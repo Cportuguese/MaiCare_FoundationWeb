@@ -1,0 +1,15 @@
+---
+// Phase 1 placeholder. The real Home page is built in Phase 4.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { identity } from '../data/site';
+---
+
+<BaseLayout title={`${identity.shortName} Foundation: site under construction`}>
+  <main class="min-h-screen grid place-items-center p-6">
+    <div class="max-w-md">
+      <h1 class="text-3xl font-bold">{identity.name}</h1>
+      <p class="mt-3">{identity.description}</p>
+      <p class="mt-6 text-sm opacity-70">Site under construction.</p>
+    </div>
+  </main>
+</BaseLayout>
