@@ -12,7 +12,7 @@ Update this file when a phase closes: tick the boxes, then write notes for the n
 | 2 | Design system | Approved colors, fonts, buttons and cards (style guide page) | ☑ Closed. Colors and fonts approved and locked |
 | 3 | Site shell + first deploy | Header, footer, menu, emergency banner, empty pages, live preview link | ◐ Built and checked by the AI. Waiting on you: review it, deploy to Cloudflare Pages (steps below), and confirm the live link works |
 | 4 | Home page | Finished Home page | ◐ Built and checked by the AI. Waiting on you: look at it on your phone and laptop, then tell the next session "Phase 4 checked" |
-| 5 | About + Programs | Two finished pages | ☐ |
+| 5 | About + Programs | Two finished pages | ◐ Built and checked by the AI. Waiting on you: look at both pages on your phone and laptop, confirm the wording (see Phase 5 notes), then tell the next session "Phase 5 checked" |
 | 6 | Get Involved + Contact | How to Donate flow, working form, Privacy Notice | ☐ |
 | 7 | Events & News | Event and news system with 3 sample posts | ☐ |
 | 8 | Polish & QA | Whole-site quality pass | ☐ |
@@ -200,7 +200,46 @@ Other changes:
 - Home copy about who we want to help (students, typhoon families, orphans and the elderly) comes from your brief and the plan, not from confirmed programs. Re-check it in Phase 5 when the Programs page is written.
 - `PageShell.astro` is still used by the other six pages; leave it until Phases 5 to 7 are finished.
 
-## Notes for the next session (Phase 5: About + Programs)
+## Phase 5: About + Programs
+
+Scope built: the real About page (`src/pages/about.astro`) and Programs page (`src/pages/programs.astro`), four new icons, and two new settings lists. Nothing from Phases 6 to 9. Home was not touched.
+
+Done when:
+- [x] Both pages are finished and reviewed on phone and desktop. Verified with screenshots at 1280px and at a true 360px (inside a 360px frame): one column on phones, no sideways scrolling, nothing clipped. Every internal link and anchor on both pages was checked against the built site: 0 broken. `npm run build` passes (9 pages).
+- [x] Their layouts feel different from Home. Home is a split hero, a photo grid, a dark list and a panel. About is text-led (story + belief quote, a dark band of three big statements, a four-step timeline, people and partners, a facts list). Programs is jump links, three full-width rows that alternate sides, a ruled list of five areas, and a closing panel.
+
+**Not closed yet: waiting for your own check on your phone and laptop**, and for you to confirm the wording below.
+
+### What was built
+- **About**: story with the belief "A little help, given with compassion, can change the course of a life." (pink underline on the h1, the only one on the page); Mission, Vision and Promise on dark olive; "How we work" timeline (Listen first, Plan together, Give where it was meant, Report openly); officers, trustees and partners; legal and transparency facts; closing line with one pink button. A link to the Privacy Notice sits in the legal section.
+- **Programs**: header with jump links to the three focus groups; each focus group has who it helps, a "Help we need" list and a button to How to Donate (`/get-involved/#how-to-donate`); then the five program areas (Charitable, Educational, Livelihood, Health, Social welfare); closing panel with Contact and See ways to help.
+- `src/data/site.ts`: new `officers` and `partners` lists (section 4). **Both are empty on purpose.** While empty, About shows "We will introduce our officers and trustees here soon" and "Our partners will be listed here once they agree to be shown." Add a line to a list and it appears. SEC number: shown in the legal facts only when `contact.secRegistrationNumber` is set.
+- `src/components/Icon.astro`: added Lucide `clipboard-list`, `ear`, `heart-pulse`, `shield-check` (same stroke width).
+- `PageShell.astro` is no longer used by About or Programs; it is still used by `get-involved`, `events`, `contact` and `privacy`. Leave it until Phases 6 and 7 are done.
+- No new dependencies. No changes to the layout, header, footer, colors or Home.
+
+### Review loop (plan section 5.3)
+1. Design direction: written at the top of both page files.
+2. Screenshots at 1280px and 360px. Fixed after the first look: the butterfly ran behind the last words of the belief quote (moved to the panel's top corner); the dark Mission band had too much empty space (padding reduced); duplicate hidden headings removed.
+3. UX review: touch targets 44px or more (chips and text links `min-h-11`, buttons 48px+), 16px gutters, headings in order (one h1 per page), one pink button per section, motion is only the existing soft fade-in. Contrast measured: pink-600 on pink-100 4.61:1, pink-600 on blush 5.01:1, ink-600 on pink-100 5.61:1, ink-500 on white 5.49:1, pink-300 on olive-800 5.61:1. All pass 4.5:1.
+4. Slop test: no gradients, glass, emoji, fake numbers, names, partners or testimonials. The one quote is the foundation's own belief statement, labelled "What we believe", not a person's testimonial. Copy names San Carlos City and Pangasinan.
+
+### Things to know / decisions for you (please confirm)
+- **Mission, Vision and Promise are copied word for word from your earlier draft** (the screenshots in `Images for references/`). Confirm them with the foundation. The Promise ("No part of our income goes to any member, trustee or officer. Every donation is used solely for our programs.") is a commitment donors will hold you to, so make sure the board agrees.
+- **I made some draft wording more careful because there is no track record yet.** The draft said "We work with local government, schools, health workers and partner organizations". The page says "We plan to work with...". Change it back if those partnerships already exist. The four timeline steps are my plain-language version of the draft's "planned with the community and reported openly to our donors".
+- **The five program areas** (Charitable, Educational, Livelihood, Health, Social welfare) come from the draft. I wrote "we are just getting started, so not every area has begun yet." Confirm the five areas are real, and edit or delete that sentence.
+- **"Help we need" lists** are based on the draft and the plan (scholarships, school supplies and literacy programs; food, clothes and money for relief; food, clothes and volunteers for orphans and the elderly). Edit them in the `focusAreas` list at the top of `programs.astro` if the real needs differ.
+- **No photos, on purpose.** I looked through CC0 photos tagged San Carlos and Pangasinan; the usable ones were school gates with readable school names (which could look like a partnership, and Home already has one), bridges and a billboard. Programs shows icon panels instead. To add a real photo, save it under the fixed name in `MEDIA-LIST.md`; no code change is needed. Photos have empty alt text because they are decoration beside full text; if a photo carries meaning, add alt text in `programs.astro`.
+- The Programs "How to help..." buttons all go to `/get-involved/#how-to-donate`. Phase 6 can make them open the contact form with the right option preselected.
+- Officer and partner names, logos and the SEC number are still missing (plan section 10).
+
+## Notes for the next session (Phase 6: Get Involved + Contact)
+- **First:** confirm Phases 3, 4 and 5 are closed (the Phase 3 live-link box and your checks of Home, About and Programs are yours). Phase 6 only. Do not touch Home, About or Programs, except to point buttons at the form if the user asks.
+- Phase 6 replaces `PageShell` on `get-involved`, `contact` and `privacy`. `get-involved` needs the anchors `#how-to-donate`, `#volunteer`, `#partner`, `#faq` (the header, Home, About and Programs already link to them).
+- Layouts to avoid repeating: Home (split hero, photo grid, dark list, panel), About (text-led, dark statements, timeline), Programs (alternating rows, ruled list).
+- The Home, About and Programs buttons that say "Offer clothes or food", "Contact us" etc. may want the form preselected: check them all with a search for `/contact/`.
+
+## Older notes for Phase 5 (kept for reference)
 - **First:** confirm Phases 3 and 4 are closed (the Phase 3 live-link box and your Home check are yours). Phase 5 only: About and Programs. Do not touch Home.
 - Replace the `PageShell` placeholders in `src/pages/about.astro` and `src/pages/programs.astro` with real sections from plan section 6. **Layouts must feel different from Home** (a Phase 5 done-when). Home used: a split hero, a white asymmetric photo grid, a dark list section and a tinted panel. Try a timeline, a pull quote or an officers grid instead. Use the pink underline once per page at most.
 - About content: story, Mission/Vision/Promise, how we work (LGU, schools, health workers, partners), officers (placeholders, never invented names), partners, legal and transparency info. The draft screenshots in `Images for references/` show Mission, Vision and Promise wording; ask the user to confirm it before publishing. The SEC number comes from `contact.secRegistrationNumber` in `site.ts` (null = hide).

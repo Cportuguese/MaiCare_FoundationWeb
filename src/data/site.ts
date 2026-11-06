@@ -98,6 +98,33 @@ export const goals: Goal[] = [
 ];
 
 // ---------------------------------------------------------------------------
+// 4. Officers, trustees and partners (About page)
+// ---------------------------------------------------------------------------
+// Both lists start EMPTY on purpose: never invent names or logos. While a list
+// is empty, the About page shows a calm "coming soon" note instead.
+// To add someone, copy one line, fill it in, and save. Only add people and
+// partners who have agreed to be named.
+export type Officer = {
+  name: string;
+  /** e.g. "President", "Treasurer", "Trustee". */
+  role: string;
+};
+
+export const officers: Officer[] = [
+  // { name: 'Full Name', role: 'President' },
+];
+
+export type Partner = {
+  name: string;
+  /** Optional website or Facebook page. */
+  url?: string;
+};
+
+export const partners: Partner[] = [
+  // { name: 'Partner name', url: 'https://...' },
+];
+
+// ---------------------------------------------------------------------------
 // Fixed identity (rarely changes)
 // ---------------------------------------------------------------------------
 export const identity = {

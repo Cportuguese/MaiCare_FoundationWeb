@@ -14,4 +14,12 @@ Every image on the site: where it is used, where it came from, and whether it is
 
 Not images, but also placeholders until the real logo arrives: `src/components/Logo.astro` (text wordmark) and `src/components/Butterfly.astro` (line art).
 
+About and Programs (Phase 5) use **no photos**: no honest picture of the foundation or the people it will help exists yet. Programs shows designed icon panels, and picks up a real photo automatically if you save one in `src/assets/images/programs/` as `students.jpg`, `storm-relief.jpg` or `orphans-elderly.jpg` (jpg, jpeg, png or webp). Photos of people, especially children, need written guardian consent first. The Programs photo slots are listed here so they are not forgotten:
+
+| Slot | Where it appears | Status |
+|---|---|---|
+| `programs/students.jpg` | Programs: focus 1 | **Empty** (icon panel shown) |
+| `programs/storm-relief.jpg` | Programs: focus 2 | **Empty** (icon panel shown) |
+| `programs/orphans-elderly.jpg` | Programs: focus 3 | **Empty** (icon panel shown) |
+
 Home (Phase 4) uses the three photos above. None of them is captioned, and none is described as a maiCare beneficiary. About, Programs, Get Involved and Events photos arrive in Phases 5 to 7. Nothing from `Images for references/` is used anywhere.

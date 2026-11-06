@@ -1,25 +1,287 @@
 ---
-// About: shell only. The real page is built in Phase 5.
+/**
+ * About page (Phase 5).
+ *
+ * Design direction (text-led, so it feels different from Home's photo grid)
+ *  1. Story: a left column of words and a Fraunces-italic belief statement in a
+ *     tinted panel on the right, with the butterfly at its corner. The pink
+ *     underline is used here once (the h1).
+ *  2. Mission, vision, promise: a dark olive band of three big statements set in
+ *     rows (label on the left, statement on the right). No cards.
+ *  3. How we work: a four-step timeline. Horizontal on desktop, vertical on phones.
+ *  4. People and partners: two calm columns on white. They read from
+ *     src/data/site.ts and show an honest "coming soon" note until real names exist.
+ *  5. Legal and transparency: a plain facts list. Any value that is null is hidden.
+ *  6. Closing line with one pink button.
+ *
+ * No photos on this page on purpose: there is no honest picture of "us" yet
+ * (see MEDIA-LIST.md). No invented names, partners, numbers or quotes.
+ */
 import PageLayout from '../layouts/PageLayout.astro';
-import PageShell from '../components/PageShell.astro';
+import Button from '../components/Button.astro';
+import Butterfly from '../components/Butterfly.astro';
+import Icon, { type IconName } from '../components/Icon.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { contact, identity, officers, partners } from '../data/site';
+import { privacyLink } from '../data/nav';
+
+// Mission, vision and promise wording comes from the foundation's earlier draft.
+// It is reproduced as written; confirm it with the foundation before launch.
+const statements = [
+  {
+    label: 'Our mission',
+    text: 'To promote the general well-being, self-reliance and quality of life of individuals, families and communities in need, without distinction as to race, religion, gender or political affiliation.',
+  },
+  {
+    label: 'Our vision',
+    text: 'Communities where every family has access to education, health care and the means to earn a decent living.',
+  },
+  {
+    label: 'Our promise',
+    text: 'No part of our income goes to any member, trustee or officer. Every donation is used solely for our programs.',
+  },
+];
+
+const steps: { icon: IconName; title: string; text: string }[] = [
+  {
+    icon: 'ear',
+    title: 'Listen first',
+    text: 'We want to hear from barangay leaders, the city government, schools and health workers about who needs help most.',
+  },
+  {
+    icon: 'handshake',
+    title: 'Plan together',
+    text: 'Each program is planned with the community it serves and with partner organizations.',
+  },
+  {
+    icon: 'hand-heart',
+    title: 'Give where it was meant',
+    text: 'Help goes to the program it was given for, and to the people that program serves.',
+  },
+  {
+    icon: 'clipboard-list',
+    title: 'Report openly',
+    text: 'We share what was given and what it did, so donors can see it for themselves.',
+  },
+];
+
+// ----- Legal and transparency facts (null values are left out) -----
+const { address, secRegistrationNumber } = contact;
+const basedIn = [address.street, address.city, address.province, address.country].filter(Boolean).join(', ');
+const facts: { label: string; value: string }[] = [
+  { label: 'Legal name', value: identity.name },
+  { label: 'What we are', value: 'A non-stock, non-profit foundation' },
+  { label: 'Based in', value: basedIn },
+  ...(secRegistrationNumber ? [{ label: 'SEC registration no.', value: secRegistrationNumber }] : []),
+];
+
+const initials = (name: string) =>
+  name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join('');
 ---
 
 <PageLayout
   title="About"
   description="Who maiCare Foundation is: our story, mission, vision and promise, and how we work with our partners in San Carlos City, Pangasinan."
 >
-  <PageShell
-    label="About us"
-    title="Who we are"
-    intro="The story of maiCare Foundation, and the people and partners behind it."
-    builtIn="Phase 5"
-    blocks={[
-      { title: 'Our story', note: 'How the foundation began.' },
-      { title: 'Mission, vision and promise', note: 'What we stand for.' },
-      { title: 'How we work', note: 'With the city government, schools, health workers and partners.' },
-      { title: 'Officers and trustees', note: 'Placeholders until the foundation confirms the names.' },
-      { title: 'Partners', note: 'Partner logos, once partners agree to be shown.' },
-      { title: 'Legal and transparency', note: 'Registration details and our promise on how help is used.' },
-    ]}
-  />
+  <!-- 1. Story -->
+  <section class="relative overflow-hidden">
+    <div class="container-page grid gap-10 pb-14 pt-10 md:pb-20 md:pt-16 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
+      <div class="fade-in">
+        <SectionHeading level="h1" label="About us" title="A foundation built on care" underline="built on care" />
+        <div class="mt-7 max-w-xl space-y-5 text-lead text-ink-600">
+          <p>
+            {identity.name} is a non-stock, non-profit organization based in the City of San Carlos, Pangasinan. It was born from a simple belief: that a little help, given with compassion, can change the course of a life.
+          </p>
+          <p>
+            We are just starting out, so we have no results to show yet. What we do have is a clear purpose, three groups of people we want to reach first, and a promise about how every donation will be used.
+          </p>
+        </div>
+        <div class="mt-8 flex flex-wrap gap-x-6 gap-y-1">
+          <a href="/programs/" class="inline-flex min-h-12 items-center gap-2 font-semibold text-pink-600 no-underline hover:text-pink-700">
+            See what we do <Icon name="arrow-right" size={18} />
+          </a>
+        </div>
+      </div>
+
+      <figure class="relative fade-in self-center overflow-hidden rounded-panel bg-pink-100 px-7 py-12 md:px-10 md:py-16">
+        <Butterfly class="pointer-events-none absolute -right-5 -top-5 size-28 rotate-12 text-pink-500 opacity-25 md:size-32" />
+        <p class="relative font-accent text-label font-medium italic text-pink-600">What we believe</p>
+        <blockquote class="relative mt-4 font-accent text-[clamp(1.5rem,1.2rem+1.4vw,2.125rem)] italic leading-snug text-olive-800">
+          A little help, given with compassion, can change the course of a life.
+        </blockquote>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 2. Mission, vision, promise (dark) -->
+  <section class="bg-olive-800" data-surface="dark" aria-labelledby="values-heading">
+    <div class="container-page py-10 md:py-16">
+      <h2 id="values-heading" class="sr-only">Our mission, vision and promise</h2>
+      <dl class="divide-y divide-pink-50/15 border-y border-pink-50/15">
+        {
+          statements.map((s) => (
+            <div class="grid gap-3 py-9 md:grid-cols-[14rem_1fr] md:gap-12 md:py-12">
+              <dt class="font-accent text-label font-medium italic text-pink-300 md:pt-1">{s.label}</dt>
+              <dd class="max-w-3xl text-[clamp(1.1875rem,1.05rem+0.6vw,1.5rem)] font-semibold leading-snug text-pink-50">
+                {s.text}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <!-- 3. How we work: timeline -->
+  <section aria-label="How we work">
+    <div class="container-page section">
+      <SectionHeading
+        label="How we work"
+        title="Close to the people we serve"
+        intro="We plan to work with the city government, schools, health workers and partner organizations, so that every peso donated reaches the people who need it most."
+      />
+
+      <ol class="relative mt-12 grid gap-10 lg:grid-cols-4 lg:gap-8">
+        <!-- the line that links the steps -->
+        <span class="absolute bottom-6 left-6 top-6 w-px bg-pink-300 lg:inset-x-6 lg:bottom-auto lg:top-6 lg:h-px lg:w-auto" aria-hidden="true"></span>
+        {
+          steps.map((step, i) => (
+            <li class="relative grid grid-cols-[3rem_1fr] gap-x-5 lg:block">
+              <span class="relative z-10 grid size-12 place-items-center rounded-full bg-white text-pink-600 shadow-soft ring-4 ring-pink-50">
+                <Icon name={step.icon} size={22} />
+              </span>
+              <div class="lg:mt-5">
+                <p class="font-accent text-small italic text-pink-600">Step {i + 1}</p>
+                <h3 class="mt-1 text-h3 text-olive-800">{step.title}</h3>
+                <p class="mt-2 text-body text-ink-600">{step.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- 4. People and partners -->
+  <section class="bg-white" aria-label="Officers, trustees and partners">
+    <div class="container-page section">
+      <SectionHeading
+        label="The people behind it"
+        title="Officers, trustees and partners"
+        intro="We will only name people and organizations who have agreed to be named."
+      />
+
+      <div class="mt-10 grid gap-6 lg:grid-cols-2 lg:gap-8">
+        <!-- Officers and trustees -->
+        <div class="rounded-panel bg-pink-50 p-6 ring-1 ring-pink-200 md:p-8">
+          <h3 class="flex items-center gap-3 text-h3 text-olive-800">
+            <Icon name="users" size={24} class="text-pink-600" /> Officers and trustees
+          </h3>
+          {
+            officers.length > 0 ? (
+              <ul class="mt-6 grid gap-5 sm:grid-cols-2">
+                {officers.map((person) => (
+                  <li class="flex items-center gap-4">
+                    <span class="grid size-14 shrink-0 place-items-center rounded-full bg-pink-100 font-extrabold text-olive-800" aria-hidden="true">
+                      {initials(person.name)}
+                    </span>
+                    <span>
+                      <span class="block font-semibold text-olive-800">{person.name}</span>
+                      <span class="block text-small text-ink-600">{person.role}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="mt-4 text-body text-ink-600">
+                We will introduce our officers and trustees here soon.
+              </p>
+            )
+          }
+        </div>
+
+        <!-- Partners -->
+        <div class="rounded-panel bg-pink-50 p-6 ring-1 ring-pink-200 md:p-8">
+          <h3 class="flex items-center gap-3 text-h3 text-olive-800">
+            <Icon name="handshake" size={24} class="text-pink-600" /> Partners
+          </h3>
+          {
+            partners.length > 0 ? (
+              <ul class="mt-6 flex flex-wrap gap-3">
+                {partners.map((partner) => (
+                  <li>
+                    {partner.url ? (
+                      <a href={partner.url} class="inline-flex min-h-11 items-center rounded-full bg-white px-5 font-semibold text-olive-800 no-underline shadow-soft hover:text-pink-700">
+                        {partner.name}
+                      </a>
+                    ) : (
+                      <span class="inline-flex min-h-11 items-center rounded-full bg-white px-5 font-semibold text-olive-800 shadow-soft">
+                        {partner.name}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="mt-4 text-body text-ink-600">
+                Our partners will be listed here once they agree to be shown. Does your school, business or group want to help?
+              </p>
+            )
+          }
+          <a href="/get-involved/#partner" class="mt-5 inline-flex min-h-11 items-center gap-2 font-semibold text-pink-600 no-underline hover:text-pink-700">
+            Partner with us <Icon name="arrow-right" size={18} />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Legal and transparency -->
+  <section aria-label="Legal and transparency">
+    <div class="container-page section grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+      <div>
+        <SectionHeading
+          label="Legal and transparency"
+          title="Plain facts, in one place"
+          intro="Donors should be able to check who we are. These details are shown exactly as we have them."
+        />
+      </div>
+
+      <div>
+        <dl class="divide-y divide-pink-200 rounded-panel bg-white px-6 py-2 shadow-soft md:px-8">
+          {
+            facts.map((fact) => (
+              <div class="grid gap-1 py-4 sm:grid-cols-[11rem_1fr] sm:gap-6">
+                <dt class="text-small font-semibold text-ink-500">{fact.label}</dt>
+                <dd class="font-semibold text-olive-800">{fact.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+        <ul class="mt-6 space-y-1">
+          <li>
+            <a href={privacyLink.href} class="inline-flex min-h-11 items-center gap-3 font-semibold text-pink-600 no-underline hover:text-pink-700">
+              <Icon name="shield-check" size={20} /> How we handle your personal data
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Closing line -->
+  <section class="container-page pb-16 md:pb-24" aria-labelledby="about-cta-heading">
+    <div class="flex flex-col gap-6 border-t border-pink-200 pt-10 sm:flex-row sm:items-center sm:justify-between">
+      <h2 id="about-cta-heading" class="max-w-md text-h2 text-olive-800">Want to help build this with us?</h2>
+      <div class="flex flex-wrap gap-3">
+        <Button href="/get-involved/" size="lg">See ways to help</Button>
+        <Button href="/contact/" variant="secondary" size="lg">Contact us</Button>
+      </div>
+    </div>
+  </section>
 </PageLayout>
