@@ -55,6 +55,24 @@ export const emergencyBanner = {
 };
 
 // ---------------------------------------------------------------------------
+// 2b. Next event (the strip near the top of the Home page)
+// ---------------------------------------------------------------------------
+// Set `enabled` to false to hide the strip. It also hides itself once `date`
+// has passed (the site is rebuilt on every push, so that happens on the next
+// push after the date). Phase 7 can replace this with the events system.
+// Leave `place` and `time` as null until they are confirmed; they are hidden.
+export const nextEvent = {
+  enabled: true,
+  title: 'maiCare Foundation launch', // TODO: confirm the event name with the foundation
+  /** Date as YYYY-MM-DD. */
+  date: '2026-11-13',
+  place: null as string | null, // TODO: confirm venue
+  time: null as string | null, // TODO: confirm time, e.g. "9:00 AM"
+  linkLabel: 'See events and news',
+  linkHref: '/events/',
+};
+
+// ---------------------------------------------------------------------------
 // 3. Goals and impact numbers
 // ---------------------------------------------------------------------------
 // At launch there is no track record, so these are GOALS, not results.

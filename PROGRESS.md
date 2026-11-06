@@ -11,7 +11,7 @@ Update this file when a phase closes: tick the boxes, then write notes for the n
 | 1 | Project setup | An empty working site, design skills installed, rules file | ☑ Closed. Pushed to GitHub (commit 208c65a; `main` matches `origin/main`) |
 | 2 | Design system | Approved colors, fonts, buttons and cards (style guide page) | ☑ Closed. Colors and fonts approved and locked |
 | 3 | Site shell + first deploy | Header, footer, menu, emergency banner, empty pages, live preview link | ◐ Built and checked by the AI. Waiting on you: review it, deploy to Cloudflare Pages (steps below), and confirm the live link works |
-| 4 | Home page | Finished Home page | ☐ |
+| 4 | Home page | Finished Home page | ◐ Built and checked by the AI. Waiting on you: look at it on your phone and laptop, then tell the next session "Phase 4 checked" |
 | 5 | About + Programs | Two finished pages | ☐ |
 | 6 | Get Involved + Contact | How to Donate flow, working form, Privacy Notice | ☐ |
 | 7 | Events & News | Event and news system with 3 sample posts | ☐ |
@@ -158,12 +158,57 @@ Phase 3 closes when all four boxes are ticked and you've checked the result. `np
 - Lucide has no Facebook icon, so the footer link is a text link ("Follow us on Facebook"). It appears only when `facebookUrl` is set.
 - No other phase's work was touched. Phase 2's components were reused unchanged.
 
-## Notes for the next session (Phase 4: Home page)
-- **First:** confirm Phase 3 is closed (the live-link box is the user's). Phase 2 is closed; its colors and fonts are locked.
-- Phase 4 replaces the placeholder blocks in `src/pages/index.astro` with the real Home sections from plan section 6 (hero, next-event strip, who we help, goals, 3 ways to help, latest events and news, featured story, final call to action). Vary the layouts (don't repeat "heading + 3 cards"). Goal numbers come from `goals` in `src/data/site.ts` and show only when `confirmed: true`; with none confirmed, show the goals as plain wording or hide the strip (no invented numbers). Don't show a featured story or quote until a real one exists.
-- Reuse: `PageLayout`, `Button`, `Card`, `SectionHeading`, `Icon` (add new Lucide icons in `Icon.astro`), `Butterfly`, `Underline`. Donate buttons go to `/get-involved/#how-to-donate`. "Donate food" style buttons can go to `/contact/` (the form's preselect arrives in Phase 6, so use a plain link for now and note it).
-- Photos: royalty-free, Filipino context, saved as `src/assets/images/home/hero.jpg` and so on, shown with Astro `<Image>`/`<Picture>`. Add each to `MEDIA-LIST.md` as a placeholder. Never caption stock photos as beneficiaries. Nothing from `Images for references/` may ship.
-- Every push updates the live preview, so the user can check each Home section on their phone.
+## Phase 4: Home page
+
+Scope built: the real Home page (`src/pages/index.astro`), three placeholder photos, four new icons, and a "next event" setting. Nothing from Phases 5 to 9 (About, Programs, Get Involved, Contact form, Events system, polish, launch).
+
+Done when:
+- [x] Every Home section is finished on phone and desktop. Verified with screenshots at 1280px and at a true 360px (inside a 360px frame, because headless Chrome won't go narrower than about 500px). One column on phones, nothing clipped, no sideways scrolling. Sections that are intentionally absent or empty are listed under "Things to know" below.
+- [x] The review loop passed, with no banned patterns (see "Review loop").
+- [x] The Donate and Volunteer buttons go to the right places. Verified in the built HTML: Donate goes to `/get-involved/#how-to-donate`, Volunteer goes to `/get-involved/#volunteer`; every other link on the page points to a real page (`/contact/`, `/programs/`, `/events/`, `/get-involved/`).
+
+`npm run build` passes (9 pages). **Not closed yet: waiting for your own check on your phone and laptop** (push, then open the `.pages.dev` link, or run `npm run dev`).
+
+### What was built (top to bottom on the page)
+1. **Hero**: split layout. Fraunces-italic place label, headline "Sharing hope. Extending a helping hand." (pink underline on "helping hand", the one underline on the page), the "With humble hearts..." line, short intro, **Donate** (primary) and **Volunteer** (secondary), and a note that giving starts with a message and the site takes no online payments. Photo on the right with the butterfly at its corner.
+2. **Next-event strip**: white bar with date badge, event name and date. Driven by the new `nextEvent` in `src/data/site.ts` (see below).
+3. **Who we help**: on white. Tall photo card (typhoon families) + wide photo card (students) + a plain tinted card (orphans and elderly, no photo). A "See our programs" button.
+4. **Goals strip**: reads `goals` in `site.ts`. **It shows nothing right now**, because no goal is `confirmed: true` with a target. Once you confirm one, it appears (big number + label + year) between "Who we help" and "Ways to help".
+5. **Ways to help**: dark olive section. A list (not cards): give money, give clothes or food, give your time, each with a text link, plus one cream "See all the ways to help" button.
+6. **Events and news**: a calm "we are just getting started" band with a link to `/events/`. Phase 7 replaces it with the latest three posts.
+7. **Final call to action**: tinted panel with the butterfly and a "Contact us" button. Phone and email appear under it only when they are set in `site.ts` (both are `null` now, so hidden).
+
+Other changes:
+- `src/data/site.ts`: new `nextEvent` block (on/off, title, date, place, time, link). Place and time are `null` and hidden. It hides itself after the date has passed (checked when the site is built).
+- `src/components/Icon.astro`: added Lucide icons `cloud-lightning`, `graduation-cap`, `hand-coins`, `package` (same stroke width).
+- Photos in `src/assets/images/home/`: `hero.jpg`, `focus-students.jpg`, `focus-storm.jpg`, shown with Astro `<Image>` (resized, WebP). Listed in `MEDIA-LIST.md`.
+- No new dependencies. No changes to the layout, header, footer or colors.
+
+### Review loop (plan section 5.3)
+1. Design direction: written at the top of `index.astro`. Layouts differ section to section (split hero, strip, asymmetric grid, dark list, panel), with no "heading + 3 equal cards" run.
+2. Screenshots at 1280px and 360px. Fixed after the first look: the storm photo made the left card far taller than the two on the right (now a fixed-height crop); the hero photo was small (columns are now equal).
+3. UX review: touch targets 44px or more (buttons 48px+, text links `min-h-11`), 16px gutters, one primary pink button per section (hero only; the dark section uses the cream button), headings in order, photos have descriptive alt text, motion is only the existing soft fade-in. Colors use the locked pairings (pink-300 and pink-50 on olive-800, ink-600 on white and blush). I did not re-measure contrast on this page; it reuses pairings already measured in Phases 2 and 3.
+4. Slop test: no gradients, glass, emoji, fake numbers, testimonials or quotes. Copy names San Carlos City and Pangasinan and explains the no-online-payment flow. Copy says "we want to..." because there is no track record yet.
+
+### Things to know / decisions for you
+- **Photos are the weakest part.** Pexels search is blocked for me, and I could not safely confirm a Philippine location for most Pexels photos. So I used two CC0 Wikimedia Commons photos taken in San Carlos City (a barangay hall sign and a school gate) and one Pexels photo that clearly shows Malabon, Metro Manila. They are plain documentary shots with no people being helped, and **none is captioned as beneficiaries**. All three are placeholders. Real photos (with guardian consent for children) will lift this page the most.
+- **The students photo shows a readable school sign** (Balite Sur Elementary School). It might look like a partnership. Swap it before launch unless the foundation works with that school.
+- **Nothing from `Images for references/` was used** (it is local-only; its sample photo also shows non-Filipino volunteers).
+- **Please confirm the next event.** I put "maiCare Foundation launch" on 13 November 2026 (a Friday) from the plan. If the event name, date, time or place is different, edit `nextEvent` in `site.ts`. Set `enabled: false` to hide the strip.
+- **Not on the page on purpose:** a featured story or quote (no real one exists) and goal numbers (none confirmed). The section 6 list had both; they come back when real content exists.
+- **Contact buttons:** "Offer clothes or food" goes to `/contact/` as a plain link. Phase 6 should make it open the form with the right option preselected.
+- Home copy about who we want to help (students, typhoon families, orphans and the elderly) comes from your brief and the plan, not from confirmed programs. Re-check it in Phase 5 when the Programs page is written.
+- `PageShell.astro` is still used by the other six pages; leave it until Phases 5 to 7 are finished.
+
+## Notes for the next session (Phase 5: About + Programs)
+- **First:** confirm Phases 3 and 4 are closed (the Phase 3 live-link box and your Home check are yours). Phase 5 only: About and Programs. Do not touch Home.
+- Replace the `PageShell` placeholders in `src/pages/about.astro` and `src/pages/programs.astro` with real sections from plan section 6. **Layouts must feel different from Home** (a Phase 5 done-when). Home used: a split hero, a white asymmetric photo grid, a dark list section and a tinted panel. Try a timeline, a pull quote or an officers grid instead. Use the pink underline once per page at most.
+- About content: story, Mission/Vision/Promise, how we work (LGU, schools, health workers, partners), officers (placeholders, never invented names), partners, legal and transparency info. The draft screenshots in `Images for references/` show Mission, Vision and Promise wording; ask the user to confirm it before publishing. The SEC number comes from `contact.secRegistrationNumber` in `site.ts` (null = hide).
+- Programs: lead with the 3 focus groups (students, storm relief and rehab, orphans and elderly), then the formal program areas if the foundation has them (the draft listed Charitable, Educational, Livelihood, Health, Social Welfare; ask). Each links to How to Donate (`/get-involved/#how-to-donate`).
+- Reuse: `PageLayout`, `Button`, `Card`, `SectionHeading`, `Icon` (add icons in `Icon.astro`), `Butterfly`, `Underline`. Photos go in `src/assets/images/about/` and `programs/` with fixed names, shown with Astro `<Image>`, and added to `MEDIA-LIST.md`.
+- Photo sourcing tip: Pexels search is blocked for the AI. Wikimedia Commons search works (filter to CC0 or public domain) and has many photos tagged San Carlos City and Pangasinan. Never caption a stock photo as a beneficiary.
+- Screenshot tip: for a true 360px view, put the page in an `<iframe width="360">` on a local HTML file and screenshot that with headless Chrome (a plain narrow window is clamped to about 500px). Use absolute Windows paths for `--screenshot`.
+- The Home copy and `nextEvent` in `site.ts` may need the user's corrections; see the Phase 4 notes above.
 - Remember the Git rules: never commit or push, no AI mention anywhere.
 
 ## Older notes (written at the end of Phase 1, still true)

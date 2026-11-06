@@ -8,7 +8,10 @@ Every image on the site: where it is used, where it came from, and whether it is
 | `public/favicon.svg` | Browser tab icon | Made in Phase 3: placeholder butterfly line art on a pink square. | **Placeholder.** Replace with the real logo. |
 | `public/favicon-32.png`, `public/favicon.ico` | Browser tab icon (older browsers) | Same artwork as `favicon.svg`, exported at 32 px. | **Placeholder.** Redo when the logo arrives. |
 | `public/apple-touch-icon.png` (180x180) | Icon when someone adds the site to their phone home screen | Same artwork as `favicon.svg`. | **Placeholder.** Redo when the logo arrives. |
+| `src/assets/images/home/hero.jpg` | Home: hero photo | Wikimedia Commons, "6317Turac, San Carlos, Pangasinan 38.jpg" by Judgefloro. **CC0** (no rights reserved, no credit needed). Shows the barangay hall and day care center sign in Barangay Turac, San Carlos City. Resized to 1800 px wide. | **Placeholder.** Replace with a real maiCare photo of people. |
+| `src/assets/images/home/focus-students.jpg` | Home: "Students" card | Wikimedia Commons, "6139Balite Sur, San Carlos, Pangasinan 01.jpg" by Judgefloro. **CC0.** An elementary school gate in San Carlos City (its sign is readable). Resized to 1800 px wide. | **Placeholder.** Replace with a real photo. The sign names a real school, so replace it before launch if the foundation has no link with that school. |
+| `src/assets/images/home/focus-storm.jpg` | Home: "Families hit by typhoons" card | Pexels, photo 32988688 by Tear Cordez (free to use, no credit needed). A man on a cargo tricycle in a flooded street in Malabon, Metro Manila. Downloaded at 1400 px wide. | **Placeholder.** Replace with a real relief photo. It is not Pangasinan and not a beneficiary. |
 
 Not images, but also placeholders until the real logo arrives: `src/components/Logo.astro` (text wordmark) and `src/components/Butterfly.astro` (line art).
 
-No stock photos are used yet. They arrive with the page phases (4 to 7).
+Home (Phase 4) uses the three photos above. None of them is captioned, and none is described as a maiCare beneficiary. About, Programs, Get Involved and Events photos arrive in Phases 5 to 7. Nothing from `Images for references/` is used anywhere.
