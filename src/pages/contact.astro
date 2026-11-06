@@ -1,21 +1,173 @@
 ---
-// Contact: shell only. The real page and the working form are built in Phase 6.
+/**
+ * Contact page (Phase 6).
+ *
+ * Design direction
+ *  1. Short header: heading, one line of intro. Butterfly faint in the corner.
+ *     The pink underline is used once (the h1).
+ *  2. Two columns on desktop: the form in a white card (the main job of the page)
+ *     and, beside it, a dark olive card with the ways to reach us directly and
+ *     a plain "what happens next". On phones: form first, details after.
+ *  3. A wide map below, lazy-loaded so it never slows the form down on mobile data.
+ *
+ * Every detail comes from src/data/site.ts; a value that is `null` is hidden.
+ * The form is src/components/ContactForm.astro.
+ */
 import PageLayout from '../layouts/PageLayout.astro';
-import PageShell from '../components/PageShell.astro';
+import Butterfly from '../components/Butterfly.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Icon from '../components/Icon.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { contact, contactForm } from '../data/site';
+import { privacyLink } from '../data/nav';
+
+const { address, phone, emailInfo, emailDonate, facebookUrl, officeHours } = contact;
+const addressLine = [address.street, address.city, address.province, address.country].filter(Boolean).join(', ');
+const telHref = phone ? `tel:${phone.replace(/[^\d+]/g, '')}` : null;
+
+const mapQuery = encodeURIComponent(contactForm.mapQuery);
+const mapEmbed = `https://www.google.com/maps?q=${mapQuery}&output=embed`;
+const mapLink = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
+
+const next = [
+  'We read your message and reply by email or phone.',
+  'We tell you exactly how to give, or when and where to drop off goods.',
+  'We let you know we received your help.',
+];
+
+const link = 'text-cream-200 no-underline hover:text-white hover:underline decoration-pink-300 decoration-2';
 ---
 
 <PageLayout
   title="Contact"
   description="Contact maiCare Foundation in San Carlos City, Pangasinan to donate, volunteer, partner with us or ask a question."
 >
-  <PageShell
-    label="Contact us"
-    title="We'd love to hear from you"
-    intro="Tell us how you would like to help, or ask us anything."
-    builtIn="Phase 6"
-    blocks={[
-      { title: 'Contact form', note: 'Name, email or mobile, "I would like to…", message, and a consent checkbox.' },
-      { title: 'Address and map', note: 'Address, phone, email, Facebook, office hours and a map.' },
-    ]}
-  />
+  <!-- 1. Header -->
+  <section class="relative overflow-hidden">
+    <Butterfly class="pointer-events-none absolute -right-12 top-2 size-52 rotate-12 text-pink-500 opacity-[0.12] md:right-8 md:size-72" />
+    <div class="container-page relative pb-8 pt-10 md:pb-10 md:pt-16">
+      <SectionHeading
+        level="h1"
+        label="Contact us"
+        title="We'd love to hear from you"
+        underline="hear from you"
+        intro="Tell us how you would like to help, or ask us anything. You do not need to know exactly what to give. We will work it out together."
+        class="fade-in"
+      />
+    </div>
+  </section>
+
+  <!-- 2. Form + details -->
+  <section aria-label="Send us a message" class="pb-12 md:pb-16">
+    <div class="container-page grid items-start gap-8 lg:grid-cols-[1.45fr_1fr] lg:gap-10">
+      <ContactForm />
+
+      <aside aria-label="Contact details" data-surface="dark" class="rounded-panel bg-olive-800 p-7 text-cream-200 md:p-9">
+        <h2 class="font-accent text-label font-medium italic text-pink-300">Reach us directly</h2>
+        <ul class="mt-4 flex flex-col gap-4 text-body">
+          <li class="flex gap-3">
+            <Icon name="map-pin" size={22} class="mt-1 shrink-0 text-pink-300" />
+            <span>{addressLine}</span>
+          </li>
+          {
+            phone && telHref && (
+              <li class="flex gap-3">
+                <Icon name="phone" size={22} class="mt-1 shrink-0 text-pink-300" />
+                <a href={telHref} class={link}>{phone}</a>
+              </li>
+            )
+          }
+          {
+            emailInfo && (
+              <li class="flex gap-3">
+                <Icon name="mail" size={22} class="mt-1 shrink-0 text-pink-300" />
+                <a href={`mailto:${emailInfo}`} class:list={[link, 'break-all']}>{emailInfo}</a>
+              </li>
+            )
+          }
+          {
+            emailDonate && (
+              <li class="flex gap-3">
+                <Icon name="hand-heart" size={22} class="mt-1 shrink-0 text-pink-300" />
+                <span>
+                  Donations:{' '}
+                  <a href={`mailto:${emailDonate}`} class:list={[link, 'break-all']}>{emailDonate}</a>
+                </span>
+              </li>
+            )
+          }
+          {
+            officeHours && (
+              <li class="flex gap-3">
+                <Icon name="clock" size={22} class="mt-1 shrink-0 text-pink-300" />
+                <span>{officeHours}</span>
+              </li>
+            )
+          }
+          {
+            facebookUrl && (
+              <li>
+                <a
+                  href={facebookUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex min-h-11 items-center gap-2 font-semibold text-white underline decoration-pink-300 decoration-2 underline-offset-4"
+                >
+                  Message us on Facebook
+                  <Icon name="arrow-right" size={16} />
+                </a>
+              </li>
+            )
+          }
+        </ul>
+
+        <div class="mt-8 border-t border-olive-700 pt-7">
+          <h3 class="font-accent text-label font-medium italic text-pink-300">What happens next</h3>
+          <ol class="mt-4 flex flex-col gap-3 text-body">
+            {
+              next.map((text, i) => (
+                <li class="grid grid-cols-[1.75rem_1fr] gap-3">
+                  <span class="font-accent text-lg font-medium italic text-pink-300" aria-hidden="true">{i + 1}.</span>
+                  <span>{text}</span>
+                </li>
+              ))
+            }
+          </ol>
+          <p class="mt-6 text-small text-pink-50/85">
+            This site takes no online payments. We will never ask you to send money through a link.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 3. Map -->
+  <section aria-labelledby="map-heading" class="pb-16 md:pb-24">
+    <div class="container-page">
+      <div class="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
+        <h2 id="map-heading" class="text-h3 text-olive-800">Find us in {address.city}</h2>
+        <a
+          href={mapLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex min-h-11 items-center gap-2 font-semibold text-pink-600 no-underline hover:text-pink-700"
+        >
+          Open in Google Maps
+          <Icon name="arrow-right" size={16} />
+        </a>
+      </div>
+      <div class="mt-4 overflow-hidden rounded-panel bg-white shadow-soft">
+        <iframe
+          title={`Map of ${contactForm.mapQuery}`}
+          src={mapEmbed}
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          class="block h-72 w-full border-0 md:h-96"></iframe>
+      </div>
+      <p class="mt-3 text-small text-ink-500">
+        The map is provided by Google and loads when you scroll here. See our{' '}
+        <a href={privacyLink.href} class="font-semibold text-pink-600 underline hover:text-pink-700">Privacy Notice</a>.
+      </p>
+    </div>
+  </section>
 </PageLayout>

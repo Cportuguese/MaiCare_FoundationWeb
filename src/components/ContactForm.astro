@@ -1,0 +1,316 @@
+---
+/**
+ * ContactForm: the one form on the site (Phase 6).
+ *
+ * - Sends through Web3Forms (key in `contactForm` in src/data/site.ts).
+ * - "I would like to…" can be preselected from the link: /contact/?topic=donate-food
+ *   (build those links with `contactHref()` from src/data/nav.ts).
+ * - Consent checkbox is required (Data Privacy Act of 2012) and links to the Privacy Notice.
+ * - Hidden "botcheck" box is a spam trap (people never see it; bots tick it).
+ * - Plain JavaScript only. Without JavaScript the form still posts to Web3Forms.
+ * - Errors are shown next to each field in words, not only in color; the first
+ *   problem gets keyboard focus. The message text is never lost on an error.
+ */
+import FormField from './FormField.astro';
+import Checkbox from './Checkbox.astro';
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import { contactForm, contact } from '../data/site';
+import { contactTopics, privacyLink } from '../data/nav';
+
+const accessKey = contactForm.web3formsAccessKey;
+const configured = Boolean(accessKey);
+// In `npm run dev` the form always shows so it can be tried; the live site hides it until a key is set.
+const isDev = import.meta.env.DEV;
+const showForm = configured || isDev;
+
+const fallbackMail = contact.emailInfo ?? contact.emailDonate;
+const options = contactTopics.map((t) => ({ value: t.id, label: t.label }));
+---
+
+{
+  !showForm && (
+    <div id="contact-form" class="rounded-panel bg-white p-7 shadow-soft md:p-10">
+      <h2 class="text-h3 text-olive-800">Our message form is almost ready</h2>
+      <p class="mt-3 text-body text-ink-600">
+        We are still setting it up. Please check back very soon
+        {fallbackMail || contact.phone || contact.facebookUrl ? ', or reach us directly using the details on this page.' : '.'}
+      </p>
+    </div>
+  )
+}
+
+{
+  showForm && (
+    <div id="contact-form" class="scroll-mt-24 rounded-panel bg-white p-6 shadow-soft sm:p-8 md:p-10">
+      {!configured && (
+        <p class="mb-6 rounded-field bg-pink-100 p-4 text-small text-olive-800">
+          <strong>Preview only.</strong> The Web3Forms access key is not set yet in <code>src/data/site.ts</code>, so
+          sending will fail. The live site hides this form until the key is added.
+        </p>
+      )}
+
+      <form
+        id="contact-form-el"
+        action="https://api.web3forms.com/submit"
+        method="POST"
+        novalidate
+        data-key={accessKey ?? 'PREVIEW_NO_KEY'}
+        data-topics={JSON.stringify(contactTopics)}
+        class="flex flex-col gap-6"
+      >
+        <input type="hidden" name="access_key" value={accessKey ?? 'PREVIEW_NO_KEY'} />
+        <input type="hidden" name="subject" value="New message from the maiCare Foundation website" />
+        <input type="hidden" name="from_name" value="maiCare Foundation website" />
+        <!-- Spam trap: hidden from people, not from bots -->
+        <input
+          type="checkbox"
+          name="botcheck"
+          tabindex="-1"
+          autocomplete="off"
+          class="hidden"
+          aria-hidden="true"
+        />
+
+        <FormField id="topic" name="topic" type="select" label="I would like to" required placeholder="Choose one" options={options} />
+
+        <FormField id="name" name="name" label="Your name" required autocomplete="name" />
+
+        <fieldset class="m-0 flex min-w-0 flex-col gap-4 border-0 p-0">
+          <legend class="mb-1 p-0 text-[0.9375rem] font-semibold text-olive-800">
+            How can we reach you? <span class="font-normal text-ink-500">Give at least one</span>
+          </legend>
+          <div class="grid gap-5 md:grid-cols-2">
+            <FormField id="email" name="email" type="email" label="Email" autocomplete="email" />
+            <FormField id="mobile" name="mobile" type="tel" label="Mobile number" autocomplete="tel" />
+          </div>
+        </fieldset>
+
+        <FormField
+          id="message"
+          name="message"
+          type="textarea"
+          label="Your message"
+          required
+          rows={5}
+          hint="A few words is enough. For goods, tell us what you would like to give."
+        />
+
+        <Checkbox id="consent" name="consent" required>
+          I agree that maiCare Foundation may use the details I enter here to reply to me. I have read the
+          <a href={privacyLink.href} class="font-semibold text-pink-600 underline hover:text-pink-700" target="_blank" rel="noopener">
+            Privacy Notice
+          </a>.
+        </Checkbox>
+
+        <div id="form-error" role="alert" hidden class="flex items-start gap-3 rounded-field bg-pink-100 p-4 text-small text-olive-800">
+          <Icon name="info" size={20} class="mt-0.5 shrink-0 text-error" />
+          <p>
+            <strong class="text-error">We could not send your message.</strong>
+            <span id="form-error-text"> Please check your internet connection and try again.</span>
+            {fallbackMail && (
+              <span>
+                {' '}You can also email us at <a href={`mailto:${fallbackMail}`} class="font-semibold underline">{fallbackMail}</a>.
+              </span>
+            )}
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <Button type="submit" size="lg" id="form-submit" class="w-full sm:w-auto">
+            <span id="form-submit-label">Send message</span>
+          </Button>
+          <p class="text-small text-ink-500">We reply by email or phone.</p>
+        </div>
+      </form>
+
+      <!-- Success: replaces the form -->
+      <div id="form-success" tabindex="-1" hidden class="text-center outline-none sm:py-6">
+        <span class="mx-auto grid size-16 place-items-center rounded-full bg-pink-100 text-pink-600">
+          <Icon name="check" size={32} />
+        </span>
+        <h2 class="mt-5 text-h2 text-olive-800">Thank you<span id="form-success-name"></span>. We got your message.</h2>
+        <p class="mx-auto mt-3 max-w-md text-lead text-ink-600">
+          Someone from maiCare will reply by email or phone with the next steps.
+        </p>
+        <div class="mt-7">
+          <Button id="form-again" variant="secondary">Send another message</Button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+<style is:global>
+  /* Red border on any field the script marks as wrong */
+  #contact-form-el [aria-invalid='true']:not(.checkbox) {
+    border-color: var(--color-error);
+  }
+</style>
+
+<script>
+  const form = document.getElementById('contact-form-el') as HTMLFormElement | null;
+
+  if (form) {
+    const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+    const select = $<HTMLSelectElement>('topic');
+    const nameInput = $<HTMLInputElement>('name');
+    const email = $<HTMLInputElement>('email');
+    const mobile = $<HTMLInputElement>('mobile');
+    const message = $<HTMLTextAreaElement>('message');
+    const consent = $<HTMLInputElement>('consent');
+    const submit = $<HTMLButtonElement>('form-submit');
+    const submitLabel = $('form-submit-label');
+    const errorBox = $('form-error');
+    const errorText = $('form-error-text');
+    const success = $('form-success');
+    const successName = $('form-success-name');
+    const topics: { id: string; label: string }[] = JSON.parse(form.dataset.topics || '[]');
+
+    // 1. Preselect "I would like to…" from the link (?topic=donate-food)
+    const wanted = new URLSearchParams(location.search).get('topic');
+    if (wanted && topics.some((t) => t.id === wanted)) select.value = wanted;
+
+    // 2. Show / clear a message under a field
+    const wrapperOf = (el: HTMLElement) => el.closest('div.flex.flex-col') as HTMLElement;
+    const errorFor = (el: HTMLElement) => {
+      const id = `${el.id}-error`;
+      let p = document.getElementById(id);
+      if (!p) {
+        p = document.createElement('p');
+        p.id = id;
+        p.className = 'text-small font-medium text-error';
+        wrapperOf(el).appendChild(p);
+      }
+      return p;
+    };
+    const setError = (el: HTMLElement, text: string | null) => {
+      const p = errorFor(el);
+      if (text) {
+        p.textContent = text;
+        p.hidden = false;
+        el.setAttribute('aria-invalid', 'true');
+        el.setAttribute('aria-describedby', [el.getAttribute('data-hint'), p.id].filter(Boolean).join(' '));
+      } else {
+        p.hidden = true;
+        el.removeAttribute('aria-invalid');
+        const hint = el.getAttribute('data-hint');
+        hint ? el.setAttribute('aria-describedby', hint) : el.removeAttribute('aria-describedby');
+      }
+    };
+    // the message field has a hint line: keep it linked when errors come and go
+    message.setAttribute('data-hint', 'message-hint');
+
+    // 3. Check everything; return the first field that is wrong
+    const validate = (): HTMLElement | null => {
+      let first: HTMLElement | null = null;
+      const fail = (el: HTMLElement, text: string) => {
+        setError(el, text);
+        first = first ?? el;
+      };
+
+      select.value ? setError(select, null) : fail(select, 'Please choose how you would like to help.');
+      nameInput.value.trim() ? setError(nameInput, null) : fail(nameInput, 'Please tell us your name.');
+
+      const e = email.value.trim();
+      const m = mobile.value.trim();
+      const digits = m.replace(/\D/g, '');
+      if (!e && !m) {
+        fail(email, 'Please give an email or a mobile number so we can reply.');
+        setError(mobile, null);
+      } else {
+        // email: only checked if given
+        e && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)
+          ? fail(email, 'This email does not look right. Please check it.')
+          : setError(email, null);
+        m && (digits.length < 7 || digits.length > 15 || /[^\d\s+()\-.]/.test(m))
+          ? fail(mobile, 'This number does not look right. Please check it.')
+          : setError(mobile, null);
+      }
+
+      message.value.trim() ? setError(message, null) : fail(message, 'Please write a short message.');
+      consent.checked ? setError(consent, null) : fail(consent, 'Please tick the box so we can use your details to reply.');
+      return first;
+    };
+
+    // Clear a field's message as soon as the person fixes it
+    [select, nameInput, email, mobile, message, consent].forEach((el) => {
+      el.addEventListener('input', () => el.hasAttribute('aria-invalid') && setError(el, null));
+      el.addEventListener('change', () => el.hasAttribute('aria-invalid') && setError(el, null));
+    });
+    // email and mobile share one rule: typing a mobile number clears "give at least one" on email
+    mobile.addEventListener('input', () => {
+      if (mobile.value.trim() && !email.value.trim() && email.hasAttribute('aria-invalid')) setError(email, null);
+    });
+
+    const setSending = (sending: boolean) => {
+      submit.disabled = sending;
+      submit.setAttribute('aria-busy', String(sending));
+      submitLabel.textContent = sending ? 'Sending…' : 'Send message';
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      errorBox.hidden = true;
+
+      const bad = validate();
+      if (bad) {
+        bad.focus();
+        return;
+      }
+
+      const topicLabel = topics.find((t) => t.id === select.value)?.label ?? select.value;
+      const data = new FormData(form);
+      data.set('topic', topicLabel);
+      data.set('subject', `maiCare website: ${topicLabel} (${nameInput.value.trim()})`);
+      data.set('from_name', nameInput.value.trim());
+      data.set('consent', 'Yes. Agreed to the Privacy Notice when sending this form.');
+      data.set('sent_from_page', location.href.split('?')[0]);
+      // Web3Forms can reject an empty email, so leave out whichever contact field was not filled in
+      if (!email.value.trim()) data.delete('email');
+      if (!mobile.value.trim()) data.delete('mobile');
+
+      setSending(true);
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 20000);
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: data,
+          signal: controller.signal,
+        });
+        const json = await res.json().catch(() => null);
+        if (res.ok && json && json.success) {
+          const first = nameInput.value.trim().split(/\s+/)[0];
+          successName.textContent = first ? `, ${first}` : '';
+          form.hidden = true;
+          success.hidden = false;
+          success.focus();
+          success.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        } else {
+          throw new Error(json?.message || 'Request failed');
+        }
+      } catch (err) {
+        const timedOut = err instanceof DOMException && err.name === 'AbortError';
+        errorText.textContent = timedOut
+          ? ' The connection is slow right now. Your message is still here, so please try again.'
+          : ' Your message is still here, so please try again in a moment.';
+        errorBox.hidden = false;
+        errorBox.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      } finally {
+        clearTimeout(timer);
+        setSending(false);
+      }
+    });
+
+    $('form-again').addEventListener('click', () => {
+      form.reset();
+      success.hidden = true;
+      form.hidden = false;
+      const again = new URLSearchParams(location.search).get('topic');
+      if (again && topics.some((t) => t.id === again)) select.value = again;
+      nameInput.focus();
+    });
+  }
+</script>

@@ -28,7 +28,7 @@ export const contact = {
   /** Mobile or landline, as people should dial it, e.g. "+63 9XX XXX XXXX". */
   phone: null as string | null, // TODO: confirm with foundation
   /** General questions. */
-  emailInfo: null as string | null, // TODO: planned info@<domain> (Phase 9)
+  emailInfo: 'maicarefoundation@gmail.com' as string | null, // Gmail for now. Phase 9: swap to info@<domain> (and get a new Web3Forms key)
   /** Donation inquiries. */
   emailDonate: null as string | null, // TODO: planned donate@<domain> (Phase 9)
   /** Full link to the foundation's Facebook page. */
@@ -37,6 +37,42 @@ export const contact = {
   secRegistrationNumber: null as string | null, // TODO: confirm with foundation
   /** e.g. "Mon to Fri, 9:00 AM to 5:00 PM". */
   officeHours: null as string | null, // TODO: confirm with foundation
+};
+
+// ---------------------------------------------------------------------------
+// 1b. Contact form (Contact page)
+// ---------------------------------------------------------------------------
+// The form sends messages through Web3Forms (free), which emails them to the
+// inbox chosen when the key was created. To switch the form on:
+//   1. Go to web3forms.com, enter the foundation's inbox email, get the access key.
+//   2. Paste the key below. It is meant to be public (it only lets people SEND
+//      to that one inbox), so it is safe in the site code.
+// While the key is `null` the live site shows a calm "form coming soon" note
+// instead of a form that cannot send. (`npm run dev` still shows the form so
+// you can try it.)
+export const contactForm = {
+  web3formsAccessKey: 'aaa1e01c-4089-43aa-b981-f881e8d777f3' as string | null, // public by design; messages go to maicarefoundation@gmail.com
+  /** Where the map on the Contact page points. Use the full street address once known. */
+  mapQuery: 'San Carlos City, Pangasinan, Philippines',
+};
+
+// ---------------------------------------------------------------------------
+// 1c. Giving goods (Get Involved page)
+// ---------------------------------------------------------------------------
+// What donors can bring, and where. Empty / null = hidden (nothing is invented).
+// Confirm each line with the foundation before launch.
+export const inKind = {
+  /** Things we can accept, e.g. "Rice and canned goods". */
+  accepted: [
+    'Food (non-perishable goods are easiest to store and share)',
+    'Clothes in good condition',
+    'School supplies, such as notebooks, pens and bags',
+  ] as string[], // TODO: confirm the real list
+  /** Things we cannot take, e.g. "Used underwear". Leave empty to hide the list. */
+  notAccepted: [] as string[], // TODO: confirm with foundation
+  /** Where and when goods can be dropped off. */
+  dropOffPlace: null as string | null, // TODO: confirm with foundation
+  dropOffHours: null as string | null, // TODO: confirm with foundation
 };
 
 // ---------------------------------------------------------------------------

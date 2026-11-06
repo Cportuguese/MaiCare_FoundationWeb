@@ -1,20 +1,182 @@
 ---
-// Privacy Notice: shell only. The real text (Data Privacy Act of 2012) is written in Phase 6.
+/**
+ * Privacy Notice (Phase 6): written for the Data Privacy Act of 2012 (Republic Act 10173).
+ *
+ * Plain words, short sentences, one idea per section. It describes ONLY what the
+ * site really does today: the contact form (sent through Web3Forms to the
+ * foundation's inbox), the Google map on the Contact page, and the host's normal
+ * technical logs. If the site starts collecting anything else (for example
+ * analytics in Phase 9, or a newsletter), add it here first.
+ *
+ * Contact details come from src/data/site.ts (null = hidden).
+ * The foundation should read this through and confirm it (and ideally have a
+ * lawyer or its data protection contact check it) before launch.
+ */
 import PageLayout from '../layouts/PageLayout.astro';
-import PageShell from '../components/PageShell.astro';
+import Butterfly from '../components/Butterfly.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { contact, identity } from '../data/site';
+import { contactHref } from '../data/nav';
+
+// Update this date whenever the text changes.
+const updated = 'November 6, 2026';
+
+const { emailInfo, secRegistrationNumber } = contact;
+const addressLine = [contact.address.street, contact.address.city, contact.address.province, contact.address.country]
+  .filter(Boolean)
+  .join(', ');
+
+const rights = [
+  ['Be informed', 'to know what we do with your information, which is what this notice is for.'],
+  ['Access', 'to ask for a copy of the information we hold about you.'],
+  ['Correct', 'to ask us to fix information that is wrong or out of date.'],
+  ['Object', 'to say no to how we use your information, or to take back your consent.'],
+  ['Erase or block', 'to ask us to delete or stop using your information.'],
+  ['Data portability', 'to ask for your information in a form you can reuse.'],
+  ['Damages', 'to claim compensation if your information was misused.'],
+];
+
+const link = 'font-semibold text-pink-600 underline hover:text-pink-700';
+const h2 = 'text-h3 text-olive-800';
+const p = 'mt-3 text-body text-ink-600';
 ---
 
 <PageLayout
   title="Privacy Notice"
-  description="How maiCare Foundation collects, uses and protects the personal information you share with us."
+  description="How maiCare Foundation collects, uses and protects the personal information you share with us, and your rights under the Data Privacy Act of 2012."
 >
-  <PageShell
-    label="Your privacy"
-    title="Privacy Notice"
-    intro="How we handle the personal information you share with us."
-    builtIn="Phase 6"
-    blocks={[
-      { title: 'Privacy Notice text', note: 'What we collect, why, how long we keep it, and your rights under the Data Privacy Act of 2012.' },
-    ]}
-  />
+  <section class="relative overflow-hidden">
+    <Butterfly class="pointer-events-none absolute -right-12 top-2 size-52 rotate-12 text-pink-500 opacity-[0.12] md:right-8 md:size-72" />
+    <div class="container-page relative pb-8 pt-10 md:pb-10 md:pt-16">
+      <SectionHeading
+        level="h1"
+        label="Your privacy"
+        title="Privacy Notice"
+        intro="How we handle the personal information you share with us. We wrote it in plain words, because you should be able to understand it."
+        class="fade-in"
+      />
+      <p class="mt-4 text-small text-ink-500">Last updated: {updated}</p>
+    </div>
+  </section>
+
+  <div class="container-page pb-16 md:pb-24">
+    <div class="max-w-3xl">
+      <!-- In short -->
+      <div class="rounded-panel bg-pink-100 p-6 md:p-8">
+        <h2 class="font-accent text-label font-medium italic text-pink-600">In short</h2>
+        <ul class="mt-3 list-disc space-y-2 pl-5 text-body text-olive-800 marker:text-pink-600">
+          <li>We only collect what you type into our contact form.</li>
+          <li>We use it to reply to you, and to carry out what you asked about.</li>
+          <li>We do not sell your information.</li>
+          <li>You can ask to see it, fix it or delete it at any time.</li>
+        </ul>
+      </div>
+
+      <div class="mt-12 flex flex-col gap-10">
+        <section aria-labelledby="who">
+          <h2 id="who" class={h2}>Who we are</h2>
+          <p class={p}>
+            {identity.name} is a non-stock, non-profit foundation in {addressLine}.
+            {secRegistrationNumber && <> Our SEC registration number is {secRegistrationNumber}.</>}
+            We decide why and how the information in this notice is used, so under the law we are the &ldquo;personal information controller.&rdquo;
+          </p>
+        </section>
+
+        <section aria-labelledby="collect">
+          <h2 id="collect" class={h2}>What we collect</h2>
+          <p class={p}>When you use the contact form, you give us:</p>
+          <ul class="mt-3 list-disc space-y-1 pl-5 text-body text-ink-600 marker:text-pink-600">
+            <li>your name</li>
+            <li>your email address or mobile number (or both)</li>
+            <li>what you would like to do (for example &ldquo;Donate food&rdquo; or &ldquo;Volunteer&rdquo;)</li>
+            <li>the message you write</li>
+            <li>a record that you ticked the consent box</li>
+          </ul>
+          <p class={p}>
+            We do not ask for bank, card or e-wallet details. This website does not take payments, so please never type them into the form.
+          </p>
+          <p class={p}>
+            Like any website, the service that hosts our pages (Cloudflare) handles technical data such as your IP address in order to send you the page and keep the site secure. We do not use this to identify you.
+          </p>
+        </section>
+
+        <section aria-labelledby="why">
+          <h2 id="why" class={h2}>Why we use it</h2>
+          <p class={p}>
+            Only to reply to you and to do what you asked: for example, to tell you how to give, to arrange where to drop off goods, to set up a volunteer day, or to talk about a partnership.
+            We use your information because you agreed to it when you ticked the box and sent the form. You can take that back at any time.
+          </p>
+        </section>
+
+        <section aria-labelledby="share">
+          <h2 id="share" class={h2}>Who sees it</h2>
+          <p class={p}>
+            Only the people at maiCare who read and answer messages. To deliver your message, we use a form service called Web3Forms, which passes it on to our email inbox. Our email provider also holds it once it arrives.
+            We do not sell your information or give it to anyone else, unless the law says we must.
+          </p>
+          <p class={p}>
+            The map on our Contact page is provided by Google. It loads from Google when you scroll to it, and Google may collect technical information under its own privacy policy.
+          </p>
+        </section>
+
+        <section aria-labelledby="keep">
+          <h2 id="keep" class={h2}>How long we keep it</h2>
+          <p class={p}>
+            We keep your message for as long as we need it to reply and to finish what you asked about, and for as long as the law requires us to keep records of donations. After that, we delete it.
+          </p>
+        </section>
+
+        <section aria-labelledby="protect">
+          <h2 id="protect" class={h2}>How we protect it</h2>
+          <p class={p}>
+            Your message travels over a secure (HTTPS) connection. We keep access to our inbox to the people who need it to reply to you.
+          </p>
+        </section>
+
+        <section aria-labelledby="rights">
+          <h2 id="rights" class={h2}>Your rights</h2>
+          <p class={p}>The Data Privacy Act of 2012 (Republic Act 10173) gives you these rights:</p>
+          <dl class="mt-4 divide-y divide-pink-200 border-y border-pink-200">
+            {
+              rights.map(([name, text]) => (
+                <div class="grid gap-1 py-4 sm:grid-cols-[11rem_1fr] sm:gap-6">
+                  <dt class="font-semibold text-olive-800">{name}</dt>
+                  <dd class="text-body text-ink-600">{text}</dd>
+                </div>
+              ))
+            }
+          </dl>
+          <p class={p}>
+            To use any of these rights, or to ask a question about this notice,
+            {emailInfo ? (
+              <>
+                {' '}email us at <a href={`mailto:${emailInfo}`} class:list={[link, 'break-all']}>{emailInfo}</a> or
+              </>
+            ) : (
+              ' '
+            )}
+            send us a message through the <a href={contactHref('other')} class={link}>contact form</a> and choose &ldquo;Something else.&rdquo;
+          </p>
+          <p class={p}>
+            If you think your information was handled wrongly, you may also complain to the National Privacy Commission at{' '}
+            <a href="https://privacy.gov.ph" target="_blank" rel="noopener noreferrer" class={link}>privacy.gov.ph</a>.
+          </p>
+        </section>
+
+        <section aria-labelledby="children">
+          <h2 id="children" class={h2}>Children</h2>
+          <p class={p}>
+            The contact form is for adults. If you are under 18, please ask a parent or guardian to write to us. We publish photos of children only with the written consent of a parent or guardian.
+          </p>
+        </section>
+
+        <section aria-labelledby="changes">
+          <h2 id="changes" class={h2}>If this notice changes</h2>
+          <p class={p}>
+            If we change how we use your information, we will update this page and the date at the top.
+          </p>
+        </section>
+      </div>
+    </div>
+  </div>
 </PageLayout>

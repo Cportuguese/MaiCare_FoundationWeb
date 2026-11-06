@@ -13,7 +13,7 @@ Update this file when a phase closes: tick the boxes, then write notes for the n
 | 3 | Site shell + first deploy | Header, footer, menu, emergency banner, empty pages, live preview link | ◐ Built and checked by the AI. Waiting on you: review it, deploy to Cloudflare Pages (steps below), and confirm the live link works |
 | 4 | Home page | Finished Home page | ◐ Built and checked by the AI. Waiting on you: look at it on your phone and laptop, then tell the next session "Phase 4 checked" |
 | 5 | About + Programs | Two finished pages | ◐ Built and checked by the AI. Waiting on you: look at both pages on your phone and laptop, confirm the wording (see Phase 5 notes), then tell the next session "Phase 5 checked" |
-| 6 | Get Involved + Contact | How to Donate flow, working form, Privacy Notice | ☐ |
+| 6 | Get Involved + Contact | How to Donate flow, working form, Privacy Notice | ◐ Built and tested by the AI. Waiting on you: get a Web3Forms key, add it, send one real test message per option, read the Privacy Notice and goods lists, then tell the next session "Phase 6 checked" (see Phase 6 notes) |
 | 7 | Events & News | Event and news system with 3 sample posts | ☐ |
 | 8 | Polish & QA | Whole-site quality pass | ☐ |
 | 9 | Launch | Domain, email and analytics; real details filled in | ☐ |
@@ -233,11 +233,64 @@ Done when:
 - The Programs "How to help..." buttons all go to `/get-involved/#how-to-donate`. Phase 6 can make them open the contact form with the right option preselected.
 - Officer and partner names, logos and the SEC number are still missing (plan section 10).
 
-## Notes for the next session (Phase 6: Get Involved + Contact)
-- **First:** confirm Phases 3, 4 and 5 are closed (the Phase 3 live-link box and your checks of Home, About and Programs are yours). Phase 6 only. Do not touch Home, About or Programs, except to point buttons at the form if the user asks.
-- Phase 6 replaces `PageShell` on `get-involved`, `contact` and `privacy`. `get-involved` needs the anchors `#how-to-donate`, `#volunteer`, `#partner`, `#faq` (the header, Home, About and Programs already link to them).
-- Layouts to avoid repeating: Home (split hero, photo grid, dark list, panel), About (text-led, dark statements, timeline), Programs (alternating rows, ruled list).
-- The Home, About and Programs buttons that say "Offer clothes or food", "Contact us" etc. may want the form preselected: check them all with a search for `/contact/`.
+## Phase 6: Get Involved + Contact
+
+Scope built: the Get Involved page, the Contact page with a working form, the Privacy Notice, and a link helper so Donate buttons open the form with the right option picked. Nothing from Phases 7 to 9. Home, About, Programs, header and footer were not touched.
+
+Done when:
+- [ ] **A test message for each dropdown option arrives in the inbox. This one is yours.** It needs a Web3Forms access key, which comes from the foundation's inbox email (steps below). I could not do it: no key, and sending a real message is outward-facing. What I did verify is the form code (see below).
+- [x] A Donate button opens the form with the right option picked. Verified in a real browser: all six links (`?topic=donate-money`, `donate-clothes`, `donate-food`, `volunteer`, `partner`, `other`) select the right option; an unknown topic is ignored. **How the path works:** the header's Donate button (and the Donate buttons on Home and Programs) still go to How to donate on Get Involved, as the project rules say. The buttons there ("Donate money", "Donate clothes", "Donate food", "Volunteer with us", "Talk about partnering", "Ask us a question") open the form with the option picked. So it is two clicks from the header, one click from Get Involved. If you want the Home and Programs buttons to skip straight to the form, say so (see "Optional follow-up").
+- [x] The form is easy to fill in on a phone and shows clear success and error messages. Verified at true 360px with real Chrome and the Web3Forms request intercepted (no real message sent): empty form shows a message under every missing field in words, and focus jumps to the first one; a bad email or number is caught; mobile only or email only both work; success replaces the form with "Thank you, <first name>. We got your message." and moves focus to it; a server error and a lost connection both show a clear error, keep what the person typed, and re-enable the button; "Send another message" resets it. Fields are 52px tall, the button is 56px, no sideways scrolling.
+
+`npm run build` passes (9 pages). All 289 internal links and anchors in the built site resolve (0 broken). No bank, GCash, QR or payment details anywhere.
+
+### What was built
+- **Get Involved** (`src/pages/get-involved.astro`): header with a plain "this website takes no online payments" note; **How to donate** (anchor `#how-to-donate`): the 3 steps from plan section 7 as big italic numerals; a connected panel with Money / Clothes / Food, each saying where it goes and opening the form with that option; **Giving goods** (`#goods`): what we can take, what we cannot take (hidden while empty), drop-off place and hours (or "we will tell you once you contact us"); **Our promise** as a pull quote; **Volunteer** (`#volunteer`); **Partner** (`#partner`, dark olive, cream button); **FAQ** (`#faq`, six questions, native `<details>` so no JavaScript). The anchors the header, Home, About and Programs already link to all work.
+- **Contact** (`src/pages/contact.astro`): the form in a white card beside a dark olive card with address, phone, emails, office hours and Facebook (each shown only if set in `site.ts`), a plain "what happens next", and a lazy-loaded Google map with an "Open in Google Maps" link.
+- **Form** (`src/components/ContactForm.astro`): "I would like to…" (Donate money, Donate clothes, Donate food, Volunteer, Partner with us, Something else), name, email and mobile (give at least one), message, a required consent checkbox linking to the Privacy Notice, and a hidden spam-trap field. Sends to Web3Forms with a readable subject such as "maiCare website: Donate food (Name)". Plain JavaScript only. Without JavaScript it still posts to Web3Forms.
+- **Privacy Notice** (`src/pages/privacy.astro`): plain-words summary, who we are, what we collect, why, who sees it (Web3Forms, email provider, Google map), how long, how we protect it, the seven rights under the Data Privacy Act of 2012, how to complain to the National Privacy Commission, children, changes. Update the "Last updated" date in the file when the text changes.
+- `src/data/nav.ts`: `contactTopics` (the six options) and `contactHref('donate-food')`, which builds `/contact/?topic=donate-food#contact-form`. Use it for any new button that should open the form.
+- `src/data/site.ts`: new `contactForm` (`web3formsAccessKey`, `mapQuery`) and `inKind` (accepted and not-accepted goods, drop-off place and hours).
+- No new dependencies, no new icons, no changes to colors or other layouts. `PageShell.astro` is now used only by `events.astro` (Phase 7).
+
+### Review loop (plan section 5.3)
+1. Design direction: written at the top of each page file. Get Involved differs from the others: steps as big numerals (not About's timeline), one connected panel (not three cards), a pull quote, a tinted split panel, a dark band, then FAQ rows. Contact is a form card plus a dark details card. Privacy is a quiet single reading column.
+2. Screenshots at 1280px and a true 360px (Chrome device emulation) of all three pages. Fixed after the first look: two places where a link ran into the text before it ("See ourPrivacy Notice").
+3. UX review: touch targets 44px or more, 16px gutters, one h1 per page, headings in order, one pink button per section (Get Involved's How to donate buttons are all secondary; Volunteer has the pink one), visible labels (never placeholder-only), errors in words and not only color, `aria-invalid` and `aria-describedby` set, focus moved on error and on success, buttons say exactly what happens. Colors reuse pairings measured in earlier phases. I did not re-measure contrast on these three pages.
+4. Slop test: no gradients, glass, emoji, fake numbers, names, partners or testimonials. The one quote is the foundation's own promise, labelled as such. Copy names San Carlos City and Pangasinan and uses "we want to / we will", not results.
+5. One caution found while reviewing: an empty `email=` field would have been sent to Web3Forms when someone gave only a mobile number. Empty email and mobile fields are now left out of the request. Re-tested in the browser afterwards: the request now carries only the mobile number, and every other check above still passes.
+
+### Your to-do before closing Phase 6
+1. **Get the Web3Forms key.** Go to web3forms.com, enter the email that should receive all messages (the foundation's inbox, plan section 10), and they email you an access key. Paste it into `contactForm.web3formsAccessKey` in `src/data/site.ts`. The key is meant to be public, so it is safe to commit.
+2. **Until the key is set**, the live site shows "Our message form is almost ready" instead of the form (so nobody types into a form that cannot send). `npm run dev` shows the form anyway, with a "Preview only" note.
+3. **Test for real:** run `npm run dev` (or use the live link after pushing) and send one message for each of the six options. Check each one arrives, and that the subject and body look right. Check one from your phone.
+4. **Read the Privacy Notice** with the foundation (ideally a lawyer or whoever is the data protection contact). It describes only what the site does today. Points to confirm: how long messages are kept (written as "as long as we need it to reply, and as long as the law requires for donation records"), "only the people at maiCare who read messages", and the children line.
+5. **Check the goods lists.** `inKind.accepted` has three lines taken from the Programs page (food, clothes in good condition, school supplies). `notAccepted` and the drop-off place and hours are empty and hidden. Fill them in `site.ts` once confirmed.
+6. Commit and push yourself, then tell the next session **"Phase 6 checked"**.
+
+### Things to know / decisions for you
+- **Wording to confirm** (the page does not mark these as drafts, so please read them before launch): the volunteer and partner idea lists (taken from the Programs page and the plan), the six FAQ answers, and the "Our promise" quote, which repeats the About page's Promise (itself copied from your draft and still needing the board's okay).
+- **Nothing in the form can be a payment.** The Privacy Notice and Contact page both say so, and the Contact page says "we will never ask you to send money through a link."
+- **Map:** it points at "San Carlos City, Pangasinan, Philippines" until the street address is known. Set `contactForm.mapQuery` (and `contact.address.street`) in `site.ts` then. The map loads from Google, which is why the Privacy Notice mentions it.
+- **Web3Forms free plan:** fine for a small foundation. It has a monthly message limit and a spam filter; if spam ever becomes a problem, Web3Forms offers hCaptcha.
+- **Phase 9:** when analytics is added, the Privacy Notice needs a line about it.
+
+### Optional follow-up (not done, because it touches other phases)
+Home and Programs still send their buttons to How to donate. To make them open the form directly, swap the links using `contactHref(...)`: Home `src/pages/index.astro` lines near 263 ("Offer clothes or food", currently `/contact/`) and the Donate / money links; Programs `src/pages/programs.astro` line 189 (`donateLink.href` in the "How to help..." buttons). Say the word and the next session can do it.
+
+## Email setup (decided by the user after Phase 6): read this in every later phase
+- **The foundation's email for now is `maicarefoundation@gmail.com`.** It is set as `contact.emailInfo` in `src/data/site.ts`, so it already shows in the footer, on the Contact page, in the form's error message and in the Privacy Notice. `emailDonate` stays `null` (no separate donations address yet); the page hides it.
+- **The Web3Forms key is still missing and is the user's step.** It is emailed to that Gmail when they register that address at web3forms.com. Paste it into `contactForm.web3formsAccessKey` in `site.ts`. Do not invent or guess a key. Until it is set, the live site shows "Our message form is almost ready" (the email address still shows, so people can write directly).
+- **Never hard-code the email in a page.** Always read it from `site.ts` (`contact.emailInfo`). Any new page or component (Phase 7 events, Phase 8 polish) must use the same setting.
+- **Phase 8 (QA):** check that the address shows in the footer, on Contact and on Privacy, that `mailto:` links open, and that the form key is set and a real test message from each of the six options reaches that Gmail (see the Phase 6 box, which is still open).
+- **Phase 9 (Launch):** when the domain is bought, set up `info@` and `donate@` with Cloudflare Email Routing forwarding to this Gmail, then update `emailInfo` and `emailDonate` in `site.ts`. The Web3Forms key is tied to the inbox it was made for, so create a **new key** for the new address (or keep the Gmail as the form inbox and keep the same key) and update `web3formsAccessKey`. Re-send a test message afterwards. Also tell the Privacy Notice's owner if the inbox provider changes (it names "our email provider" generally, so no text change is needed for Gmail or a forward).
+
+## Notes for the next session (Phase 7: Events & News)
+- **First:** confirm Phase 6 is closed (the Web3Forms key and the real test messages are the user's). Also still open from before: the Phase 3 live link and the user's checks of Home, About and Programs. Phase 7 only.
+- Phase 7 replaces `PageShell` on `src/pages/events.astro` (it is the last page using it; delete `PageShell.astro` when done) and replaces the "we are just getting started" band on Home with the latest three posts (Home is the only Phase 4 change allowed). Content goes in `src/content/events/` and `src/content/news/` as one Markdown file each. Three sample posts must be clearly marked as samples and must not read as real events or carry fake names, photos of beneficiaries or numbers.
+- `nextEvent` in `site.ts` (the Home strip) can be driven by the events system once it exists.
+- Contact links: use `contactHref(topic)` from `src/data/nav.ts`.
+- Dev tip: a headless Chrome test setup that works on this PC (device emulation at true 360px, request interception) was written in the scratchpad, not in the project. Recreate it if needed: launch `chrome.exe --headless=new --remote-debugging-port=9333`, then drive it with Node's built-in `fetch` and `WebSocket`. `python` is not on this shell's PATH (use the full path in the Phase 1 notes).
 
 ## Older notes for Phase 5 (kept for reference)
 - **First:** confirm Phases 3 and 4 are closed (the Phase 3 live-link box and your Home check are yours). Phase 5 only: About and Programs. Do not touch Home.

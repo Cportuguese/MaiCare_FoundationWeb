@@ -22,3 +22,22 @@ export const donateLink: NavLink = {
 };
 
 export const privacyLink: NavLink = { label: 'Privacy Notice', href: '/privacy/' };
+
+/**
+ * The options in the contact form's "I would like to…" dropdown.
+ * `id` is also what goes in the link: /contact/?topic=donate-food opens the form
+ * with "Donate food" already picked. Use `contactHref('donate-food')` for those links.
+ */
+export const contactTopics = [
+  { id: 'donate-money', label: 'Donate money' },
+  { id: 'donate-clothes', label: 'Donate clothes' },
+  { id: 'donate-food', label: 'Donate food' },
+  { id: 'volunteer', label: 'Volunteer' },
+  { id: 'partner', label: 'Partner with us' },
+  { id: 'other', label: 'Something else' },
+] as const;
+
+export type ContactTopicId = (typeof contactTopics)[number]['id'];
+
+export const contactHref = (topic?: ContactTopicId) =>
+  topic ? `/contact/?topic=${topic}#contact-form` : '/contact/#contact-form';
