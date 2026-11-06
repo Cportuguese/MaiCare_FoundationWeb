@@ -1,0 +1,37 @@
+---
+/**
+ * Logo
+ * ----
+ * PLACEHOLDER wordmark. There is no logo file in the project yet, so this
+ * imitates the look of the maiCare logo ("mai" in olive, "Care" in pink, a small
+ * heart, and FOUNDATION underneath). When the real logo (SVG) arrives, replace
+ * the contents of this file with it and the header and footer both update.
+ *
+ * tone="light" is for light backgrounds (the header).
+ * tone="dark"  is for the olive footer.
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  tone?: 'light' | 'dark';
+  class?: string;
+}
+
+const { tone = 'light', class: className } = Astro.props;
+
+const mai = tone === 'dark' ? 'text-pink-50' : 'text-olive-800';
+const care = tone === 'dark' ? 'text-pink-300' : 'text-pink-600';
+const foundation = tone === 'dark' ? 'text-cream-200' : 'text-olive-800';
+---
+
+<span class:list={['inline-flex flex-col leading-none', className]}>
+  <span class="relative text-[1.75rem] font-extrabold tracking-tight">
+    <span class={mai}>mai</span><span class={care}>Care</span>
+    <Icon
+      name="heart"
+      size={11}
+      class:list={['absolute -top-1 left-[2.2rem] fill-current', tone === 'dark' ? 'text-pink-300' : 'text-pink-500']}
+    />
+  </span>
+  <span class:list={['mt-1 text-[0.625rem] font-extrabold tracking-[0.2em]', foundation]}>FOUNDATION</span>
+</span>

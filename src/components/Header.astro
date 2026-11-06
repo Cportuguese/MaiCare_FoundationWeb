@@ -1,0 +1,124 @@
+---
+/**
+ * Header
+ * ------
+ * Sticky. Logo, 6 page links, and the pink Donate button (goes to How to Donate:
+ * the site takes no online payments). On phones the links fold into a menu
+ * button; the Donate button stays visible next to it.
+ *
+ * The only JavaScript is the small menu toggle at the bottom of this file.
+ */
+import Logo from './Logo.astro';
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import { navLinks, donateLink } from '../data/nav';
+import { identity } from '../data/site';
+
+// "/about/" and "/about" both count as the About page.
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isCurrent = (href: string) => (href.replace(/\/+$/, '') || '/') === path;
+
+const desktopLink =
+  'relative inline-flex min-h-11 items-center rounded-full px-3.5 text-[0.9375rem] font-semibold text-olive-800 no-underline ' +
+  'transition-colors hover:bg-pink-100 aria-[current=page]:text-pink-700 ' +
+  'aria-[current=page]:after:absolute aria-[current=page]:after:inset-x-3.5 aria-[current=page]:after:bottom-1.5 ' +
+  'aria-[current=page]:after:h-0.5 aria-[current=page]:after:rounded-full aria-[current=page]:after:bg-pink-500';
+
+const mobileLink =
+  'flex min-h-12 items-center justify-between rounded-2xl px-4 text-lg font-semibold text-olive-800 no-underline ' +
+  'hover:bg-pink-100 aria-[current=page]:bg-pink-100 aria-[current=page]:text-pink-700';
+---
+
+<header id="site-header" class="sticky top-0 z-40 border-b border-pink-200 bg-pink-50">
+  <div class="container-page flex min-h-[4.5rem] items-center justify-between gap-3">
+    <a
+      href="/"
+      class="-ml-1 inline-flex min-h-12 items-center rounded-xl px-1 no-underline"
+      aria-label={`${identity.shortName} Foundation, home`}
+    >
+      <Logo />
+    </a>
+
+    <nav aria-label="Main" class="hidden lg:block">
+      <ul class="flex items-center gap-0.5">
+        {
+          navLinks.map((link) => (
+            <li>
+              <a href={link.href} class={desktopLink} aria-current={isCurrent(link.href) ? 'page' : undefined}>
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <Button href={donateLink.href} class="px-5 sm:px-6">{donateLink.label}</Button>
+      <button
+        type="button"
+        id="menu-button"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Open menu"
+        class="grid size-12 cursor-pointer place-items-center rounded-full text-olive-800 hover:bg-pink-100 lg:hidden"
+      >
+        <Icon name="menu" size={26} class="menu-open" />
+        <Icon name="x" size={26} class="menu-close hidden" />
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" hidden class="max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-pink-200 bg-pink-50 lg:hidden">
+    <nav aria-label="Main (mobile)" class="container-page py-3">
+      <ul class="flex flex-col gap-1">
+        {
+          navLinks.map((link) => (
+            <li>
+              <a href={link.href} class={mobileLink} aria-current={isCurrent(link.href) ? 'page' : undefined}>
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // Mobile menu: open/close with the button, close with Escape, a link tap,
+  // or by growing the window to desktop size.
+  const button = document.getElementById('menu-button') as HTMLButtonElement | null;
+  const menu = document.getElementById('mobile-menu');
+
+  if (button && menu) {
+    const iconOpen = button.querySelector('.menu-open');
+    const iconClose = button.querySelector('.menu-close');
+
+    const setOpen = (open: boolean) => {
+      menu.hidden = !open;
+      button.setAttribute('aria-expanded', String(open));
+      button.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      iconOpen?.classList.toggle('hidden', open);
+      iconClose?.classList.toggle('hidden', !open);
+    };
+
+    button.addEventListener('click', () => setOpen(menu.hidden));
+
+    menu.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('a')) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !menu.hidden) {
+        setOpen(false);
+        button.focus();
+      }
+    });
+
+    window.matchMedia('(min-width: 64rem)').addEventListener('change', (event) => {
+      if (event.matches) setOpen(false);
+    });
+  }
+</script>

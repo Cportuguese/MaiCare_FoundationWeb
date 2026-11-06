@@ -1,0 +1,25 @@
+---
+// About: shell only. The real page is built in Phase 5.
+import PageLayout from '../layouts/PageLayout.astro';
+import PageShell from '../components/PageShell.astro';
+---
+
+<PageLayout
+  title="About"
+  description="Who maiCare Foundation is: our story, mission, vision and promise, and how we work with our partners in San Carlos City, Pangasinan."
+>
+  <PageShell
+    label="About us"
+    title="Who we are"
+    intro="The story of maiCare Foundation, and the people and partners behind it."
+    builtIn="Phase 5"
+    blocks={[
+      { title: 'Our story', note: 'How the foundation began.' },
+      { title: 'Mission, vision and promise', note: 'What we stand for.' },
+      { title: 'How we work', note: 'With the city government, schools, health workers and partners.' },
+      { title: 'Officers and trustees', note: 'Placeholders until the foundation confirms the names.' },
+      { title: 'Partners', note: 'Partner logos, once partners agree to be shown.' },
+      { title: 'Legal and transparency', note: 'Registration details and our promise on how help is used.' },
+    ]}
+  />
+</PageLayout>

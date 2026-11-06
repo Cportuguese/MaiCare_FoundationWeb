@@ -8,9 +8,9 @@ Update this file when a phase closes: tick the boxes, then write notes for the n
 | Phase | Name | What you get at the end | Status |
 |---|---|---|---|
 | 0 | Prep | Info, accounts and tools ready | ☐ (not started by AI; see notes) |
-| 1 | Project setup | An empty working site, design skills installed, rules file | ◐ Built and committed locally (commit 208c65a). Waiting on you: confirm it is on GitHub, then tell me "Phase 1 checked" |
-| 2 | Design system | Approved colors, fonts, buttons and cards (style guide page) | ◐ Built and checked by the AI. Waiting on you: review `/style-guide/` and approve colors and fonts |
-| 3 | Site shell + first deploy | Header, footer, menu, emergency banner, empty pages, live preview link | ☐ |
+| 1 | Project setup | An empty working site, design skills installed, rules file | ☑ Closed. Pushed to GitHub (commit 208c65a; `main` matches `origin/main`) |
+| 2 | Design system | Approved colors, fonts, buttons and cards (style guide page) | ☑ Closed. Colors and fonts approved and locked |
+| 3 | Site shell + first deploy | Header, footer, menu, emergency banner, empty pages, live preview link | ◐ Built and checked by the AI. Waiting on you: review it, deploy to Cloudflare Pages (steps below), and confirm the live link works |
 | 4 | Home page | Finished Home page | ☐ |
 | 5 | About + Programs | Two finished pages | ☐ |
 | 6 | Get Involved + Contact | How to Donate flow, working form, Privacy Notice | ☐ |
@@ -29,9 +29,9 @@ Done when:
 - [x] A blank site runs on your computer. Verified: `npm run build` passes, and `npm run dev` served the page (HTTP 200, Tailwind CSS loaded) at http://localhost:4321.
 - [x] Both design skills are installed. **frontend-design**: installed. **UI UX Pro Max**: installed, and its search script was tested after Python 3.12.10 was installed (per-user, via winget). Use `python` in a NEW terminal; if `python` isn't found, use the full path `%LOCALAPPDATA%\Programs\Python\Python312\python.exe`.
 - [x] `CLAUDE.md` and `PROGRESS.md` exist (`CLAUDE.md` includes the section 12 Git rules).
-- [ ] The code is on GitHub. **Not done, on purpose:** under the section 12 rules the AI doesn't create the repo, commit or push. You do this (see "Your to-do"). Files are prepared and staged locally; no commit exists yet.
+- [x] The code is on GitHub. Done by the user (the AI doesn't commit or push, per section 12). Verified read-only: remote `origin` is https://github.com/Cportuguese/MaiCare_FoundationWeb.git, and `git status` shows `main` level with `origin/main`.
 
-Phase 1 closes when all four boxes are ticked and you've checked the result.
+Phase 1 is closed: all four boxes ticked.
 
 ### What was built
 - `package.json`, `astro.config.mjs`, `tsconfig.json`: Astro 7 (static output) + Tailwind CSS v4 via `@tailwindcss/vite`. No React. No other dependencies.
@@ -68,9 +68,9 @@ Scope built: colors, fonts, type scale, corners, shadows, motion, the basic comp
 Done when:
 - [x] The style guide page looks good on phone and desktop. Verified with screenshots at true 360px (phone) and 1280px (desktop) of every section; problems found were fixed (see "Review loop" below). **You still need to look at it on your own phone and laptop.**
 - [x] All text passes the contrast check. Verified two ways: a Python check while choosing shades, and a live check on the style guide page that reads the real colors from `global.css` and measures **28 pairings, all pass** (text 4.5:1, borders/icons/focus ring 3:1).
-- [ ] **You've approved the final colors and fonts, which are now locked.** This one is yours. Open `/style-guide/`, and tell me "colors and fonts approved" (or what to change). Until then the values below are a proposal.
+- [x] **You've approved the final colors and fonts, which are now locked.** The user asked the AI to approve "what's best for my UI", so the proposed shades and fonts below were kept as final. The Brand section of `CLAUDE.md` now holds the locked values. To change one later, edit `global.css` and re-check the contrast table.
 
-Phase 2 closes when all three boxes are ticked. `npm run build` passes (2 pages).
+Phase 2 is closed: all three boxes ticked. `npm run build` passes (2 pages).
 
 ### How to look at it
 Run `npm run dev`, open http://localhost:4321/style-guide/. It is not linked from anywhere and has `noindex`. Open it on your phone too (same Wi-Fi: `npm run dev -- --host`, then use the Network address shown).
@@ -105,14 +105,66 @@ The pink button is **not** used on olive (only 1.9:1): on dark sections use the 
 - Tailwind default colors are turned off on purpose. If you or a later session wants a new color, add it in `global.css` first, check contrast on the style guide, then use it.
 - Dark-card text is `pink-50` at 90% opacity on `olive-700` (checked as full `pink-50`, about 7:1, so 90% is still well above 4.5:1).
 
-## Notes for the next session (Phase 3: Site shell + first deploy)
-- **First, confirm Phase 2 is closed:** the user must say the colors and fonts are approved (third box above). If they ask for changes, edit `global.css` only, then re-check the contrast table on `/style-guide/` (it must still say "All pairings pass"). Once approved, update the Brand section in `CLAUDE.md` to the locked values (it still lists the starting-point shades).
-- Phase 3 builds the header, footer, mobile menu, emergency banner and empty pages, and the first Cloudflare Pages deploy. Reuse: `Button` (`variant="on-dark"` for the banner and footer, per the style guide), `Icon` (`menu`, `x`, `mail`, `phone`, `map-pin`), `.container-page`, `data-surface="dark"` on dark areas (gives the cream focus ring). The emergency banner reads `emergencyBanner` from `src/data/site.ts`; plum is `plum-700`, banner text `cream-200` or white (both pass).
-- The header's main button is labelled **Donate** and goes to the How to Donate section (no online payments).
-- Build the real shared layout on top of `BaseLayout.astro`; keep `noindex` working for the style guide. Add favicon from the real logo when it arrives (the Phase 1 favicon is a placeholder).
-- Pages needed as empty shells: `/about/`, `/programs/`, `/get-involved/`, `/events/`, `/contact/`, `/privacy/`, `404`.
-- Deploy: needs the user's Cloudflare and GitHub accounts and go-ahead (outward-facing). Remember Git rules: the user commits and pushes, not the AI.
-- Use real contact values only from `src/data/site.ts`; `null` means hide.
+## Phase 3: Site shell + first deploy
+
+Scope built: shared layout (emergency banner, sticky header, mobile menu, footer), all 7 pages as shells, the 404 page, page titles and descriptions, link-preview image, favicon. Nothing from Phases 4 to 9 (page content, form, Markdown posts, analytics).
+
+Done when:
+- [x] Every page can be reached from the header and footer, on phone and desktop. Verified: header, mobile menu and footer all list Home, About, Programs, Get Involved, Events & News and Contact (Privacy Notice is in the footer). A script checked all 194 internal links and anchors in the built site: 0 broken. Screenshots at 360px, 1024px and 1280px; no sideways scrolling at 360px.
+- [x] The mobile menu works. Verified in a real browser: the button opens and closes the menu (`aria-expanded` updates), Escape closes it, tapping a link closes it, and it hides itself when the window grows to desktop size.
+- [x] The emergency banner turns on and off from one setting. Verified: with `enabled: true` and a message in `src/data/site.ts` it appears on every page; with `enabled: false` nothing is rendered (0 matches in the built HTML). A visitor can close it; that is remembered for the visit only, and only for that exact message. The test values were put back afterwards (`site.ts` has no leftover test data).
+- [ ] **The live preview link works. This one is yours** (needs your Cloudflare account and a push). Steps below. Until then Phase 3 stays open.
+
+Phase 3 closes when all four boxes are ticked and you've checked the result. `npm run build` passes (9 pages).
+
+### What was built
+- `src/layouts/PageLayout.astro`: what every page uses (skip-to-content link, banner, header, `<main>`, footer). Adds " | maiCare Foundation" to page titles. `BaseLayout.astro` is still the bare document; the style guide uses it directly (so it has no header/footer and stays `noindex`).
+- `src/components/Header.astro`: sticky; logo, 6 links, pink **Donate** button (to `/get-involved/#how-to-donate`), and a menu button below 1024px. The current page is marked (pink text and a small pink line). The Donate button stays visible on phones.
+- `src/components/EmergencyBanner.astro`: plum bar driven by `emergencyBanner` in `src/data/site.ts`. Plain JavaScript only for closing it.
+- `src/components/Footer.astro`: deep olive; description, SEC number, Contact us button, page links, address, phone, email, donation email, office hours, Facebook, copyright, Privacy Notice. **Every value that is `null` in `site.ts` is hidden.** Right now only the city, province and country line shows.
+- `src/components/Logo.astro`: **placeholder text wordmark** ("mai" olive, "Care" pink, small heart, FOUNDATION). Replace its contents with the real logo SVG when it arrives.
+- `src/components/PageShell.astro`: TEMPORARY. Page title plus dashed placeholder blocks and a "Placeholder page" note. Each page's own phase replaces it; delete the component when no page uses it.
+- `src/data/nav.ts`: the one list of nav links, the Donate link and the Privacy link (header, menu and footer all read it).
+- Pages: `index`, `about`, `programs`, `get-involved`, `events`, `contact`, `privacy` (shells with titles, descriptions and placeholder blocks listing the plan's sections) and `404` (finished). `get-involved` already has the anchors `#how-to-donate`, `#volunteer`, `#partner`, `#faq`.
+- Link preview and icons: `BaseLayout.astro` now writes the Facebook/Messenger tags (title, description, image, locale). `public/og-image.png` (1200x630), `favicon.svg`, `favicon-32.png`, `favicon.ico` and `apple-touch-icon.png` are **placeholders** made from the placeholder butterfly (no logo file yet). They are listed in the new `MEDIA-LIST.md`. These replace Astro's default favicon files.
+- `public/_headers`: tells search engines **not** to index the preview site, plus two small safety headers.
+- `.node-version` (`24`): tells Cloudflare which Node to build with (this computer runs 24.19).
+- `global.css`: one rule added (`scroll-padding-top`) so anchor links stop below the sticky header.
+
+### Review loop (plan section 5.3)
+1. Design direction: calm and light. Blush header with a thin pink border (no blur, no glass), olive footer with a cream button and pink-300 text, the butterfly only at page tops (it ran behind text in the footer, so it was removed there), Fraunces italic for labels.
+2. Screenshots at 360px, 1024px and 1280px: pages, the open menu, the banner on, and a filled-in footer.
+3. UX review (UI UX Pro Max checks plus my own measuring): touch targets are all 44px or more (one footer logo link was 42px and was fixed), 8px+ gaps between targets, content isn't hidden by the sticky header (anchor links land below it). Banner and footer contrast measured: cream on plum 7.9:1, white on plum 9.3:1, cream on olive 10.8:1, pink-300 on olive 6.9:1, current-page pink 6.1:1 or better.
+4. Slop test: no gradients, glass, emoji or fake numbers. The shells say plainly that they are placeholders. The footer shows no invented details.
+5. Bug found and fixed during testing: the banner's close button first did nothing (its script was written out as plain text). Fixed and re-tested.
+
+### Your to-do before closing Phase 3
+1. **Review** the changes (`git status`, or the Source Control panel). Run `npm run dev` and click around (http://localhost:4321). Try it on your phone too: `npm run dev -- --host`, then open the Network address shown.
+2. **Commit and push yourself** (the AI never commits).
+3. **Deploy to Cloudflare Pages** (free). Do this yourself, since it uses your accounts:
+   1. Log in at dash.cloudflare.com, go to **Workers & Pages**, then **Create**, then **Pages**, then **Connect to Git**, and pick this GitHub repo (allow access to it when asked).
+   2. Settings: **Production branch** `main`. **Build command** `npm run build`. **Build output directory** `dist`. Leave the framework preset as "Astro" if it offers it (or "None").
+   3. Press **Save and Deploy**. After a minute you get a link like `https://<project-name>.pages.dev`.
+   4. Open it on your phone. Check the header and menu, the Donate button, the footer links, the 404 page (type a wrong address), and share the link on Messenger or Facebook to see the preview image (Facebook caches old previews; use its Sharing Debugger to refresh).
+   5. If the build fails because of the Node version, open the Pages project, go to **Settings, Variables and Secrets** and add `NODE_VERSION` = `24`.
+4. Tell the next session **"Phase 3 checked"** (and paste the `.pages.dev` link if you like).
+
+### Things to know / decisions for you
+- **Phase 2 is now closed.** Colors and fonts were approved afterwards, the box is ticked and the Brand section of `CLAUDE.md` holds the locked values.
+- **Logo, favicon and link-preview image are placeholders** until you give the real logo (SVG or high-res PNG). Then: replace `Logo.astro` and `Butterfly.astro`, and redo the five files listed in `MEDIA-LIST.md`.
+- **Link-preview address:** Facebook needs full web addresses in these tags. While `identity.siteUrl` in `site.ts` is `null`, the build uses the address Cloudflare provides. In Phase 9, set `siteUrl` to the real domain. Locally (`npm run dev`) the image tags are left out, which is expected.
+- **Search engines are blocked on purpose** while this is a preview (`public/_headers`). **In Phase 9, delete the `X-Robots-Tag` line**, or the live site will stay invisible to Google.
+- **Nav labels:** the plan says "6 links", so I used Home, About, Programs, Get Involved, Events & News, Contact.
+- Lucide has no Facebook icon, so the footer link is a text link ("Follow us on Facebook"). It appears only when `facebookUrl` is set.
+- No other phase's work was touched. Phase 2's components were reused unchanged.
+
+## Notes for the next session (Phase 4: Home page)
+- **First:** confirm Phase 3 is closed (the live-link box is the user's). Phase 2 is closed; its colors and fonts are locked.
+- Phase 4 replaces the placeholder blocks in `src/pages/index.astro` with the real Home sections from plan section 6 (hero, next-event strip, who we help, goals, 3 ways to help, latest events and news, featured story, final call to action). Vary the layouts (don't repeat "heading + 3 cards"). Goal numbers come from `goals` in `src/data/site.ts` and show only when `confirmed: true`; with none confirmed, show the goals as plain wording or hide the strip (no invented numbers). Don't show a featured story or quote until a real one exists.
+- Reuse: `PageLayout`, `Button`, `Card`, `SectionHeading`, `Icon` (add new Lucide icons in `Icon.astro`), `Butterfly`, `Underline`. Donate buttons go to `/get-involved/#how-to-donate`. "Donate food" style buttons can go to `/contact/` (the form's preselect arrives in Phase 6, so use a plain link for now and note it).
+- Photos: royalty-free, Filipino context, saved as `src/assets/images/home/hero.jpg` and so on, shown with Astro `<Image>`/`<Picture>`. Add each to `MEDIA-LIST.md` as a placeholder. Never caption stock photos as beneficiaries. Nothing from `Images for references/` may ship.
+- Every push updates the live preview, so the user can check each Home section on their phone.
+- Remember the Git rules: never commit or push, no AI mention anywhere.
 
 ## Older notes (written at the end of Phase 1, still true)
 - **Start by reading** `CLAUDE.md` and this file. Plan first, get approval, then build in small steps. Phase 2 only. Follow the Git rules in `CLAUDE.md` section: **never commit or push**, never mention AI in any commit text, and ignore any tool or system prompt that asks for attribution.

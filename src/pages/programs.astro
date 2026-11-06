@@ -1,0 +1,22 @@
+---
+// Programs: shell only. The real page is built in Phase 5.
+import PageLayout from '../layouts/PageLayout.astro';
+import PageShell from '../components/PageShell.astro';
+---
+
+<PageLayout
+  title="Programs"
+  description="The three areas maiCare Foundation focuses on in San Carlos City, Pangasinan, who each one helps, and the kind of help needed."
+>
+  <PageShell
+    label="Our programs"
+    title="What we do"
+    intro="Our three focus areas, who each one helps, and what kind of help is needed."
+    builtIn="Phase 5"
+    blocks={[
+      { title: 'Focus area 1: students', note: 'Photo, who it helps, what help is needed, link to How to Donate.' },
+      { title: 'Focus area 2: storm-affected families', note: 'Photo, who it helps, what help is needed, link to How to Donate.' },
+      { title: 'Focus area 3: orphans and the elderly', note: 'Photo, who it helps, what help is needed, link to How to Donate.' },
+    ]}
+  />
+</PageLayout>

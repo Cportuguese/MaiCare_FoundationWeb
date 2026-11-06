@@ -1,0 +1,20 @@
+---
+// Privacy Notice: shell only. The real text (Data Privacy Act of 2012) is written in Phase 6.
+import PageLayout from '../layouts/PageLayout.astro';
+import PageShell from '../components/PageShell.astro';
+---
+
+<PageLayout
+  title="Privacy Notice"
+  description="How maiCare Foundation collects, uses and protects the personal information you share with us."
+>
+  <PageShell
+    label="Your privacy"
+    title="Privacy Notice"
+    intro="How we handle the personal information you share with us."
+    builtIn="Phase 6"
+    blocks={[
+      { title: 'Privacy Notice text', note: 'What we collect, why, how long we keep it, and your rights under the Data Privacy Act of 2012.' },
+    ]}
+  />
+</PageLayout>

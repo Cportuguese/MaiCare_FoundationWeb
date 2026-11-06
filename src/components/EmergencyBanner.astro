@@ -1,0 +1,81 @@
+---
+/**
+ * Emergency banner
+ * ----------------
+ * Controlled from ONE place: `emergencyBanner` in src/data/site.ts.
+ *   enabled: true  + a message  -> shows on every page
+ *   enabled: false (or no text) -> nothing is rendered at all
+ *
+ * A visitor can close it. We remember that for the current visit only
+ * (sessionStorage), and only for that exact message, so a new message always shows.
+ */
+import { emergencyBanner } from '../data/site';
+import Icon from './Icon.astro';
+
+const { enabled, message, linkLabel, linkHref } = emergencyBanner;
+const text = message.trim();
+const show = enabled && text.length > 0;
+
+// Runs right after the banner, before the page paints, so a banner the visitor
+// already closed never flashes back. Plain JavaScript, no libraries.
+const closeScript = `
+(function () {
+  var banner = document.getElementById('emergency-banner');
+  if (!banner) return;
+  var key = 'maicare-banner-closed';
+  var message = banner.getAttribute('data-key');
+  try {
+    if (sessionStorage.getItem(key) === message) banner.hidden = true;
+  } catch (e) {}
+  var close = document.getElementById('emergency-banner-close');
+  if (close) {
+    close.addEventListener('click', function () {
+      banner.hidden = true;
+      try { sessionStorage.setItem(key, message); } catch (e) {}
+    });
+  }
+})();
+`;
+---
+
+{
+  show && (
+    <div
+      id="emergency-banner"
+      role="region"
+      aria-label="Announcement"
+      data-surface="dark"
+      data-key={text}
+      class="bg-plum-700 text-cream-200"
+    >
+      <div class="container-page flex items-start gap-3 py-3">
+        <Icon name="info" size={22} class="mt-0.5 shrink-0 text-pink-300" />
+        <p class="flex-1 text-[0.9375rem] leading-snug">
+          <span class="font-semibold text-white">{text}</span>
+          {linkLabel && linkHref && (
+            <>
+              {' '}
+              <a
+                href={linkHref}
+                class="inline-flex items-center gap-1 font-semibold text-white underline decoration-pink-300 decoration-2 hover:decoration-white"
+              >
+                {linkLabel}
+                <Icon name="arrow-right" size={16} />
+              </a>
+            </>
+          )}
+        </p>
+        <button
+          type="button"
+          id="emergency-banner-close"
+          aria-label="Close this announcement"
+          class="-my-2 -mr-2 grid size-11 shrink-0 cursor-pointer place-items-center rounded-full text-cream-200 hover:bg-plum-800"
+        >
+          <Icon name="x" size={20} />
+        </button>
+      </div>
+    </div>
+  )
+}
+
+{show && <script is:inline set:html={closeScript} />}

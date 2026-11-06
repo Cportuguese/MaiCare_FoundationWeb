@@ -1,17 +1,34 @@
 ---
-// Bare-bones layout for Phase 1. The real shared layout (header, footer,
-// emergency banner) is built in Phase 3.
+// The bare HTML document: <head> tags (title, description, favicon, link preview)
+// and the <body>. Pages normally use PageLayout.astro, which adds the banner,
+// header and footer on top of this. The hidden style guide uses this one directly.
 import '../styles/global.css';
 import { identity } from '../data/site';
 
 interface Props {
+  /** Full browser-tab title. */
   title?: string;
   description?: string;
   /** Keep this page out of search engines (used by the hidden style guide). */
   noindex?: boolean;
+  /** Facebook / link-preview image, as a path in /public. 1200x630 works best. */
+  image?: string;
 }
 
-const { title = identity.name, description = identity.description, noindex = false } = Astro.props;
+const {
+  title = identity.name,
+  description = identity.description,
+  noindex = false,
+  image = '/og-image.png',
+} = Astro.props;
+
+// Facebook needs ABSOLUTE links for the preview image and page address.
+// Use the address set in src/data/site.ts; while that is empty, fall back to the
+// address Cloudflare Pages gives each deploy (CF_PAGES_URL). If neither exists
+// (local dev), the preview tags are simply left out.
+const siteUrl = identity.siteUrl ?? process.env.CF_PAGES_URL ?? null;
+const pageUrl = siteUrl ? new URL(Astro.url.pathname, siteUrl).href : null;
+const imageUrl = siteUrl ? new URL(image, siteUrl).href : null;
 ---
 
 <!doctype html>
@@ -20,10 +37,26 @@ const { title = identity.name, description = identity.description, noindex = fal
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#fdf0f4" />
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+
+    <!-- Link preview (Facebook, Messenger, etc.) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={identity.name} />
+    <meta property="og:locale" content="en_PH" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {pageUrl && <meta property="og:url" content={pageUrl} />}
+    {imageUrl && <meta property="og:image" content={imageUrl} />}
+    {imageUrl && <meta property="og:image:width" content="1200" />}
+    {imageUrl && <meta property="og:image:height" content="630" />}
+    {imageUrl && <meta property="og:image:alt" content="maiCare Foundation, San Carlos City, Pangasinan" />}
+    <meta name="twitter:card" content={imageUrl ? 'summary_large_image' : 'summary'} />
   </head>
   <body>
     <slot />

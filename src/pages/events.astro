@@ -1,0 +1,22 @@
+---
+// Events & News: shell only. The real page and the post system are built in Phase 7.
+import PageLayout from '../layouts/PageLayout.astro';
+import PageShell from '../components/PageShell.astro';
+---
+
+<PageLayout
+  title="Events & News"
+  description="Upcoming and past events and news from maiCare Foundation in San Carlos City, Pangasinan."
+>
+  <PageShell
+    label="Events and news"
+    title="What's happening"
+    intro="Upcoming events, what we have done, and news from the foundation."
+    builtIn="Phase 7"
+    blocks={[
+      { title: 'Upcoming events', note: 'One card per event.' },
+      { title: 'Past events', note: 'With photo galleries, once real photos exist.' },
+      { title: 'News', note: 'Short posts from the foundation.' },
+    ]}
+  />
+</PageLayout>

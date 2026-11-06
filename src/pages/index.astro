@@ -1,15 +1,24 @@
 ---
-// Phase 1 placeholder. The real Home page is built in Phase 4.
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { identity } from '../data/site';
+// Home: shell only. The real Home page is built in Phase 4.
+import PageLayout from '../layouts/PageLayout.astro';
+import PageShell from '../components/PageShell.astro';
 ---
 
-<BaseLayout title={`${identity.shortName} Foundation: site under construction`}>
-  <main class="min-h-screen grid place-items-center p-6">
-    <div class="max-w-md">
-      <h1 class="text-3xl font-bold">{identity.name}</h1>
-      <p class="mt-3">{identity.description}</p>
-      <p class="mt-6 text-sm opacity-70">Site under construction.</p>
-    </div>
-  </main>
-</BaseLayout>
+<PageLayout description="maiCare Foundation Inc. is a non-stock, non-profit foundation in San Carlos City, Pangasinan. Learn what we do and how you can help.">
+  <PageShell
+    label="Welcome"
+    title="maiCare Foundation, San Carlos City, Pangasinan"
+    intro="A non-stock, non-profit foundation. Find out who we are, what we do, and how you can help."
+    builtIn="Phase 4"
+    blocks={[
+      { title: 'Hero', note: 'Headline, tagline, Donate and Volunteer buttons, photo.' },
+      { title: 'Next event', note: 'A strip for the next event, such as the foundation launch.' },
+      { title: 'Who we help', note: 'Students, storm-affected families, orphans and the elderly.' },
+      { title: 'Goals', note: 'Goal numbers from the settings file. Shown only once confirmed.' },
+      { title: '3 ways to help', note: 'Money, goods and time.' },
+      { title: 'Latest events and news', note: 'The three most recent posts.' },
+      { title: 'Featured story', note: 'One story or quote, only once a real one exists.' },
+      { title: 'Get in touch', note: 'A final call to action.' },
+    ]}
+  />
+</PageLayout>

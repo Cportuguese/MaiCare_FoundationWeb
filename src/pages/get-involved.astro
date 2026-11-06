@@ -1,0 +1,29 @@
+---
+// Get Involved: shell only. The real page is built in Phase 6.
+// The block ids below (how-to-donate, volunteer, partner, faq) are the anchors
+// that the header's Donate button and other links already point to.
+import PageLayout from '../layouts/PageLayout.astro';
+import PageShell from '../components/PageShell.astro';
+---
+
+<PageLayout
+  title="Get Involved"
+  description="Ways to help maiCare Foundation: donate money, clothes or food, volunteer your time, or partner with us. San Carlos City, Pangasinan."
+>
+  <PageShell
+    label="Get involved"
+    title="Ways to help"
+    intro="Give, volunteer or partner with us. Here is how each one works."
+    builtIn="Phase 6"
+    blocks={[
+      {
+        id: 'how-to-donate',
+        title: 'How to donate',
+        note: 'Three steps: choose how to help, contact us, we follow up. Accepted goods and drop-off details. No online payments.',
+      },
+      { id: 'volunteer', title: 'Volunteer', note: 'How to give your time, with a button to the contact form.' },
+      { id: 'partner', title: 'Partner with us', note: 'For companies, schools and groups.' },
+      { id: 'faq', title: 'Questions and answers', note: 'The questions people ask most.' },
+    ]}
+  />
+</PageLayout>

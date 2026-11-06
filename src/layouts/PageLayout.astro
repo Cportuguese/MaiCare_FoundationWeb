@@ -1,0 +1,43 @@
+---
+/**
+ * PageLayout: what every real page uses.
+ * Skip link, emergency banner (if switched on), sticky header, the page, footer.
+ *
+ * Usage:
+ *   <PageLayout title="About" description="...">
+ *     <h1>...</h1>
+ *   </PageLayout>
+ *
+ * `title` is the page name; " | maiCare Foundation" is added for you.
+ * Leave `title` out (Home page) to use the full default title.
+ */
+import BaseLayout from './BaseLayout.astro';
+import EmergencyBanner from '../components/EmergencyBanner.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { identity } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const { title, description, image } = Astro.props;
+const fullTitle = title ? `${title} | ${identity.shortName} Foundation` : `${identity.name} | San Carlos City, Pangasinan`;
+---
+
+<BaseLayout title={fullTitle} description={description} image={image}>
+  <a
+    href="#main"
+    class="fixed left-3 top-3 z-50 -translate-y-24 rounded-full bg-olive-800 px-5 py-3 font-semibold text-pink-50 no-underline focus:translate-y-0"
+  >
+    Skip to main content
+  </a>
+  <EmergencyBanner />
+  <Header />
+  <main id="main">
+    <slot />
+  </main>
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,28 @@
+---
+// "Page not found". This one is finished in Phase 3 (it is small and every site needs it).
+import PageLayout from '../layouts/PageLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Button from '../components/Button.astro';
+import Butterfly from '../components/Butterfly.astro';
+import { donateLink } from '../data/nav';
+---
+
+<PageLayout title="Page not found" description="This page could not be found.">
+  <section class="relative overflow-hidden">
+    <Butterfly class="pointer-events-none absolute -right-12 top-2 size-52 rotate-12 text-pink-500 opacity-[0.12] md:right-8 md:size-72" />
+    <div class="container-page section relative">
+      <SectionHeading
+        level="h1"
+        label="Error 404"
+        title="We can't find that page"
+        underline="can't find"
+        intro="The link may be old or mistyped. These will get you back on track."
+        class="fade-in"
+      />
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <Button href="/">Go to the home page</Button>
+        <Button href={donateLink.href} variant="secondary">See how to help</Button>
+      </div>
+    </div>
+  </section>
+</PageLayout>

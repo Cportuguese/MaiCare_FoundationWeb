@@ -1,0 +1,21 @@
+---
+// Contact: shell only. The real page and the working form are built in Phase 6.
+import PageLayout from '../layouts/PageLayout.astro';
+import PageShell from '../components/PageShell.astro';
+---
+
+<PageLayout
+  title="Contact"
+  description="Contact maiCare Foundation in San Carlos City, Pangasinan to donate, volunteer, partner with us or ask a question."
+>
+  <PageShell
+    label="Contact us"
+    title="We'd love to hear from you"
+    intro="Tell us how you would like to help, or ask us anything."
+    builtIn="Phase 6"
+    blocks={[
+      { title: 'Contact form', note: 'Name, email or mobile, "I would like to…", message, and a consent checkbox.' },
+      { title: 'Address and map', note: 'Address, phone, email, Facebook, office hours and a map.' },
+    ]}
+  />
+</PageLayout>

@@ -42,8 +42,8 @@ export const contact = {
 // ---------------------------------------------------------------------------
 // 2. Emergency banner
 // ---------------------------------------------------------------------------
-// Set `enabled` to true and the banner shows on EVERY page (the banner itself
-// is built in Phase 3). Set it back to false to hide it.
+// Set `enabled` to true (and write a message) and the banner shows on EVERY
+// page. Set it back to false to hide it. Visitors can close it for their visit.
 export const emergencyBanner = {
   enabled: false,
   /** One short sentence, e.g. "Typhoon ___ relief drive: here's what we need." */

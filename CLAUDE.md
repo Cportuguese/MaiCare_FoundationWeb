@@ -31,17 +31,21 @@ The user owns this repository and its history. The AI is a coding assistant, **n
 - Icons: **Lucide only**, one stroke width everywhere.
 - Commands: `npm run dev` (local site, http://localhost:4321), `npm run build` (output in `dist/`), `npm run preview`.
 
-## Brand (starting point; locked in Phase 2)
-Family: **pink + olive + blush**. Approximate values read from the reference screenshots, to be tuned for contrast in Phase 2:
+## Brand (LOCKED in Phase 2)
+Family: **pink + olive + blush**. The full scales live in `src/styles/global.css` (the single source of truth; Tailwind's default colors are switched off). Every text pairing passes WCAG AA, shown live on the hidden `/style-guide/` page. Before adding or changing any color, edit `global.css`, then confirm the style guide still says "All pairings pass".
 
-| Role | ~Color | Use |
-|---|---|---|
-| Primary pink | #E0206F | buttons, highlights, icons |
-| Deep olive | #3C4235 | headlines, dark sections, footer |
-| Plum | #7A2A48 | announcement / emergency banner |
-| Blush | #FDF0F4 / #FBE4EC | page background / tinted cards |
-| Cream | #F6EADB | secondary button on dark |
-| Warm gray | #5F5A5C | body text |
+| Role | Color | Token | Use |
+|---|---|---|---|
+| Action pink | #C9185F | `pink-600` (hover `pink-700` #A8114E) | buttons, links, pink text |
+| Logo pink | #E0206F | `pink-500` | decoration only (hearts, butterfly, underline); never small text |
+| Pink on dark | #F7A8C4 | `pink-300` | pink text/labels on olive |
+| Deep olive | #3C4235 (footer #2F3429) | `olive-800` / `olive-900` | headlines, dark sections, footer |
+| Plum | #7A2A48 | `plum-700` | announcement / emergency banner |
+| Blush | #FDF0F4 / #FBE4EC | `pink-50` / `pink-100` | page background / tinted cards |
+| Cream | #F6EADB | `cream-200` | button on dark |
+| Warm gray | #5F5A5C (quiet #6F676A) | `ink-600` / `ink-500` | body text / hints |
+
+Never use pink-600 or pink-500 for text on olive (1.9:1 and 2.3:1). On dark sections use the cream button and `pink-300` text.
 
 Fonts (self-hosted via Fontsource, installed in Phase 2): **Plus Jakarta Sans** (headlines ExtraBold, body Regular) and **Fraunces Italic** for accents only. Style: lots of white space, 16-24px rounded corners, soft shadows, the logo's butterfly line art as a subtle decoration, one primary pink button per section.
 
