@@ -1,0 +1,79 @@
+---
+/**
+ * Prose: styles the body text of a Markdown post (headings, lists, links, quotes).
+ * Wrap the rendered Markdown in it. Uses only the design tokens from global.css.
+ */
+---
+
+<div class="prose-maicare">
+  <slot />
+</div>
+
+<style is:global>
+  .prose-maicare {
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    color: var(--color-ink-600);
+    max-width: 42rem;
+  }
+  .prose-maicare > * + * {
+    margin-top: 1.25rem;
+  }
+  .prose-maicare h2 {
+    font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+    font-weight: 700;
+    margin-top: 2.25rem;
+  }
+  .prose-maicare h3 {
+    font-size: var(--text-lead);
+    font-weight: 700;
+    margin-top: 1.75rem;
+  }
+  .prose-maicare strong {
+    color: var(--color-olive-800);
+    font-weight: 700;
+  }
+  .prose-maicare a {
+    color: var(--color-pink-600);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+  .prose-maicare a:hover {
+    color: var(--color-pink-700);
+  }
+  .prose-maicare ul,
+  .prose-maicare ol {
+    padding-left: 1.4rem;
+  }
+  .prose-maicare ul {
+    list-style: disc;
+  }
+  .prose-maicare ol {
+    list-style: decimal;
+  }
+  .prose-maicare li + li {
+    margin-top: 0.5rem;
+  }
+  .prose-maicare li::marker {
+    color: var(--color-pink-500);
+  }
+  .prose-maicare blockquote {
+    border-left: 3px solid var(--color-pink-500);
+    padding-left: 1.25rem;
+    font-family: var(--font-accent);
+    font-style: italic;
+    font-size: var(--text-lead);
+    color: var(--color-olive-800);
+  }
+  .prose-maicare code {
+    background: var(--color-pink-100);
+    border-radius: 0.375rem;
+    padding: 0.1em 0.4em;
+    font-size: 0.9em;
+  }
+  .prose-maicare hr {
+    border: 0;
+    border-top: 1px solid var(--color-pink-200);
+  }
+</style>

@@ -1,0 +1,14 @@
+---
+// One page per file in src/content/news/ (Phase 7). The page itself is PostDetail.astro.
+import PostDetail from '../../components/PostDetail.astro';
+import { getPublishedNews } from '../../data/posts';
+
+export async function getStaticPaths() {
+  const news = await getPublishedNews();
+  return news.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+---
+
+<PostDetail entry={entry} kind="news" />

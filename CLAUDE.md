@@ -12,7 +12,7 @@ Website for **maiCare Foundation Inc.**, a non-stock, non-profit foundation in *
 4. **Work one phase at a time.** Only do the phase the user names. Do not start the next phase or touch other phases' work. Plan the phase and get approval, build in small steps, run the review loop, then stop for the user's check before closing the phase.
 5. **Close each phase** by ticking its boxes in `PROGRESS.md` and writing notes for the next session. Never mark something done that wasn't verified. Checkpoints to GitHub are done by the user (see the Git rules below).
 6. Privacy: the contact form collects personal data (Data Privacy Act of 2012). It needs a Privacy Notice page and a consent checkbox.
-7. `Images for references/` is **local context only** (earlier draft screenshots, sample photos/videos, which show draft donation details). It is git-ignored. Never publish or ship anything from it.
+7. `Images for references/` is **local context only** (earlier draft screenshots, sample photos/videos, which show draft donation details). It is git-ignored. Never publish or ship anything from it. **Exception for Phase 8:** `logo.jpg` (the official logo) and `text.jpg` (the official brochure) are the brand sources for the Phase 8 refresh. Phase 8 may make web versions of the logo from them (preferably from the foundation's original files) and use the brochure's wording. Still never ship the reference files themselves or the brochure's photos.
 
 ## Git identity and commit rules (plan section 12): follow strictly
 The user owns this repository and its history. The AI is a coding assistant, **not** a contributor.
@@ -31,7 +31,9 @@ The user owns this repository and its history. The AI is a coding assistant, **n
 - Icons: **Lucide only**, one stroke width everywhere.
 - Commands: `npm run dev` (local site, http://localhost:4321), `npm run build` (output in `dist/`), `npm run preview`.
 
-## Brand (LOCKED in Phase 2)
+## Brand (LOCKED in Phase 2; to be refreshed in Phase 8)
+**Phase 8 replaces this brand** with the foundation's official logo and brochure (`Images for references/logo.jpg`, `text.jpg`). The steps and the starting colors are in the Phase 8 section of `WEBSITE-PLAN.md`. Until Phase 8, keep using the values below, and never hard-code colors or fonts outside `global.css`, so the refresh changes everything in one place. After Phase 8, update this section with the new locked values.
+
 Family: **pink + olive + blush**. The full scales live in `src/styles/global.css` (the single source of truth; Tailwind's default colors are switched off). Every text pairing passes WCAG AA, shown live on the hidden `/style-guide/` page. Before adding or changing any color, edit `global.css`, then confirm the style guide still says "All pairings pass".
 
 | Role | Color | Token | Use |

@@ -16,7 +16,12 @@ import { identity } from '../data/site';
 
 // "/about/" and "/about" both count as the About page.
 const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
-const isCurrent = (href: string) => (href.replace(/\/+$/, '') || '/') === path;
+// Events and news posts (/events/<name>/, /news/<name>/) keep "Events & News" marked.
+const isCurrent = (href: string) => {
+  const target = href.replace(/\/+$/, '') || '/';
+  if (target === '/events') return path === '/events' || path.startsWith('/events/') || path.startsWith('/news/');
+  return target === path;
+};
 
 const desktopLink =
   'relative inline-flex min-h-11 items-center rounded-full px-3.5 text-[0.9375rem] font-semibold text-olive-800 no-underline ' +

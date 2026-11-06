@@ -14,8 +14,8 @@ Update this file when a phase closes: tick the boxes, then write notes for the n
 | 4 | Home page | Finished Home page | ◐ Built and checked by the AI. Waiting on you: look at it on your phone and laptop, then tell the next session "Phase 4 checked" |
 | 5 | About + Programs | Two finished pages | ◐ Built and checked by the AI. Waiting on you: look at both pages on your phone and laptop, confirm the wording (see Phase 5 notes), then tell the next session "Phase 5 checked" |
 | 6 | Get Involved + Contact | How to Donate flow, working form, Privacy Notice | ◐ Built and tested by the AI. Waiting on you: get a Web3Forms key, add it, send one real test message per option, read the Privacy Notice and goods lists, then tell the next session "Phase 6 checked" (see Phase 6 notes) |
-| 7 | Events & News | Event and news system with 3 sample posts | ☐ |
-| 8 | Polish & QA | Whole-site quality pass | ☐ |
+| 7 | Events & News | Event and news system with 3 sample posts | ◐ Built and tested by the AI. Waiting on you: look at the Events page, a post page and Home on your phone and laptop, then tell the next session "Phase 7 checked" (see Phase 7 notes) |
+| 8 | Brand refresh + Polish & QA | New logo, colors, fonts and brochure wording; then a whole-site quality pass | ☐ |
 | 9 | Launch | Domain, email and analytics; real details filled in | ☐ |
 | 10 | After launch | Ongoing upgrades | — |
 
@@ -285,7 +285,66 @@ Home and Programs still send their buttons to How to donate. To make them open t
 - **Phase 8 (QA):** check that the address shows in the footer, on Contact and on Privacy, that `mailto:` links open, and that the form key is set and a real test message from each of the six options reaches that Gmail (see the Phase 6 box, which is still open).
 - **Phase 9 (Launch):** when the domain is bought, set up `info@` and `donate@` with Cloudflare Email Routing forwarding to this Gmail, then update `emailInfo` and `emailDonate` in `site.ts`. The Web3Forms key is tied to the inbox it was made for, so create a **new key** for the new address (or keep the Gmail as the form inbox and keep the same key) and update `web3formsAccessKey`. Re-send a test message afterwards. Also tell the Privacy Notice's owner if the inbox provider changes (it names "our email provider" generally, so no text change is needed for Gmail or a forward).
 
-## Notes for the next session (Phase 7: Events & News)
+## Brand refresh (added by the user after Phase 6): done in Phase 8
+- **New official materials:** `Images for references/logo.jpg` (the new logo: sage "mai", rose-pink "Care" with a heart over the "i", FOUNDATION, EST. 2026, "Kindness everywhere…" script tagline; no butterfly) and `Images for references/text.jpg` (the printed tri-fold brochure: About, Mission, Vision, Our Heart, Our Focus, taglines).
+- **Phase 8 now starts with a brand refresh**, before the polish and QA pass: logo, colors, fonts, signature details and wording. The full steps, the decision on what to adopt (the brand yes, the print layout no) and the sampled starting colors are in **`WEBSITE-PLAN.md`, Phase 8**.
+- **Until Phase 8, keep the current locked brand.** Phase 7 builds with today's tokens and components.
+- **To keep the refresh easy, Phase 7 must:**
+  - never hard-code colors or fonts outside `global.css`
+  - reuse the shared `Logo`, `Butterfly` and `Underline` components instead of drawing new decorations, so Phase 8 can swap each one in one place
+  - not write new copy that repeats the draft's Mission and Vision wording (it is being replaced)
+
+## Phase 7: Events & News
+
+Scope built: the events and news system (Markdown files), the Events & News page, a page for every post, photo galleries, the Home "latest 3" section, three sample posts and a how-to guide. Nothing from Phases 8 and 9. About, Programs, Get Involved, Contact and Privacy were not touched.
+
+Done when:
+- [x] Adding one new post file makes it appear everywhere it should. Verified with five temporary test files (since removed): an event and a news post each showed up on the Events & News page, on their own new page, and (when among the newest three) on Home, with no code changes. A multi-day event with a cover photo and a two-photo gallery rendered correctly.
+- [x] Events move from "upcoming" to "past" automatically by date. Verified with temporary events dated yesterday, today, tomorrow and spanning today: yesterday's went to Past; today's, tomorrow's and the multi-day one stayed Upcoming. The rule: upcoming through the last day (Philippine date), past from the next day. **It is decided when the site is built**, so it changes on the next push or rebuild (see "Things to know").
+- [x] Reviewed on phone and desktop. Verified with screenshots at 1280px and a true 360px (iframe) of the Events page, a post page with cover and gallery, and Home. One column on phones, no clipped text, 0 broken links of 355 checked.
+
+`npm run build` passes (12 pages: the 9 before plus the 3 sample posts). **Not closed yet: waiting for your own check.**
+
+### What was built
+- **Content system**: `src/content.config.ts` (two collections, `events` and `news`, with checks that give a clear build error for a bad date, a cover with no description, and so on). One Markdown file per post: `src/content/events/<name>.md` becomes `/events/<name>/`, `src/content/news/<name>.md` becomes `/news/<name>/`.
+- **Helpers**: `src/data/posts.ts` is the one place that reads the files, splits upcoming and past, sorts, formats Philippine-style dates ("Fri, Nov 13, 2026", "Nov 4 to 8, 2026") and picks Home's latest three. Pages never compare dates themselves.
+- **Events & News page** (`src/pages/events.astro`): header with jump links; **Upcoming** as ruled rows in one white panel with date badges; **Past events** as image-led cards (a tinted icon panel when there is no cover photo); **News** as a text-led dated list; closing panel with the one pink button (Volunteer, via `contactHref('volunteer')`). Each empty section has an honest "we are just getting started" note.
+- **Post pages** (`src/pages/events/[slug].astro`, `src/pages/news/[slug].astro`, both using `src/components/PostDetail.astro`): back link, labels, title, summary, date / time / place (hidden if missing), cover photo, the Markdown body, a photo gallery for events, and a closing panel. The link-preview image is the cover photo when there is one.
+- **Components**: `PostCard.astro` (used on Home and Past events), `Prose.astro` (styles Markdown text from the design tokens), `PostDetail.astro`. Two icons added to `Icon.astro` (`newspaper`, `arrow-left`, same stroke width).
+- **Home**: the "we are just getting started" band is replaced by the latest three posts (still shown as the empty state if there are no posts). Nothing else on Home changed.
+- **Small changes to shared files**: `PageLayout.astro` got an optional `noindex` setting; `Header.astro` now keeps "Events & News" marked on post pages.
+- **Sample posts** (three files, all `sample: true`): an upcoming event (12 Dec 2026), a past event (10 Oct 2026) and a news post (2 Nov 2026). Each says in its first line that it is a sample, shows a "Sample" label on cards and a notice on its page, and is hidden from search engines. They contain no names, numbers or photos.
+- **Guide**: `HOW-TO-ADD-POSTS.md` (project root) for whoever updates the site.
+- `PageShell.astro` is no longer used by any page. **It still exists**: my attempt to delete it was blocked, so please delete `src/components/PageShell.astro` yourself (or tell the next session to).
+- No new dependencies. No changes to colors, fonts or other pages.
+
+### Review loop (plan section 5.3)
+1. Design direction: written at the top of `events.astro`. The page differs from the others: calendar-style ruled rows, then image cards, then a text-only news list. No "heading + 3 cards" run. The pink underline is used once (the h1).
+2. Screenshots at 1280px and 360px. Fixed during build: the multi-day date read "4 to Nov 8, 2026" (now "Nov 4 to 8, 2026"); two sections pointed their accessibility label at an id that did not exist.
+3. UX review: whole cards and rows are one link each with a visible keyboard focus ring, touch targets 44px or more, 16px gutters, one h1 per page, headings in order, one pink button per section, every cover and gallery photo needs a description (the build refuses a cover without one), soft fade-in only. Colors reuse measured pairings (pink-600 on pink-100 4.61:1, olive-800 on olive-100, ink-500 on white 5.49:1). I did not re-measure contrast on these pages.
+4. Slop test: no gradients, glass, emoji, fake stats, names or testimonials; samples are labelled everywhere they appear; no stock photo is ever used as an event photo.
+
+### Your to-do before closing Phase 7
+1. Run `npm run dev` (or push and open the `.pages.dev` link) and look at `/events/`, one post page and Home on your phone and laptop.
+2. Read `HOW-TO-ADD-POSTS.md`. Try adding a real post (or a `draft: true` one) yourself if you like.
+3. **Delete `src/components/PageShell.astro`** (unused).
+4. Decide the launch event: `nextEvent` in `site.ts` (the Home strip) is still a separate setting, and no real "launch" post exists. Either leave it, or add a real post for it and set `nextEvent.enabled` to `false`.
+5. **Before launch (Phase 8/9), delete the three sample files.**
+6. Commit and push yourself, then tell the next session **"Phase 7 checked"**.
+
+### Things to know / decisions for you
+- **Dates update on rebuild, not at midnight.** The site is static. If a week may pass between pushes, set up an optional free daily rebuild (Cloudflare Pages deploy hook; steps are in `HOW-TO-ADD-POSTS.md`). That is yours to set up.
+- **Sample posts show on Home and the Events page** (labelled "Sample") until real posts replace them. They are hidden from search engines but visible on the preview site.
+- **Home shows the three posts with the latest dates**, so a far-future event can sit above today's news. Say if you would rather show "next upcoming event + two newest posts".
+- **No real photos yet**, so the samples use icon panels and no event has a gallery. The gallery was tested with temporary posts using the Home placeholder photos (removed afterwards). Photos of people, especially children, need written consent. Event and news photos go in `src/assets/images/events/`.
+- **Phase 8 refresh notes**: the new components use only design tokens, the shared `Butterfly` and the pink-100 / olive tints, so the brand refresh needs no edits here. The date badges and labels use `pink-100` + `pink-600`; re-check them if those change.
+- **Phase 9**: add each real post's page to the sitemap when one is set up; the Facebook link preview already uses the cover photo.
+
+## Notes for the next session (Phase 8: Brand refresh + Polish & QA)
+- **First:** read the Phase 7 notes above. Open from before: the Phase 6 form test (Web3Forms key is set in `site.ts`, but the real test message for each of the six options is still the user's), the Phase 3 live link, and the user's checks of Home, About, Programs and Events. Phase 8 only.
+- Phase 8 starts with the brand refresh (see "Brand refresh" above and `WEBSITE-PLAN.md` Phase 8), then the QA pass. QA should also confirm: sample posts deleted or knowingly kept, `PageShell.astro` gone, `nextEvent` decision made, the email check from the "Email setup" section.
+
+## Older notes written for Phase 7 (kept for reference)
 - **First:** confirm Phase 6 is closed (the Web3Forms key and the real test messages are the user's). Also still open from before: the Phase 3 live link and the user's checks of Home, About and Programs. Phase 7 only.
 - Phase 7 replaces `PageShell` on `src/pages/events.astro` (it is the last page using it; delete `PageShell.astro` when done) and replaces the "we are just getting started" band on Home with the latest three posts (Home is the only Phase 4 change allowed). Content goes in `src/content/events/` and `src/content/news/` as one Markdown file each. Three sample posts must be clearly marked as samples and must not read as real events or carry fake names, photos of beneficiaries or numbers.
 - `nextEvent` in `site.ts` (the Home strip) can be driven by the events system once it exists.

@@ -1,0 +1,14 @@
+---
+// One page per file in src/content/events/ (Phase 7). The page itself is PostDetail.astro.
+import PostDetail from '../../components/PostDetail.astro';
+import { getPublishedEvents } from '../../data/posts';
+
+export async function getStaticPaths() {
+  const events = await getPublishedEvents();
+  return events.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+---
+
+<PostDetail entry={entry} kind="event" />

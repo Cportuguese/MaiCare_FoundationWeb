@@ -64,6 +64,8 @@ The site has 6 pages: Home, About, Programs, Get Involved, Events & News, Contac
 
 ## 4. Brand & design direction
 
+> **Update:** the foundation now has an **official logo and brochure** (`Images for references/logo.jpg` and `text.jpg`). **Phase 8** changes the logo, colors, fonts and wording to match them (see Phase 8 in section 9). Until then, the values below (as locked in Phase 2) stay in use.
+
 **Colors**: the brand family is **pink + olive + blush**. The values below are approximate, read from the reference screenshots. They're a starting point, not fixed. Exact shades can be adjusted for contrast, readability and harmony (see section 5.1), as long as the site still clearly looks like maiCare and matches the logo.
 
 | Role | Color | Used for |
@@ -183,7 +185,7 @@ This table also lives in the project as **`PROGRESS.md`**, created in Phase 1. T
 | 5 | About + Programs | Two finished pages | ☐ |
 | 6 | Get Involved + Contact | How to Donate flow, working form, Privacy Notice | ☐ |
 | 7 | Events & News | Event and news system with 3 sample posts | ☐ |
-| 8 | Polish & QA | Whole-site quality pass | ☐ |
+| 8 | Brand refresh + Polish & QA | New logo, colors, fonts and brochure wording; then a whole-site quality pass | ☐ |
 | 9 | Launch | Domain, email and analytics; real details filled in | ☐ |
 | 10 | After launch | Ongoing upgrades | — |
 
@@ -300,14 +302,79 @@ This table also lives in the project as **`PROGRESS.md`**, created in Phase 1. T
 - [ ] Adding one new post file makes it appear everywhere it should
 - [ ] Events move from "upcoming" to "past" automatically by date
 
-### Phase 8: Polish & QA
-**Goal:** make the whole site feel finished and consistent.
-- Run every check in section 11.
-- Proofread all text and keep the tone consistent.
-- Fix spacing and alignment differences between pages, then do a final slop check across the whole site.
-- Finish the media list so every placeholder is recorded.
+### Phase 8: Brand refresh + Polish & QA
+**Goal:** bring the whole site in line with the foundation's official logo and brochure, then make everything feel finished and consistent.
+
+**Why this phase changed:** the foundation now has an official **logo** (`Images for references/logo.jpg`) and a printed **brochure** (`Images for references/text.jpg`). They differ from the earlier draft the site was built on:
+- a new logo, with no butterfly
+- greener and softer colors
+- a handwritten-style tagline, "Kindness everywhere…"
+- official wording
+
+The brand refresh comes **first**, so the quality pass checks the final look.
+
+**Decision: use the brochure's brand, not its print layout.** A folded brochure is designed for paper. A website has to be easy to read on a small phone.
+
+| From the logo and brochure | On the website |
+|---|---|
+| New logo | **Yes.** Header, footer, favicon and link preview. It replaces the placeholder wordmark. |
+| Colors: sage and forest green, rose pink, blush, cream | **Yes**, tuned for readable contrast (table below). |
+| Official wording: About, Mission, Vision, Our Heart, Our Focus, taglines | **Yes.** It replaces the wording taken from the earlier draft. |
+| Handwritten script lettering ("Kindness everywhere…") | **Yes, for short accent phrases only.** One script font replaces Fraunces Italic. It is never used for body text, buttons, menus, form labels or long headings. |
+| Hearts with leaves, and a soft pink-and-green wave | **Yes, as the new signature detail.** They replace the butterfly, which isn't in the new logo. Line art plus one light wave divider, used sparingly. |
+| Warm, sunlit feel | **A light touch:** warm cream backgrounds and warm photos. No sun rays across the page. |
+| Sunburst glow, rainbow, watercolor texture behind text | **No.** It is slow to load on phones and makes text hard to read. The glowing version of the logo appears only in the link-preview image. |
+| Script headings on every section | **No.** Script is hard to read at small sizes, so section labels stay in Plus Jakarta Sans. |
+| The brochure's photos of children | **No.** They look AI-generated. Neither these nor any stock photo may be shown as the people the foundation helps. Use real photos only, with guardian consent. |
+
+**Starting colors**, sampled from the two images. Phase 8 fine-tunes them and checks their contrast with UI UX Pro Max.
+
+| Role | Sampled from | About | Notes |
+|---|---|---|---|
+| Logo rose pink | "Care" and the heart in the logo | #EA6489 / #F27C97 | Decoration and large display text only. Too light for normal text (about 3.2:1 on white). |
+| Action pink | brochure's pink headings | #C3386B | Buttons, links, pink text. About 5:1 on white but only about 4.3:1 on blush, so it probably needs a slightly deeper shade. |
+| Sage green | "mai" and FOUNDATION in the logo | #6A7364 | Logo, quiet accents, icons |
+| Forest green | brochure's green headings | #1C543E | Headlines, dark sections, footer. Replaces olive. |
+| Green-gray text | brochure's body text | #4B605B | Body text. Replaces warm gray. |
+| Blush | brochure's pink panels | #FCE5EB | Tinted panels; about the same as today |
+| Sage tint | brochure's green panels | #E9F0E4 | A second tint for panels |
+| Cream | brochure paper | #F6F6EF | Page background option |
+
+The plum emergency banner can stay or move to a deeper rose. Decide with the contrast check.
+
+**Steps, in this order:**
+1. **Get the source files.**
+   - Ask the foundation for the original logo: an SVG, or a PNG with a see-through background.
+   - Ask for the brochure's text file (Word, PDF or Canva). Copying wording from a photo risks typos.
+   - If no original logo exists, redraw it as a clean SVG that matches `logo.jpg`, without the glow.
+2. **Logo:**
+   - Replace `Logo.astro` with the new logo, without the glow. Show "EST. 2026" and the tagline only where there's room.
+   - Remake the favicon set. The heart over the "i" works well at small sizes.
+   - Remake the link-preview image.
+   - Update `MEDIA-LIST.md`.
+3. **Colors:** update the color settings in `global.css`, the one place colors live. Re-run the style guide's contrast table until it says "All pairings pass". Every page uses these settings, so the whole site changes at once.
+4. **Fonts:** choose a free script font that best matches the brochure's lettering, checked with UI UX Pro Max, to replace Fraunces Italic. Keep Plus Jakarta Sans, so there are still two fonts in total.
+5. **Signature details:**
+   - Replace the butterfly with heart-and-leaf line art.
+   - Add the pink-and-green wave as a small, light divider, in at most 2–3 places on the whole site.
+   - Keep the hand-drawn pink underline.
+6. **Wording:**
+   - Replace the draft-based wording with the brochure text: the About story, Mission, Vision, the new **Our Heart** section, and the taglines ("Kindness everywhere…", "Because kindness changes lives", "Together for a brighter tomorrow").
+   - Rebuild the Programs page around the brochure's **four focus areas: Food Support, Healthcare Support, Education Support and Other Assistance**, and say who each one helps. The brochure puts children and families first.
+   - **Ask the foundation** whether storm relief, the elderly and the five formal program areas still belong on the site, and whether "Our Promise" (it isn't in the brochure) stays.
+   - Fix obvious typos only with your okay. For example, the Mission sentence ends "…bringing dignity, joy, hope into their lives and spread kindness everywhere."
+7. **Re-approve the style guide** with the new logo, colors and fonts. Then write the new locked values into the Brand section of `CLAUDE.md`.
+8. **Polish and quality pass:**
+   - Run every check in section 11.
+   - Proofread all text.
+   - Fix spacing and alignment differences between pages.
+   - Do a final slop check.
+   - Finish the media list.
 
 **Done when:**
+- [ ] The new logo is in the header, footer, favicon and link preview, and no placeholder logo or butterfly is left
+- [ ] The new colors and fonts are in place, every pairing passes on the style guide, and you've approved them (now locked)
+- [ ] The brochure wording is on the site, and you've confirmed every change in meaning (programs, Our Promise, typo fixes)
 - [ ] Every section 11 check passes
 - [ ] No known bugs or rough spots remain
 
@@ -316,7 +383,7 @@ This table also lives in the project as **`PROGRESS.md`**, created in Phase 1. T
 - Buy the domain at Cloudflare and connect it to the site.
 - Set up email forwarding for `info@` and `donate@`, and send the contact form to that address.
 - Turn on Cloudflare Web Analytics.
-- Swap in any real details from section 10 that are ready (contacts, SEC number, logo).
+- Swap in any real details from section 10 that are ready (contacts, SEC number). The logo is already done in Phase 8.
 - Do a final check on the real domain, then share the link on the foundation's Facebook page.
 
 **Done when:**
@@ -334,7 +401,7 @@ This table also lives in the project as **`PROGRESS.md`**, created in Phase 1. T
 ---
 
 ## 10. Information to gather before building
-- Logo files (high-res PNG or SVG) and exact brand colors, if they exist
+- Logo files (high-res PNG or SVG) and exact brand colors, if they exist. **For Phase 8:** the original file of the new logo (SVG, or PNG with a see-through background) and the brochure's text file (Word, PDF or Canva)
 - SEC registration number, office address, phone, Facebook page link
 - Which email should receive donation and contact inquiries
 - Officers/trustees: names and photos (optional at launch)

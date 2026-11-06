@@ -21,13 +21,15 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  /** Keep this page out of search engines (used by sample posts). */
+  noindex?: boolean;
 }
 
-const { title, description, image } = Astro.props;
+const { title, description, image, noindex } = Astro.props;
 const fullTitle = title ? `${title} | ${identity.shortName} Foundation` : `${identity.name} | San Carlos City, Pangasinan`;
 ---
 
-<BaseLayout title={fullTitle} description={description} image={image}>
+<BaseLayout title={fullTitle} description={description} image={image} noindex={noindex}>
   <a
     href="#main"
     class="fixed left-3 top-3 z-50 -translate-y-24 rounded-full bg-olive-800 px-5 py-3 font-semibold text-pink-50 no-underline focus:translate-y-0"

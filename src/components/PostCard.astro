@@ -1,0 +1,64 @@
+---
+/**
+ * PostCard: one event or news post as a card (Home's latest posts, Past events).
+ * The whole card is one link (the title link is stretched over it).
+ *
+ * No cover photo? A tinted panel with an icon is shown instead. We never use a
+ * stock photo here: it could read as a real event or as our beneficiaries.
+ */
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import type { Post } from '../data/posts';
+
+interface Props {
+  post: Post;
+  class?: string;
+}
+
+const { post, class: className } = Astro.props;
+const meta = [post.dateLabel, post.place].filter(Boolean).join(' · ');
+---
+
+<article
+  class:list={[
+    'lift group relative flex flex-col overflow-hidden rounded-card bg-white shadow-soft',
+    'has-[a:focus-visible]:outline-[3px] has-[a:focus-visible]:outline-offset-4 has-[a:focus-visible]:outline-olive-800',
+    className,
+  ]}
+>
+  {
+    post.cover ? (
+      <Image
+        src={post.cover}
+        alt={post.coverAlt ?? ''}
+        widths={[400, 640, 900]}
+        sizes="(min-width: 1024px) 340px, (min-width: 640px) 45vw, calc(100vw - 2rem)"
+        format="webp"
+        quality={78}
+        class="aspect-[16/10] w-full object-cover"
+      />
+    ) : (
+      <div class="grid aspect-[16/10] place-items-center bg-pink-100 text-pink-600">
+        <Icon name={post.kind === 'event' ? 'calendar' : 'newspaper'} size={40} />
+      </div>
+    )
+  }
+  <div class="flex flex-1 flex-col gap-2 p-5 md:p-6">
+    <div class="flex flex-wrap items-center gap-2 text-small font-semibold">
+      <span class="rounded-full bg-pink-100 px-3 py-0.5 text-pink-600">
+        {post.kind === 'event' ? (post.upcoming ? 'Upcoming event' : 'Event') : 'News'}
+      </span>
+      {post.sample && <span class="rounded-full bg-olive-100 px-3 py-0.5 text-olive-800">Sample</span>}
+    </div>
+    <h3 class="text-h3">
+      <a
+        href={post.href}
+        class="text-olive-800 no-underline after:absolute after:inset-0 after:content-[''] group-hover:text-pink-700"
+      >
+        {post.title}
+      </a>
+    </h3>
+    <p class="text-small text-ink-500">{meta}</p>
+    <p class="text-body text-ink-600">{post.summary}</p>
+  </div>
+</article>

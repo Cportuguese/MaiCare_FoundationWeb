@@ -22,4 +22,6 @@ About and Programs (Phase 5) use **no photos**: no honest picture of the foundat
 | `programs/storm-relief.jpg` | Programs: focus 2 | **Empty** (icon panel shown) |
 | `programs/orphans-elderly.jpg` | Programs: focus 3 | **Empty** (icon panel shown) |
 
+Events & News (Phase 7) uses **no photos**: the three sample posts have no cover photo, so cards show an icon panel. Real event and news photos go in `src/assets/images/events/` (any name; each is pointed to from its post file) and must be added to this list. See `HOW-TO-ADD-POSTS.md`.
+
 Home (Phase 4) uses the three photos above. None of them is captioned, and none is described as a maiCare beneficiary. About, Programs, Get Involved and Events photos arrive in Phases 5 to 7. Nothing from `Images for references/` is used anywhere.

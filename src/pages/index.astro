@@ -10,7 +10,8 @@
  *     a plain tinted card). Not three equal cards.
  *  4. Goals strip: ONLY renders when a goal is confirmed in src/data/site.ts.
  *  5. Ways to help: dark olive section, a list (not cards), cream button.
- *  6. Events and news: a calm empty state until Phase 7 adds the real posts.
+ *  6. Events and news: the newest 3 posts from src/content (Phase 7), or a calm
+ *     empty state when there are none.
  *  7. Final call to action: tinted panel with the butterfly.
  *
  * Not on this page on purpose: a featured story or quote (there is no real one
@@ -21,10 +22,12 @@ import PageLayout from '../layouts/PageLayout.astro';
 import Button from '../components/Button.astro';
 import Butterfly from '../components/Butterfly.astro';
 import Icon from '../components/Icon.astro';
+import PostCard from '../components/PostCard.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import Underline from '../components/Underline.astro';
 import { contact, goals, nextEvent } from '../data/site';
 import { donateLink } from '../data/nav';
+import { getLatestPosts } from '../data/posts';
 
 import heroPhoto from '../assets/images/home/hero.jpg';
 import studentsPhoto from '../assets/images/home/focus-students.jpg';
@@ -40,6 +43,9 @@ const eventMonth = fmt({ month: 'short' });
 const eventDay = fmt({ day: 'numeric' });
 const eventLong = fmt({ weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 const eventDetails = [eventLong, nextEvent.time, nextEvent.place].filter(Boolean).join(' · ');
+
+// ----- Latest events and news (newest 3 from src/content, picked automatically) -----
+const latestPosts = await getLatestPosts(3);
 
 // ----- Goals: only confirmed goals with a real target are shown -----
 const shownGoals = goals.filter((g) => g.confirmed && g.target !== null);
@@ -283,21 +289,39 @@ const emailToShow = contact.emailDonate ?? contact.emailInfo;
     </div>
   </section>
 
-  <!-- 6. Latest events and news (real posts arrive in Phase 7) -->
-  <section aria-labelledby="latest-heading">
+  <!-- 6. Latest events and news: the newest 3 posts, picked automatically (Phase 7) -->
+  <section aria-label="Events and news">
     <div class="container-page section !pb-8 md:!pb-10">
-      <div class="flex flex-col gap-6 rounded-panel bg-white p-6 shadow-soft sm:flex-row sm:items-center sm:gap-8 md:p-9">
-        <span class="grid size-14 shrink-0 place-items-center rounded-full bg-pink-100 text-pink-600">
-          <Icon name="calendar" size={26} />
-        </span>
-        <div class="max-w-2xl">
-          <h2 id="latest-heading" class="text-h3 text-olive-800">Events and news</h2>
-          <p class="mt-2 text-body text-ink-600">
-            We are just getting started. Our first events and news posts will appear here as soon as they are published.
-          </p>
-        </div>
-        <Button href="/events/" variant="secondary" class="sm:ml-auto">See events and news</Button>
-      </div>
+      {
+        latestPosts.length > 0 ? (
+          <>
+            <div class="flex flex-wrap items-end justify-between gap-5">
+              <SectionHeading label="Events and news" title="What's happening" />
+              <Button href="/events/" variant="secondary" icon="arrow-right">See events and news</Button>
+            </div>
+            <ul class="mt-10 grid gap-6 md:grid-cols-3">
+              {latestPosts.map((post) => (
+                <li class="flex">
+                  <PostCard post={post} class="w-full" />
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <div class="flex flex-col gap-6 rounded-panel bg-white p-6 shadow-soft sm:flex-row sm:items-center sm:gap-8 md:p-9">
+            <span class="grid size-14 shrink-0 place-items-center rounded-full bg-pink-100 text-pink-600">
+              <Icon name="calendar" size={26} />
+            </span>
+            <div class="max-w-2xl">
+              <h2 class="text-h3 text-olive-800">Events and news</h2>
+              <p class="mt-2 text-body text-ink-600">
+                We are just getting started. Our first events and news posts will appear here as soon as they are published.
+              </p>
+            </div>
+            <Button href="/events/" variant="secondary" class="sm:ml-auto">See events and news</Button>
+          </div>
+        )
+      }
     </div>
   </section>
 
