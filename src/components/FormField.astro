@@ -1,0 +1,137 @@
+---
+/**
+ * FormField: a labelled text input, textarea or dropdown.
+ *
+ * Every field has a visible label above it (never placeholder-only), a hint
+ * line for help text and an error line, all linked with aria-describedby so
+ * screen readers read them. Fields are 52px tall (easy to tap) and the border
+ * is dark enough to see (3:1 contrast).
+ *
+ * type: "text" | "email" | "tel" | "textarea" | "select"
+ * For "select", pass `options` as [{ value, label }] and the first item is
+ * used as the empty "Choose one" choice when `placeholder` is given.
+ *
+ * The form itself (Web3Forms, consent checkbox, spam trap) is built in Phase 6.
+ */
+import Icon from './Icon.astro';
+
+interface Option {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  id: string;
+  name?: string;
+  label: string;
+  type?: 'text' | 'email' | 'tel' | 'textarea' | 'select';
+  hint?: string;
+  error?: string;
+  required?: boolean;
+  placeholder?: string;
+  options?: Option[];
+  rows?: number;
+  autocomplete?: string;
+  value?: string;
+  disabled?: boolean;
+  class?: string;
+}
+
+const {
+  id,
+  name = id,
+  label,
+  type = 'text',
+  hint,
+  error,
+  required = false,
+  placeholder,
+  options = [],
+  rows = 5,
+  autocomplete,
+  value,
+  disabled = false,
+  class: className,
+} = Astro.props;
+
+const hintId = hint ? `${id}-hint` : undefined;
+const errorId = error ? `${id}-error` : undefined;
+const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
+
+const control =
+  'block w-full rounded-[var(--radius-field)] border-[1.5px] bg-white px-4 text-base text-olive-900 ' +
+  'placeholder:text-ink-500 transition-[border-color,box-shadow] duration-150 ' +
+  'focus:border-olive-800 ' + // the clear olive focus ring comes from global.css
+  'disabled:bg-olive-50 disabled:text-ink-500 disabled:cursor-not-allowed ' +
+  (error ? 'border-error' : 'border-ink-300');
+
+const common = {
+  id,
+  name,
+  required,
+  disabled,
+  'aria-invalid': error ? 'true' : undefined,
+  'aria-describedby': describedBy,
+};
+---
+
+<div class:list={['flex flex-col gap-2', className]}>
+  <label for={id} class="font-semibold text-olive-800 text-[0.9375rem]">
+    {label}
+    {
+      required ? (
+        <span class="text-pink-600" aria-hidden="true"> *</span>
+      ) : (
+        <span class="font-normal text-ink-500"> (optional)</span>
+      )
+    }
+  </label>
+
+  {hint && <p id={hintId} class="text-small text-ink-500 -mt-1">{hint}</p>}
+
+  {
+    type === 'textarea' ? (
+      <textarea {...common} rows={rows} placeholder={placeholder} class:list={[control, 'py-3 min-h-32 resize-y']}>
+        {value}
+      </textarea>
+    ) : type === 'select' ? (
+      <div class="relative">
+        <select {...common} class:list={[control, 'min-h-[3.25rem] appearance-none pr-12 cursor-pointer']}>
+          {placeholder && (
+            <option value="" selected={!value} disabled={required}>
+              {placeholder}
+            </option>
+          )}
+          {options.map((o) => (
+            <option value={o.value} selected={o.value === value}>
+              {o.label}
+            </option>
+          ))}
+        </select>
+        <Icon
+          name="chevron-down"
+          size={20}
+          class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-olive-800"
+        />
+      </div>
+    ) : (
+      <input
+        {...common}
+        type={type}
+        value={value}
+        placeholder={placeholder}
+        autocomplete={autocomplete}
+        class:list={[control, 'min-h-[3.25rem]']}
+      />
+    )
+  }
+
+  {
+    error && (
+      <p id={errorId} class="flex items-start gap-2 text-small font-medium text-error">
+        <Icon name="info" size={18} class="mt-0.5 shrink-0" />
+        <span>{error}</span>
+      </p>
+    )
+  }
+</div>

@@ -1,0 +1,56 @@
+---
+/**
+ * Butterfly: the signature decoration (line art, like the maiCare logo).
+ *
+ * PLACEHOLDER: no logo file exists in the project yet, so this butterfly is
+ * drawn to match the look of the logo's line art. When the real logo (SVG)
+ * arrives, replace the paths below with the logo's butterfly. Every page that
+ * uses <Butterfly /> will update at once.
+ *
+ * It is only a quiet decoration: never put it behind text, keep it large,
+ * faint and at the edge of a section. Colour comes from the text colour
+ * (currentColor), e.g. class="text-pink-500".
+ */
+interface Props {
+  class?: string;
+  /** Stroke thickness in pixels (stays the same however big the butterfly is). */
+  strokeWidth?: number;
+}
+
+const { class: className, strokeWidth = 1.4 } = Astro.props;
+
+// Right half of the butterfly. The left half is the same, flipped.
+const half = [
+  // upper wing, outer edge
+  'M50 47 C 55 22, 78 5, 91 13 C 98 19, 91 41, 73 52 C 65 57, 57 55, 50 52',
+  // upper wing, inner loop (gives the hand-drawn feel)
+  'M50 50 C 59 35, 73 24, 85 21',
+  // lower wing
+  'M51 55 C 63 56, 82 63, 80 77 C 78 90, 63 88, 56 74 C 53 68, 51 62, 51 55',
+  // lower wing, inner line
+  'M52 60 C 60 64, 70 68, 73 76',
+];
+const body = 'M50 40 C 49 55, 49 71, 50 86';
+const antennae = ['M50 41 C 48 31, 44 25, 37 20', 'M50 41 C 52 31, 56 25, 63 20'];
+---
+
+<svg
+  viewBox="0 0 100 100"
+  fill="none"
+  stroke="currentColor"
+  stroke-width={strokeWidth}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class={className}
+  aria-hidden="true"
+  focusable="false"
+>
+  <g>
+    {half.map((d) => <path d={d} vector-effect="non-scaling-stroke" />)}
+  </g>
+  <g transform="translate(100 0) scale(-1 1)">
+    {half.map((d) => <path d={d} vector-effect="non-scaling-stroke" />)}
+  </g>
+  <path d={body} vector-effect="non-scaling-stroke" />
+  {antennae.map((d) => <path d={d} vector-effect="non-scaling-stroke" />)}
+</svg>

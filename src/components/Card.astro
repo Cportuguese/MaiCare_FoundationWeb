@@ -1,0 +1,76 @@
+---
+/**
+ * Card
+ * ----
+ * tone="tint"   blush-tinted card, no shadow (calm, for text-heavy cards).
+ * tone="white"  white card with a soft shadow (stands out on blush).
+ * tone="dark"   olive card, for use inside a dark section.
+ *
+ * Give it `href` to make the whole card a link (it lifts slightly on hover).
+ * Give it `icon` for a round icon badge. Put the body text in the slot.
+ *
+ * Don't use three identical cards in a row down every page: mix in split
+ * image + text, full-width photos, a goals strip, a timeline or a pull quote.
+ */
+import Icon, { type IconName } from './Icon.astro';
+
+interface Props {
+  title?: string;
+  icon?: IconName;
+  tone?: 'tint' | 'white' | 'dark';
+  href?: string;
+  /** Text for a link-style line at the bottom of a linked card, e.g. "How to donate food". */
+  cta?: string;
+  class?: string;
+}
+
+const { title, icon, tone = 'tint', href, cta, class: className } = Astro.props;
+
+const tones = {
+  tint: 'bg-pink-100 text-ink-600',
+  white: 'bg-white text-ink-600 shadow-[var(--shadow-soft)]',
+  dark: 'bg-olive-700 text-pink-50/90',
+};
+const badge = {
+  tint: 'bg-white text-pink-600',
+  white: 'bg-pink-100 text-pink-600',
+  dark: 'bg-olive-800 text-pink-300',
+};
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag
+  href={href}
+  data-surface={tone === 'dark' ? 'dark' : undefined}
+  class:list={[
+    'flex flex-col gap-3 rounded-[var(--radius-card)] p-6 md:p-7 no-underline',
+    tones[tone],
+    href && 'lift',
+    className,
+  ]}
+>
+  {
+    icon && (
+      <span class:list={['mb-1 grid size-12 place-items-center rounded-full', badge[tone]]}>
+        <Icon name={icon} size={24} />
+      </span>
+    )
+  }
+  {title && <h3 class:list={['text-h3', tone === 'dark' && 'text-pink-50!']}>{title}</h3>}
+  <div class="text-body [&>p+p]:mt-3">
+    <slot />
+  </div>
+  {
+    href && cta && (
+      <span
+        class:list={[
+          'mt-auto pt-2 inline-flex items-center gap-2 font-semibold',
+          tone === 'dark' ? 'text-pink-300' : 'text-pink-600',
+        ]}
+      >
+        {cta}
+        <Icon name="arrow-right" size={18} />
+      </span>
+    )
+  }
+</Tag>

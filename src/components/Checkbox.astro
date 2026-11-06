@@ -1,0 +1,72 @@
+---
+/**
+ * Checkbox: a big, easy-to-tap checkbox with a label.
+ * Used for the consent box on the contact form (Data Privacy Act of 2012):
+ * the label text can include a link to the Privacy Notice via the slot.
+ *
+ *   <Checkbox id="consent" required>
+ *     I agree that maiCare Foundation may use my details to reply to me.
+ *     Read the <a href="/privacy/">Privacy Notice</a>.
+ *   </Checkbox>
+ */
+interface Props {
+  id: string;
+  name?: string;
+  required?: boolean;
+  checked?: boolean;
+  error?: string;
+  class?: string;
+}
+
+const { id, name = id, required = false, checked = false, error, class: className } = Astro.props;
+const errorId = error ? `${id}-error` : undefined;
+---
+
+<div class:list={['flex flex-col gap-2', className]}>
+  <label for={id} class="flex min-h-12 cursor-pointer items-start gap-3 text-body">
+    <input
+      id={id}
+      name={name}
+      type="checkbox"
+      required={required}
+      checked={checked}
+      aria-invalid={error ? 'true' : undefined}
+      aria-describedby={errorId}
+      class="checkbox mt-0.5"
+    />
+    <span><slot /></span>
+  </label>
+  {error && <p id={errorId} class="text-small font-medium text-error">{error}</p>}
+</div>
+
+<style>
+  .checkbox {
+    appearance: none;
+    flex: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 1.5px solid var(--color-ink-300);
+    border-radius: 0.5rem;
+    background-color: var(--color-white);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 1rem;
+    cursor: pointer;
+    transition:
+      background-color 0.15s,
+      border-color 0.15s,
+      box-shadow 0.15s;
+  }
+  .checkbox:checked {
+    background-color: var(--color-pink-600);
+    border-color: var(--color-pink-600);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+  }
+  .checkbox:focus-visible {
+    outline: 3px solid var(--color-olive-800);
+    outline-offset: 2px;
+  }
+  .checkbox[aria-invalid='true'] {
+    border-color: var(--color-error);
+  }
+</style>

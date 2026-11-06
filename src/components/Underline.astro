@@ -1,0 +1,32 @@
+---
+/**
+ * Underline: the hand-drawn pink line under a key phrase in a heading.
+ * Our second signature detail. Use it once per page or section at most,
+ * on the phrase that matters most:
+ *   <h2>A foundation built on <Underline>care</Underline></h2>
+ *
+ * Pink-500 is the logo pink. It is a decoration, not text, so it only needs
+ * 3:1 contrast, which it has on blush, white and cream.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<span class:list={['relative inline-block', className]}>
+  <slot />
+  <svg
+    class="pointer-events-none absolute left-0 -bottom-[0.12em] h-[0.28em] w-full text-pink-500"
+    viewBox="0 0 200 12"
+    preserveAspectRatio="none"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="3.5"
+    stroke-linecap="round"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path d="M3 8 C 34 2, 62 10, 100 5 S 168 9, 197 3" vector-effect="non-scaling-stroke" />
+  </svg>
+</span>

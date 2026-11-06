@@ -7,9 +7,11 @@ import { identity } from '../data/site';
 interface Props {
   title?: string;
   description?: string;
+  /** Keep this page out of search engines (used by the hidden style guide). */
+  noindex?: boolean;
 }
 
-const { title = identity.name, description = identity.description } = Astro.props;
+const { title = identity.name, description = identity.description, noindex = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -19,6 +21,7 @@ const { title = identity.name, description = identity.description } = Astro.prop
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>

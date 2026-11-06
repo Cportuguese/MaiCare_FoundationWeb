@@ -1,0 +1,78 @@
+---
+/**
+ * Icon: the ONLY way icons are used on the site.
+ * Lucide icons, one stroke width everywhere (set once, below).
+ *
+ * To use another Lucide icon: import it here, add it to the `icons` list.
+ * Usage: <Icon name="heart" />   <Icon name="hand-heart" size={32} class="text-pink-600" />
+ *
+ * Note: Lucide no longer ships brand logos (Facebook etc.), so social links
+ * use a text label instead of a logo icon.
+ */
+import ArrowRight from '@lucide/astro/icons/arrow-right';
+import Calendar from '@lucide/astro/icons/calendar';
+import Check from '@lucide/astro/icons/check';
+import ChevronDown from '@lucide/astro/icons/chevron-down';
+import Clock from '@lucide/astro/icons/clock';
+import HandHeart from '@lucide/astro/icons/hand-heart';
+import Handshake from '@lucide/astro/icons/handshake';
+import Heart from '@lucide/astro/icons/heart';
+import HeartHandshake from '@lucide/astro/icons/heart-handshake';
+import Info from '@lucide/astro/icons/info';
+import Mail from '@lucide/astro/icons/mail';
+import MapPin from '@lucide/astro/icons/map-pin';
+import Menu from '@lucide/astro/icons/menu';
+import Phone from '@lucide/astro/icons/phone';
+import Shirt from '@lucide/astro/icons/shirt';
+import Sprout from '@lucide/astro/icons/sprout';
+import Users from '@lucide/astro/icons/users';
+import Utensils from '@lucide/astro/icons/utensils';
+import X from '@lucide/astro/icons/x';
+
+export const icons = {
+  'arrow-right': ArrowRight,
+  calendar: Calendar,
+  check: Check,
+  'chevron-down': ChevronDown,
+  clock: Clock,
+  'hand-heart': HandHeart,
+  handshake: Handshake,
+  heart: Heart,
+  'heart-handshake': HeartHandshake,
+  info: Info,
+  mail: Mail,
+  'map-pin': MapPin,
+  menu: Menu,
+  phone: Phone,
+  shirt: Shirt,
+  sprout: Sprout,
+  users: Users,
+  utensils: Utensils,
+  x: X,
+} as const;
+
+/** The one stroke width used by every icon on the site. */
+const STROKE_WIDTH = 1.75;
+
+export type IconName = keyof typeof icons;
+
+interface Props {
+  name: IconName;
+  size?: number;
+  class?: string;
+  /** Give a label only when the icon alone carries meaning (no text next to it). */
+  label?: string;
+}
+
+const { name, size = 24, class: className, label } = Astro.props;
+const Lucide = icons[name];
+---
+
+<Lucide
+  size={size}
+  stroke-width={STROKE_WIDTH}
+  class={className}
+  aria-hidden={label ? undefined : 'true'}
+  aria-label={label}
+  role={label ? 'img' : undefined}
+/>

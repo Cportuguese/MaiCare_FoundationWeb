@@ -1,0 +1,92 @@
+---
+/**
+ * SectionHeading: small label + heading + optional intro.
+ *
+ * label      short Fraunces-italic line above the heading ("Our story",
+ *            "Donate", "Volunteer"). Sentence case, never ALL CAPS.
+ * title      the heading itself.
+ * underline  a phrase inside the title to give the pink hand-drawn underline.
+ *            Optional. Use it once per page, not in every section.
+ * level      "h1" for the page's main heading (once per page), otherwise "h2".
+ * tone       "dark" when the section background is olive or plum.
+ */
+import Underline from './Underline.astro';
+
+interface Props {
+  title: string;
+  label?: string;
+  intro?: string;
+  underline?: string;
+  level?: 'h1' | 'h2' | 'h3';
+  align?: 'left' | 'center';
+  tone?: 'light' | 'dark';
+  class?: string;
+}
+
+const {
+  title,
+  label,
+  intro,
+  underline,
+  level = 'h2',
+  align = 'left',
+  tone = 'light',
+  class: className,
+} = Astro.props;
+
+const Heading = level;
+const sizeClass = level === 'h1' ? 'text-h1' : level === 'h2' ? 'text-h2' : 'text-h3';
+
+// Split the title around the underlined phrase (if it is in there).
+let before = title;
+let after = '';
+let hasUnderline = false;
+if (underline && title.includes(underline)) {
+  const i = title.indexOf(underline);
+  before = title.slice(0, i);
+  after = title.slice(i + underline.length);
+  hasUnderline = true;
+}
+
+const dark = tone === 'dark';
+---
+
+<div class:list={['max-w-2xl', align === 'center' && 'mx-auto text-center', className]}>
+  {
+    label && (
+      <p
+        class:list={[
+          'font-accent italic text-label font-medium mb-3',
+          dark ? 'text-pink-300' : 'text-pink-600',
+        ]}
+      >
+        {label}
+      </p>
+    )
+  }
+  <Heading class:list={[sizeClass, dark && 'text-pink-50!']}>
+    {
+      hasUnderline ? (
+        <>
+          {before}
+          <Underline>{underline}</Underline>
+          {after}
+        </>
+      ) : (
+        title
+      )
+    }
+  </Heading>
+  {
+    intro && (
+      <p
+        class:list={[
+          'text-lead mt-4',
+          dark ? 'text-pink-50/85' : 'text-ink-600',
+        ]}
+      >
+        {intro}
+      </p>
+    )
+  }
+</div>
