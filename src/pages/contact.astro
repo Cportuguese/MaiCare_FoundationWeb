@@ -3,10 +3,10 @@
  * Contact page (Phase 6).
  *
  * Design direction
- *  1. Short header: heading, one line of intro. Butterfly faint in the corner.
+ *  1. Short header: heading, one line of intro. Heart-and-leaf line art faint in the corner.
  *     The pink underline is used once (the h1).
  *  2. Two columns on desktop: the form in a white card (the main job of the page)
- *     and, beside it, a dark olive card with the ways to reach us directly and
+ *     and, beside it, a dark green card with the ways to reach us directly and
  *     a plain "what happens next". On phones: form first, details after.
  *  3. A wide map below, lazy-loaded so it never slows the form down on mobile data.
  *
@@ -14,24 +14,21 @@
  * The form is src/components/ContactForm.astro.
  */
 import PageLayout from '../layouts/PageLayout.astro';
-import Butterfly from '../components/Butterfly.astro';
+import HeartLeaf from '../components/HeartLeaf.astro';
 import ContactForm from '../components/ContactForm.astro';
 import Icon from '../components/Icon.astro';
 import SectionHeading from '../components/SectionHeading.astro';
-import { contact, contactForm } from '../data/site';
+import Address from '../components/Address.astro';
+import Email from '../components/Email.astro';
+import { contact, addressOneLine, maps } from '../data/site';
 import { privacyLink } from '../data/nav';
 
 const { address, phone, emailInfo, emailDonate, facebookUrl, officeHours } = contact;
-const addressLine = [address.street, address.city, address.province, address.country].filter(Boolean).join(', ');
 const telHref = phone ? `tel:${phone.replace(/[^\d+]/g, '')}` : null;
-
-const mapQuery = encodeURIComponent(contactForm.mapQuery);
-const mapEmbed = `https://www.google.com/maps?q=${mapQuery}&output=embed`;
-const mapLink = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
 
 const next = [
   'We read your message and reply by email or phone.',
-  'We tell you exactly how to give, or when and where to drop off goods.',
+  'We tell you exactly how to donate or share, or when and where to drop off goods.',
   'We let you know we received your help.',
 ];
 
@@ -44,14 +41,14 @@ const link = 'text-cream-200 no-underline hover:text-white hover:underline decor
 >
   <!-- 1. Header -->
   <section class="relative overflow-hidden">
-    <Butterfly class="pointer-events-none absolute -right-12 top-2 size-52 rotate-12 text-pink-500 opacity-[0.12] md:right-8 md:size-72" />
+    <HeartLeaf class="pointer-events-none absolute -right-12 top-2 size-52 rotate-12 text-pink-500 opacity-[0.12] md:right-8 md:size-72" />
     <div class="container-page relative pb-8 pt-10 md:pb-10 md:pt-16">
       <SectionHeading
         level="h1"
         label="Contact us"
         title="We'd love to hear from you"
         underline="hear from you"
-        intro="Tell us how you would like to help, or ask us anything. You do not need to know exactly what to give. We will work it out together."
+        intro="Tell us how you would like to help, or ask us anything. You do not need to know exactly what to share. We will work it out together."
         class="fade-in"
       />
     </div>
@@ -62,12 +59,18 @@ const link = 'text-cream-200 no-underline hover:text-white hover:underline decor
     <div class="container-page grid items-start gap-8 lg:grid-cols-[1.45fr_1fr] lg:gap-10">
       <ContactForm />
 
-      <aside aria-label="Contact details" data-surface="dark" class="rounded-panel bg-olive-800 p-7 text-cream-200 md:p-9">
-        <h2 class="font-accent text-label font-medium italic text-pink-300">Reach us directly</h2>
+      <aside aria-label="Contact details" data-surface="dark" class="rounded-panel bg-green-800 p-7 text-cream-200 md:p-9">
+        <h2 class="text-label text-pink-300">Reach us directly</h2>
         <ul class="mt-4 flex flex-col gap-4 text-body">
           <li class="flex gap-3">
             <Icon name="map-pin" size={22} class="mt-1 shrink-0 text-pink-300" />
-            <span>{addressLine}</span>
+            <span>
+              <Address class={link} landmarkClass="mt-1 block text-small text-pink-50/85" />
+              <a href={maps.directionsUrl} target="_blank" rel="noopener noreferrer" class="mt-1 inline-flex min-h-11 items-center gap-1.5 font-semibold text-white underline decoration-pink-300 decoration-2 underline-offset-4">
+                Get directions
+                <Icon name="arrow-right" size={16} />
+              </a>
+            </span>
           </li>
           {
             phone && telHref && (
@@ -81,7 +84,7 @@ const link = 'text-cream-200 no-underline hover:text-white hover:underline decor
             emailInfo && (
               <li class="flex gap-3">
                 <Icon name="mail" size={22} class="mt-1 shrink-0 text-pink-300" />
-                <a href={`mailto:${emailInfo}`} class:list={[link, 'break-all']}>{emailInfo}</a>
+                <a href={`mailto:${emailInfo}`} class={link}><Email address={emailInfo} /></a>
               </li>
             )
           }
@@ -91,7 +94,7 @@ const link = 'text-cream-200 no-underline hover:text-white hover:underline decor
                 <Icon name="hand-heart" size={22} class="mt-1 shrink-0 text-pink-300" />
                 <span>
                   Donations:{' '}
-                  <a href={`mailto:${emailDonate}`} class:list={[link, 'break-all']}>{emailDonate}</a>
+                  <a href={`mailto:${emailDonate}`} class={link}><Email address={emailDonate} /></a>
                 </span>
               </li>
             )
@@ -121,13 +124,13 @@ const link = 'text-cream-200 no-underline hover:text-white hover:underline decor
           }
         </ul>
 
-        <div class="mt-8 border-t border-olive-700 pt-7">
-          <h3 class="font-accent text-label font-medium italic text-pink-300">What happens next</h3>
+        <div class="mt-8 border-t border-green-700 pt-7">
+          <h3 class="text-label text-pink-300">What happens next</h3>
           <ol class="mt-4 flex flex-col gap-3 text-body">
             {
               next.map((text, i) => (
                 <li class="grid grid-cols-[1.75rem_1fr] gap-3">
-                  <span class="font-accent text-lg font-medium italic text-pink-300" aria-hidden="true">{i + 1}.</span>
+                  <span class="text-lg font-bold text-pink-300" aria-hidden="true">{i + 1}.</span>
                   <span>{text}</span>
                 </li>
               ))
@@ -144,22 +147,25 @@ const link = 'text-cream-200 no-underline hover:text-white hover:underline decor
   <!-- 3. Map -->
   <section aria-labelledby="map-heading" class="pb-16 md:pb-24">
     <div class="container-page">
-      <div class="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
-        <h2 id="map-heading" class="text-h3 text-olive-800">Find us in {address.city}</h2>
+      <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-1">
+        <h2 id="map-heading" class="text-h3 text-green-800">Find our office</h2>
         <a
-          href={mapLink}
+          href={maps.directionsUrl}
           target="_blank"
           rel="noopener noreferrer"
           class="inline-flex min-h-11 items-center gap-2 font-semibold text-pink-600 no-underline hover:text-pink-700"
         >
-          Open in Google Maps
+          Get directions
           <Icon name="arrow-right" size={16} />
         </a>
       </div>
+      <p class="mt-1 max-w-2xl text-body text-ink-600">
+        {addressOneLine}.{address.landmark && ` ${address.landmark}.`}
+      </p>
       <div class="mt-4 overflow-hidden rounded-panel bg-white shadow-soft">
         <iframe
-          title={`Map of ${contactForm.mapQuery}`}
-          src={mapEmbed}
+          title={`Map of our office: ${addressOneLine}`}
+          src={maps.embedUrl}
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
           class="block h-72 w-full border-0 md:h-96"></iframe>

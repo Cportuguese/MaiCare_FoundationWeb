@@ -3,7 +3,8 @@
 // and the <body>. Pages normally use PageLayout.astro, which adds the banner,
 // header and footer on top of this. The hidden style guide uses this one directly.
 import '../styles/global.css';
-import { identity } from '../data/site';
+import { identity, contact, contactForm } from '../data/site';
+import logo from '../assets/images/shared/logo.svg';
 
 interface Props {
   /** Full browser-tab title. */
@@ -29,6 +30,36 @@ const {
 const siteUrl = identity.siteUrl ?? process.env.CF_PAGES_URL ?? null;
 const pageUrl = siteUrl ? new URL(Astro.url.pathname, siteUrl).href : null;
 const imageUrl = siteUrl ? new URL(image, siteUrl).href : null;
+
+// "Who we are" data for search engines (schema.org), on the Home page only.
+// Everything comes from src/data/site.ts; values that are null are left out.
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/index.html';
+const { address: a } = contact;
+const pin = contactForm.mapPin?.split(',').map((n) => Number(n.trim()));
+const orgData = isHome
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'NGO',
+      name: identity.name,
+      alternateName: 'maiCare Foundation',
+      description: identity.description,
+      foundingDate: '2026',
+      slogan: 'Kindness everywhere…',
+      ...(siteUrl && { url: siteUrl, logo: new URL(logo.src, siteUrl).href }),
+      ...(contact.emailInfo && { email: contact.emailInfo }),
+      ...(contact.phone && { telephone: contact.phone }),
+      ...(contact.facebookUrl && { sameAs: [contact.facebookUrl] }),
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: [a.unit, a.building, a.street, a.barangay].filter(Boolean).join(', '),
+        addressLocality: a.city,
+        addressRegion: a.province,
+        ...(a.postalCode && { postalCode: a.postalCode }),
+        addressCountry: 'PH',
+      },
+      ...(pin?.length === 2 && pin.every(Number.isFinite) && { geo: { '@type': 'GeoCoordinates', latitude: pin[0], longitude: pin[1] } }),
+    }
+  : null;
 ---
 
 <!doctype html>
@@ -39,7 +70,7 @@ const imageUrl = siteUrl ? new URL(image, siteUrl).href : null;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="theme-color" content="#fdf0f4" />
+    <meta name="theme-color" content="#fbfaf5" />
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta name="generator" content={Astro.generator} />
@@ -57,6 +88,7 @@ const imageUrl = siteUrl ? new URL(image, siteUrl).href : null;
     {imageUrl && <meta property="og:image:height" content="630" />}
     {imageUrl && <meta property="og:image:alt" content="maiCare Foundation, San Carlos City, Pangasinan" />}
     <meta name="twitter:card" content={imageUrl ? 'summary_large_image' : 'summary'} />
+    {orgData && <script type="application/ld+json" set:html={JSON.stringify(orgData)} />}
   </head>
   <body>
     <slot />

@@ -1,0 +1,37 @@
+---
+/**
+ * Wave: the soft pink-and-green wave from the brochure, as a divider.
+ *
+ * Use it sparingly: at most 2 or 3 places on the whole site. Today it is used
+ * twice: on top of the footer (every page) and under the Home hero.
+ *
+ * Put it directly above the section it leads into. Its bottom is filled with
+ * the colour of that section, set with a text colour class, e.g.
+ *   <Wave class="text-green-900" />  above the dark green footer
+ *   <Wave class="text-white" />      above a white section
+ * The two thin ribbons (blush pink and sage) stay the same everywhere.
+ * Purely decorative, so screen readers skip it.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<svg
+  viewBox="0 0 1440 80"
+  preserveAspectRatio="none"
+  class:list={['block h-10 w-full md:h-16', className]}
+  aria-hidden="true"
+  focusable="false"
+>
+  <path
+    fill="var(--color-pink-200)"
+    d="M0 40 C 240 12, 470 10, 720 30 S 1180 62, 1440 20 L1440 40 C 1190 76, 950 56, 720 46 S 250 30, 0 56 Z"
+  />
+  <path
+    fill="var(--color-green-200)"
+    d="M0 54 C 300 34, 540 42, 760 54 S 1200 72, 1440 38 L1440 54 C 1180 82, 940 68, 740 62 S 300 50, 0 66 Z"
+  />
+  <path fill="currentColor" d="M0 66 C 300 50, 560 58, 740 64 S 1180 86, 1440 52 L1440 81 L0 81 Z" />
+</svg>

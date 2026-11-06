@@ -2,36 +2,50 @@
 /**
  * Logo
  * ----
- * PLACEHOLDER wordmark. There is no logo file in the project yet, so this
- * imitates the look of the maiCare logo ("mai" in olive, "Care" in pink, a small
- * heart, and FOUNDATION underneath). When the real logo (SVG) arrives, replace
- * the contents of this file with it and the header and footer both update.
+ * The foundation's official logo (Phase 8): sage "ma", rose "iCare" with a
+ * heart over the "i", and FOUNDATION underneath.
  *
- * tone="light" is for light backgrounds (the header).
- * tone="dark"  is for the olive footer.
+ * The artwork lives in two SVG files in src/assets/images/shared/:
+ *   logo.svg          for light backgrounds (header)
+ *   logo-on-dark.svg  for the dark green footer
+ * They were redrawn from the logo image (no original file was supplied), with
+ * the lettering turned into shapes so no extra font is downloaded. If the
+ * foundation sends its original SVG, save it over these two files: the header,
+ * footer and every page update at once.
+ *
+ * full={true} adds "EST. 2026" and the "Kindness everywhere…" tagline under
+ * the logo. Use it only where there is room (the footer), never in the header.
  */
-import Icon from './Icon.astro';
+import logoLight from '../assets/images/shared/logo.svg';
+import logoDark from '../assets/images/shared/logo-on-dark.svg';
 
 interface Props {
   tone?: 'light' | 'dark';
+  /** Show EST. 2026 and the tagline. */
+  full?: boolean;
+  /** md = header, lg = footer and other roomy places. */
+  size?: 'md' | 'lg';
   class?: string;
 }
 
-const { tone = 'light', class: className } = Astro.props;
-
-const mai = tone === 'dark' ? 'text-pink-50' : 'text-olive-800';
-const care = tone === 'dark' ? 'text-pink-300' : 'text-pink-600';
-const foundation = tone === 'dark' ? 'text-cream-200' : 'text-olive-800';
+const { tone = 'light', full = false, size = 'md', class: className } = Astro.props;
+const src = tone === 'dark' ? logoDark : logoLight;
+const dark = tone === 'dark';
 ---
 
-<span class:list={['inline-flex flex-col leading-none', className]}>
-  <span class="relative text-[1.75rem] font-extrabold tracking-tight">
-    <span class={mai}>mai</span><span class={care}>Care</span>
-    <Icon
-      name="heart"
-      size={11}
-      class:list={['absolute -top-1 left-[2.2rem] fill-current', tone === 'dark' ? 'text-pink-300' : 'text-pink-500']}
-    />
-  </span>
-  <span class:list={['mt-1 text-[0.625rem] font-extrabold tracking-[0.2em]', foundation]}>FOUNDATION</span>
+<span class:list={['inline-flex flex-col items-center leading-none', className]}>
+  <!-- The link around the logo carries the accessible name, so the image is decorative here. -->
+  <img src={src.src} width={src.width} height={src.height} alt="" class:list={['w-auto', size === 'lg' ? 'h-16' : 'h-11 sm:h-12']} />
+  {
+    full && (
+      <>
+        <span class:list={['mt-3 flex w-full items-center gap-3 text-[0.75rem] font-semibold tracking-[0.2em]', dark ? 'text-green-100' : 'text-green-500']}>
+          <span class="h-px flex-1 bg-current opacity-60" aria-hidden="true" />
+          EST. 2026
+          <span class="h-px flex-1 bg-current opacity-60" aria-hidden="true" />
+        </span>
+        <span class:list={['mt-2 font-script text-[1.5rem] leading-tight', dark ? 'text-cream-200' : 'text-green-800']}>Kindness everywhere…</span>
+      </>
+    )
+  }
 </span>

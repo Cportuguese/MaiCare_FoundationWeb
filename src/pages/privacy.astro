@@ -13,18 +13,15 @@
  * lawyer or its data protection contact check it) before launch.
  */
 import PageLayout from '../layouts/PageLayout.astro';
-import Butterfly from '../components/Butterfly.astro';
+import HeartLeaf from '../components/HeartLeaf.astro';
 import SectionHeading from '../components/SectionHeading.astro';
-import { contact, identity } from '../data/site';
+import { contact, identity, addressOneLine } from '../data/site';
 import { contactHref } from '../data/nav';
 
 // Update this date whenever the text changes.
 const updated = 'November 6, 2026';
 
 const { emailInfo, secRegistrationNumber } = contact;
-const addressLine = [contact.address.street, contact.address.city, contact.address.province, contact.address.country]
-  .filter(Boolean)
-  .join(', ');
 
 const rights = [
   ['Be informed', 'to know what we do with your information, which is what this notice is for.'],
@@ -37,7 +34,7 @@ const rights = [
 ];
 
 const link = 'font-semibold text-pink-600 underline hover:text-pink-700';
-const h2 = 'text-h3 text-olive-800';
+const h2 = 'text-h3 text-green-800';
 const p = 'mt-3 text-body text-ink-600';
 ---
 
@@ -46,7 +43,7 @@ const p = 'mt-3 text-body text-ink-600';
   description="How maiCare Foundation collects, uses and protects the personal information you share with us, and your rights under the Data Privacy Act of 2012."
 >
   <section class="relative overflow-hidden">
-    <Butterfly class="pointer-events-none absolute -right-12 top-2 size-52 rotate-12 text-pink-500 opacity-[0.12] md:right-8 md:size-72" />
+    <HeartLeaf class="pointer-events-none absolute -right-12 top-2 size-52 rotate-12 text-pink-500 opacity-[0.12] md:right-8 md:size-72" />
     <div class="container-page relative pb-8 pt-10 md:pb-10 md:pt-16">
       <SectionHeading
         level="h1"
@@ -63,8 +60,8 @@ const p = 'mt-3 text-body text-ink-600';
     <div class="max-w-3xl">
       <!-- In short -->
       <div class="rounded-panel bg-pink-100 p-6 md:p-8">
-        <h2 class="font-accent text-label font-medium italic text-pink-600">In short</h2>
-        <ul class="mt-3 list-disc space-y-2 pl-5 text-body text-olive-800 marker:text-pink-600">
+        <h2 class="text-label text-pink-600">In short</h2>
+        <ul class="mt-3 list-disc space-y-2 pl-5 text-body text-green-800 marker:text-pink-600">
           <li>We only collect what you type into our contact form.</li>
           <li>We use it to reply to you, and to carry out what you asked about.</li>
           <li>We do not sell your information.</li>
@@ -76,7 +73,7 @@ const p = 'mt-3 text-body text-ink-600';
         <section aria-labelledby="who">
           <h2 id="who" class={h2}>Who we are</h2>
           <p class={p}>
-            {identity.name} is a non-stock, non-profit foundation in {addressLine}.
+            {identity.name} is a non-stock, non-profit foundation in San Carlos City, Pangasinan. Our office is at {addressOneLine}.
             {secRegistrationNumber && <> Our SEC registration number is {secRegistrationNumber}.</>}
             We decide why and how the information in this notice is used, so under the law we are the &ldquo;personal information controller.&rdquo;
           </p>
@@ -88,7 +85,7 @@ const p = 'mt-3 text-body text-ink-600';
           <ul class="mt-3 list-disc space-y-1 pl-5 text-body text-ink-600 marker:text-pink-600">
             <li>your name</li>
             <li>your email address or mobile number (or both)</li>
-            <li>what you would like to do (for example &ldquo;Donate food&rdquo; or &ldquo;Volunteer&rdquo;)</li>
+            <li>what you would like to do (for example &ldquo;Share food&rdquo; or &ldquo;Volunteer&rdquo;)</li>
             <li>the message you write</li>
             <li>a record that you ticked the consent box</li>
           </ul>
@@ -103,7 +100,7 @@ const p = 'mt-3 text-body text-ink-600';
         <section aria-labelledby="why">
           <h2 id="why" class={h2}>Why we use it</h2>
           <p class={p}>
-            Only to reply to you and to do what you asked: for example, to tell you how to give, to arrange where to drop off goods, to set up a volunteer day, or to talk about a partnership.
+            Only to reply to you and to do what you asked: for example, to tell you how to donate or share, to arrange where to drop off goods, to set up a volunteer day, or to talk about a partnership.
             We use your information because you agreed to it when you ticked the box and sent the form. You can take that back at any time.
           </p>
         </section>
@@ -140,7 +137,7 @@ const p = 'mt-3 text-body text-ink-600';
             {
               rights.map(([name, text]) => (
                 <div class="grid gap-1 py-4 sm:grid-cols-[11rem_1fr] sm:gap-6">
-                  <dt class="font-semibold text-olive-800">{name}</dt>
+                  <dt class="font-semibold text-green-800">{name}</dt>
                   <dd class="text-body text-ink-600">{text}</dd>
                 </div>
               ))

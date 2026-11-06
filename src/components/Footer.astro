@@ -2,33 +2,37 @@
 /**
  * Footer
  * ------
- * Deep olive. Everything about contact details comes from src/data/site.ts.
+ * Deep green. Everything about contact details comes from src/data/site.ts.
  * A value that is `null` there is simply not shown (no blanks, no invented values).
  */
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import Button from './Button.astro';
-import { contact, identity } from '../data/site';
+import Wave from './Wave.astro';
+import Address from './Address.astro';
+import Email from './Email.astro';
+import { contact, identity, maps } from '../data/site';
 import { navLinks, privacyLink } from '../data/nav';
 
-const { address, phone, emailInfo, emailDonate, facebookUrl, secRegistrationNumber, officeHours } = contact;
+const { phone, emailInfo, emailDonate, facebookUrl, secRegistrationNumber, officeHours } = contact;
 
-const addressLine = [address.street, address.city, address.province, address.country].filter(Boolean).join(', ');
 const telHref = phone ? `tel:${phone.replace(/[^\d+]/g, '')}` : null;
 const year = new Date().getFullYear();
 
 const link =
   'inline-flex min-h-11 items-center text-cream-200 no-underline hover:text-white hover:underline decoration-pink-300 decoration-2';
-const heading = 'font-accent text-label italic font-medium text-pink-300';
+const heading = 'text-label text-pink-300';
 ---
 
-<footer data-surface="dark" class="relative overflow-hidden bg-olive-900 text-cream-200">
+<!-- The pink-and-green wave from the brochure leads into the footer (one of its two uses on the site). -->
+<Wave class="-mb-px text-green-900" />
+<footer data-surface="dark" class="relative overflow-hidden bg-green-900 text-cream-200">
   <div class="container-page relative section !pb-10">
     <div class="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.3fr]">
       <!-- Who we are -->
       <div class="max-w-sm">
         <a href="/" class="inline-flex min-h-12 items-center rounded-xl no-underline" aria-label={`${identity.shortName} Foundation, home`}>
-          <Logo tone="dark" />
+          <Logo tone="dark" full size="lg" />
         </a>
         <p class="mt-5 text-small text-pink-50/90">{identity.description}</p>
         {secRegistrationNumber && (
@@ -63,13 +67,22 @@ const heading = 'font-accent text-label italic font-medium text-pink-300';
         <ul class="mt-3 flex flex-col gap-3 text-small">
           <li class="flex gap-3">
             <Icon name="map-pin" size={20} class="mt-0.5 shrink-0 text-pink-300" />
-            <span>{addressLine}</span>
+            <span>
+              <Address
+                class="text-cream-200 no-underline hover:text-white hover:underline decoration-pink-300 decoration-2"
+                landmarkClass="mt-1 block text-pink-50/80"
+              />
+              <a href={maps.directionsUrl} target="_blank" rel="noopener noreferrer" class="mt-1 inline-flex min-h-11 items-center gap-1.5 font-semibold text-white underline decoration-pink-300 decoration-2 underline-offset-4">
+                Get directions
+                <Icon name="arrow-right" size={16} />
+              </a>
+            </span>
           </li>
           {
             phone && telHref && (
               <li class="flex gap-3">
                 <Icon name="phone" size={20} class="mt-0.5 shrink-0 text-pink-300" />
-                <a href={telHref} class="text-cream-200 hover:text-white">
+                <a href={telHref} class="-my-3 inline-block py-3 text-cream-200 hover:text-white">
                   {phone}
                 </a>
               </li>
@@ -79,8 +92,8 @@ const heading = 'font-accent text-label italic font-medium text-pink-300';
             emailInfo && (
               <li class="flex gap-3">
                 <Icon name="mail" size={20} class="mt-0.5 shrink-0 text-pink-300" />
-                <a href={`mailto:${emailInfo}`} class="break-all text-cream-200 hover:text-white">
-                  {emailInfo}
+                <a href={`mailto:${emailInfo}`} class="-my-3 inline-block py-3 text-cream-200 hover:text-white">
+                  <Email address={emailInfo} />
                 </a>
               </li>
             )
@@ -91,8 +104,8 @@ const heading = 'font-accent text-label italic font-medium text-pink-300';
                 <Icon name="hand-heart" size={20} class="mt-0.5 shrink-0 text-pink-300" />
                 <span>
                   Donations:{' '}
-                  <a href={`mailto:${emailDonate}`} class="break-all text-cream-200 hover:text-white">
-                    {emailDonate}
+                  <a href={`mailto:${emailDonate}`} class="-my-3 inline-block py-3 text-cream-200 hover:text-white">
+                    <Email address={emailDonate} />
                   </a>
                 </span>
               </li>
@@ -125,7 +138,7 @@ const heading = 'font-accent text-label italic font-medium text-pink-300';
       </div>
     </div>
 
-    <div class="mt-12 flex flex-col gap-2 border-t border-olive-700 pt-6 text-small text-olive-200 sm:flex-row sm:items-center sm:justify-between">
+    <div class="mt-12 flex flex-col gap-2 border-t border-green-700 pt-6 text-small text-green-200 sm:flex-row sm:items-center sm:justify-between">
       <p>&copy; {year} {identity.name}</p>
       <a href={privacyLink.href} class="inline-flex min-h-11 items-center text-cream-200 hover:text-white">{privacyLink.label}</a>
     </div>

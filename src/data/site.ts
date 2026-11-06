@@ -18,12 +18,23 @@
 // 1. Contact details
 // ---------------------------------------------------------------------------
 export const contact = {
-  /** Public address. Confirm the full street address with the foundation. */
+  /**
+   * Office address (confirmed by the foundation, Phase 8). Pages never type it
+   * in: they use `addressLines` / `addressOneLine` below. Any part set to
+   * `null` is left out.
+   */
   address: {
-    street: null as string | null, // TODO: street / barangay
-    city: 'San Carlos City',
+    unit: 'Unit 10, 2nd Floor' as string | null,
+    building: 'Caranto Building' as string | null,
+    street: 'Mabini Street' as string | null,
+    barangay: 'Brgy. Mabini (Pob.)' as string | null,
+    /** Written exactly as in the official address. Ordinary sentences can say "San Carlos City". */
+    city: 'City of San Carlos',
     province: 'Pangasinan',
+    postalCode: '2420' as string | null,
     country: 'Philippines',
+    /** A nearby landmark people know, e.g. "across from the city plaza". Shown as a hint under the address. */
+    landmark: null as string | null, // TODO: ask the foundation
   },
   /** Mobile or landline, as people should dial it, e.g. "+63 9XX XXX XXXX". */
   phone: null as string | null, // TODO: confirm with foundation
@@ -52,14 +63,48 @@ export const contact = {
 // you can try it.)
 export const contactForm = {
   web3formsAccessKey: 'aaa1e01c-4089-43aa-b981-f881e8d777f3' as string | null, // public by design; messages go to maicarefoundation@gmail.com
-  /** Where the map on the Contact page points. Use the full street address once known. */
-  mapQuery: 'San Carlos City, Pangasinan, Philippines',
+  /**
+   * Exact map pin, as "latitude,longitude" (e.g. "15.9286,120.3487").
+   * Leave `null` and the map and "Get directions" links search for the
+   * address instead. If the pin does not land on Caranto Building on Mabini
+   * Street, open Google Maps, long-press the building, copy the two numbers
+   * shown, and paste them here.
+   */
+  mapPin: null as string | null, // TODO: check the pin on a phone (Phase 8)
+};
+
+// ---------------------------------------------------------------------------
+// 1d. Address helpers (read by the footer, Contact, About and Privacy)
+// ---------------------------------------------------------------------------
+const a = contact.address;
+const join = (parts: (string | null)[], sep = ', ') => parts.filter(Boolean).join(sep);
+
+/** The address in 3 tidy lines, for phones: unit + building / street + barangay / city + postal code. */
+export const addressLines: string[] = [
+  join([a.unit, a.building]),
+  join([a.street, a.barangay]),
+  join([a.city, join([a.province, a.postalCode], ' ')]),
+].filter(Boolean);
+
+/** The full address on one line (structured data, map search, sentences). */
+export const addressOneLine = join([...addressLines, a.country]);
+
+/** What Google Maps looks for: the exact pin if set, otherwise the address. */
+const mapTarget = encodeURIComponent(contactForm.mapPin ?? addressOneLine);
+
+export const maps = {
+  /** Opens the place in Google Maps (the app on phones). */
+  openUrl: `https://www.google.com/maps/search/?api=1&query=${mapTarget}`,
+  /** Opens Google Maps directions to the office from where the person is. */
+  directionsUrl: `https://www.google.com/maps/dir/?api=1&destination=${mapTarget}`,
+  /** The free embedded map on the Contact page (no API key). */
+  embedUrl: `https://www.google.com/maps?q=${mapTarget}&z=17&output=embed`,
 };
 
 // ---------------------------------------------------------------------------
 // 1c. Giving goods (Get Involved page)
 // ---------------------------------------------------------------------------
-// What donors can bring, and where. Empty / null = hidden (nothing is invented).
+// What supporters can bring, and where. Empty / null = hidden (nothing is invented).
 // Confirm each line with the foundation before launch.
 export const inKind = {
   /** Things we can accept, e.g. "Rice and canned goods". */
@@ -130,7 +175,7 @@ export type Goal = {
 export const goals: Goal[] = [
   { id: 'students', label: 'students supported', year: null, target: null, current: null, confirmed: false },
   { id: 'storm-relief', label: 'families reached by storm relief', year: null, target: null, current: null, confirmed: false },
-  { id: 'marginalized', label: 'orphans and elderly supported', year: null, target: null, current: null, confirmed: false },
+  { id: 'marginalized', label: 'children without parents and elders supported', year: null, target: null, current: null, confirmed: false },
 ];
 
 // ---------------------------------------------------------------------------

@@ -4,7 +4,7 @@
  * ----
  * tone="tint"   blush-tinted card, no shadow (calm, for text-heavy cards).
  * tone="white"  white card with a soft shadow (stands out on blush).
- * tone="dark"   olive card, for use inside a dark section.
+ * tone="dark"   green card, for use inside a dark section.
  *
  * Give it `href` to make the whole card a link (it lifts slightly on hover).
  * Give it `icon` for a round icon badge. Put the body text in the slot.
@@ -29,12 +29,12 @@ const { title, icon, tone = 'tint', href, cta, class: className } = Astro.props;
 const tones = {
   tint: 'bg-pink-100 text-ink-600',
   white: 'bg-white text-ink-600 shadow-[var(--shadow-soft)]',
-  dark: 'bg-olive-700 text-pink-50/90',
+  dark: 'bg-green-700 text-pink-50/90',
 };
 const badge = {
   tint: 'bg-white text-pink-600',
   white: 'bg-pink-100 text-pink-600',
-  dark: 'bg-olive-800 text-pink-300',
+  dark: 'bg-green-800 text-pink-300',
 };
 const Tag = href ? 'a' : 'div';
 ---

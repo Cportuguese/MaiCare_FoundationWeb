@@ -59,10 +59,10 @@ const errorId = error ? `${id}-error` : undefined;
 const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
 
 const control =
-  'block w-full rounded-[var(--radius-field)] border-[1.5px] bg-white px-4 text-base text-olive-900 ' +
+  'block w-full rounded-[var(--radius-field)] border-[1.5px] bg-white px-4 text-base text-green-900 ' +
   'placeholder:text-ink-500 transition-[border-color,box-shadow] duration-150 ' +
-  'focus:border-olive-800 ' + // the clear olive focus ring comes from global.css
-  'disabled:bg-olive-50 disabled:text-ink-500 disabled:cursor-not-allowed ' +
+  'focus:border-green-800 ' + // the clear green focus ring comes from global.css
+  'disabled:bg-green-50 disabled:text-ink-500 disabled:cursor-not-allowed ' +
   (error ? 'border-error' : 'border-ink-300');
 
 const common = {
@@ -76,7 +76,7 @@ const common = {
 ---
 
 <div class:list={['flex flex-col gap-2', className]}>
-  <label for={id} class="font-semibold text-olive-800 text-[0.9375rem]">
+  <label for={id} class="font-semibold text-green-800 text-[0.9375rem]">
     {label}
     {
       required ? (
@@ -111,7 +111,7 @@ const common = {
         <Icon
           name="chevron-down"
           size={20}
-          class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-olive-800"
+          class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-green-800"
         />
       </div>
     ) : (

@@ -363,8 +363,28 @@ The plum emergency banner can stay or move to a deeper rose. Decide with the con
    - Rebuild the Programs page around the brochure's **four focus areas: Food Support, Healthcare Support, Education Support and Other Assistance**, and say who each one helps. The brochure puts children and families first.
    - **Ask the foundation** whether storm relief, the elderly and the five formal program areas still belong on the site, and whether "Our Promise" (it isn't in the brochure) stays.
    - Fix obvious typos only with your okay. For example, the Mission sentence ends "…bringing dignity, joy, hope into their lives and spread kindness everywhere."
-7. **Re-approve the style guide** with the new logo, colors and fonts. Then write the new locked values into the Brand section of `CLAUDE.md`.
-8. **Polish and quality pass:**
+7. **Address, map and location details.** The office address is now confirmed:
+   > **Unit 10, 2nd Floor, Caranto Building, Mabini Street, Brgy. Mabini (Pob.), City of San Carlos, Pangasinan 2420**
+   - **Settings file:** put it in `site.ts`, split into parts: unit and floor, building, street, barangay, city, province and postal code (add a postal-code field for `2420`). Pages always read it from there and never have it typed in directly.
+   - **Where it shows:**
+     - the footer
+     - the Contact page
+     - the Privacy Notice ("Who we are")
+     - About (legal and transparency facts)
+     - Giving goods on Get Involved, but only if the office is also the drop-off point (**ask first**)
+   - **Layout and naming:**
+     - On phones, break the address into 2–3 tidy lines so it doesn't wrap awkwardly.
+     - Use "City of San Carlos" exactly as written in the address. Ordinary sentences can keep "San Carlos City".
+   - **Map:** point the Contact page map at the building, and **check that the pin lands on Caranto Building on Mabini Street**. If Google Maps can't find the building by name, use the exact pin (map coordinates) instead. Add a **"Get directions"** link that opens Google Maps on phones. Also make the address itself tappable wherever it appears (footer, Contact, About), so it opens in Google Maps. The map already exists on the Contact page (built in Phase 6, free, no API key); today it only points at the city through `contactForm.mapQuery` in `site.ts`.
+   - **Help people find it:**
+     - Ask the foundation for a nearby landmark to add as a short hint (local addresses are often found by landmark).
+     - Ask whether there's an elevator or a ground-floor drop-off for people carrying heavy goods to the 2nd floor.
+   - **Show up in Google:**
+     - Add the address to the site's hidden "who we are" data for search engines (structured data), so the foundation appears correctly in Google search results.
+     - Recommended: the foundation creates a free **Google Business Profile** for the office, so the map shows "maiCare Foundation" by name. This step is theirs, since it needs their Google account and verification.
+   - **Ask at the same time** for the details still missing: phone number, office hours, Facebook page link and SEC number.
+8. **Re-approve the style guide** with the new logo, colors and fonts. Then write the new locked values into the Brand section of `CLAUDE.md`.
+9. **Polish and quality pass:**
    - Run every check in section 11.
    - Proofread all text.
    - Fix spacing and alignment differences between pages.
@@ -375,6 +395,7 @@ The plum emergency banner can stay or move to a deeper rose. Decide with the con
 - [ ] The new logo is in the header, footer, favicon and link preview, and no placeholder logo or butterfly is left
 - [ ] The new colors and fonts are in place, every pairing passes on the style guide, and you've approved them (now locked)
 - [ ] The brochure wording is on the site, and you've confirmed every change in meaning (programs, Our Promise, typo fixes)
+- [ ] The full office address shows correctly everywhere it belongs (read from `site.ts`), the map pin lands on Caranto Building, and "Get directions" opens Google Maps on a phone
 - [ ] Every section 11 check passes
 - [ ] No known bugs or rough spots remain
 
@@ -402,7 +423,7 @@ The plum emergency banner can stay or move to a deeper rose. Decide with the con
 
 ## 10. Information to gather before building
 - Logo files (high-res PNG or SVG) and exact brand colors, if they exist. **For Phase 8:** the original file of the new logo (SVG, or PNG with a see-through background) and the brochure's text file (Word, PDF or Canva)
-- SEC registration number, office address, phone, Facebook page link
+- SEC registration number, phone, Facebook page link, office hours (the office address is received: see Phase 8, step 7)
 - Which email should receive donation and contact inquiries
 - Officers/trustees: names and photos (optional at launch)
 - Accepted in-kind items, drop-off place and hours

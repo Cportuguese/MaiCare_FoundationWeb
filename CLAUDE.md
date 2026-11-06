@@ -31,38 +31,42 @@ The user owns this repository and its history. The AI is a coding assistant, **n
 - Icons: **Lucide only**, one stroke width everywhere.
 - Commands: `npm run dev` (local site, http://localhost:4321), `npm run build` (output in `dist/`), `npm run preview`.
 
-## Brand (LOCKED in Phase 2; to be refreshed in Phase 8)
-**Phase 8 replaces this brand** with the foundation's official logo and brochure (`Images for references/logo.jpg`, `text.jpg`). The steps and the starting colors are in the Phase 8 section of `WEBSITE-PLAN.md`. Until Phase 8, keep using the values below, and never hard-code colors or fonts outside `global.css`, so the refresh changes everything in one place. After Phase 8, update this section with the new locked values.
+## Brand (refreshed in Phase 8 from the official logo and brochure; awaiting the user's approval to lock)
+Built in Phase 8 from `Images for references/logo.jpg` and `text.jpg` (the brand, not the print layout). **Status: built and contrast-checked; the user still has to approve it on `/style-guide/`.** Once approved, change this heading to "LOCKED in Phase 8". Never hard-code colors or fonts outside `global.css`.
 
-Family: **pink + olive + blush**. The full scales live in `src/styles/global.css` (the single source of truth; Tailwind's default colors are switched off). Every text pairing passes WCAG AA, shown live on the hidden `/style-guide/` page. Before adding or changing any color, edit `global.css`, then confirm the style guide still says "All pairings pass".
+Family: **rose pink + forest/sage green + blush, on warm cream**. The full scales live in `src/styles/global.css` (the single source of truth; Tailwind's default colors are switched off). Every text pairing passes WCAG AA, shown live on the hidden `/style-guide/` page (39 pairings). Before adding or changing any color, edit `global.css`, then confirm the style guide still says "All pairings pass".
 
 | Role | Color | Token | Use |
 |---|---|---|---|
-| Action pink | #C9185F | `pink-600` (hover `pink-700` #A8114E) | buttons, links, pink text |
-| Logo pink | #E0206F | `pink-500` | decoration only (hearts, butterfly, underline); never small text |
-| Pink on dark | #F7A8C4 | `pink-300` | pink text/labels on olive |
-| Deep olive | #3C4235 (footer #2F3429) | `olive-800` / `olive-900` | headlines, dark sections, footer |
+| Action pink | #B82E60 | `pink-600` (hover `pink-700` #99224F) | buttons, links, pink text |
+| Logo rose | #E0507B | `pink-500` | decoration only (hearts, heart-and-leaf line art, underline); never text |
+| Pink on dark | #F5AAC1 | `pink-300` | pink text/labels on green-800/900 (icons only on green-700) |
+| Forest green | #1C543E (footer #153F2F, dark card #25624A) | `green-800` / `green-900` / `green-700` | headlines, dark sections, footer |
+| Logo sage | #5F6A5A | `green-500` | the logo's "ma" and FOUNDATION; quiet accents |
+| Sage tint | #E7EFE2 | `green-100` | second panel tint |
+| Blush | #FDF1F4 / #FCE5EB | `pink-50` / `pink-100` | soft panels / pink cards |
+| Cream | #FBFAF5 (page) / #F4EEDF (button on dark) | `cream-50` / `cream-200` | page background / button on dark |
 | Plum | #7A2A48 | `plum-700` | announcement / emergency banner |
-| Blush | #FDF0F4 / #FBE4EC | `pink-50` / `pink-100` | page background / tinted cards |
-| Cream | #F6EADB | `cream-200` | button on dark |
-| Warm gray | #5F5A5C (quiet #6F676A) | `ink-600` / `ink-500` | body text / hints |
+| Green-gray | #4B605B (quiet #596B64) | `ink-600` / `ink-500` | body text / hints |
 
-Never use pink-600 or pink-500 for text on olive (1.9:1 and 2.3:1). On dark sections use the cream button and `pink-300` text.
+Never use pink-600 or pink-500 for text on dark green. On dark sections use the cream button and `pink-300` text.
 
-Fonts (self-hosted via Fontsource, installed in Phase 2): **Plus Jakarta Sans** (headlines ExtraBold, body Regular) and **Fraunces Italic** for accents only. Style: lots of white space, 16-24px rounded corners, soft shadows, the logo's butterfly line art as a subtle decoration, one primary pink button per section.
+Fonts (self-hosted via Fontsource): **Plus Jakarta Sans** (headlines ExtraBold, body Regular, section labels Bold) and **Dancing Script** SemiBold (`font-script`, `text-script`) for short accent phrases only: taglines, one pull quote per page, big decorative numerals, always 20px or larger. Never script for body text, buttons, menus, form labels, section labels or long headings.
+
+Logo: `src/components/Logo.astro` reads `src/assets/images/shared/logo.svg` and `logo-on-dark.svg` (redrawn from `logo.jpg`; replace those two files if the foundation sends its original). Signature details: `HeartLeaf.astro` (heart with two leaves, faint, at section edges), `Underline.astro` (once per page), `Wave.astro` (pink-and-green wave, only above the footer and under the Home hero; max 2–3 places). Style: lots of white space, 16-24px rounded corners, soft shadows, one primary pink button per section.
 
 ## House rules: avoid "AI slop" (plan section 5.2)
 - **Banned:** purple/blue gradients, gradient text, glassmorphism, emoji as icons, Inter or Roboto for everything, a dark overlay with centered text on every hero, animation on everything, fake testimonials or stats, filler copy like "Empowering communities to thrive."
 - **Be specific, not generic:** real place names (San Carlos City, Pangasinan), real program details, Filipino-context photos, real names/quotes only once they exist.
 - **Vary layouts:** mix split image+text, full-width photo, goals strip, timeline, pull quote. Do not repeat "heading + 3 cards" down a page.
-- **One signature detail, used consistently:** butterfly line art, Fraunces italic accents, a hand-drawn pink underline or heart. Everything else restrained.
+- **One signature detail, used consistently:** heart-and-leaf line art, script taglines, the pink-and-green wave, a hand-drawn pink underline. Everything else restrained.
 - **Gentle motion only:** soft fade-ins, slight lift on hover. Respect `prefers-reduced-motion`.
 - **Copy:** plain, warm, specific, active voice, sentence case. A button says exactly what happens.
 
 ## Design skills (in `.claude/skills/`)
 - **frontend-design** (Anthropic, official): commit to a design direction before writing UI code. Write a short design plan for each page/section first.
 - **ui-ux-pro-max** (nextlevelbuilder): searchable UI/UX data and a review checklist (contrast, touch targets, spacing, hierarchy, mobile). Needs **Python 3** to run `python .claude/skills/ui-ux-pro-max/scripts/search.py "<query>" --domain ux` (try `python3` or `py -3` if `python` isn't found). Treat its output as suggestions: the brand direction above and these rules win.
-- Keep the pink/olive/blush family and the two-font idea; tune shades, don't swap in an unrelated palette.
+- Keep the rose/green/blush/cream family and the two-font idea; tune shades, don't swap in an unrelated palette.
 
 ## Review loop for every page (plan section 5.3)
 1. Before coding: short design direction for the page (layout of each section, where signature details go).

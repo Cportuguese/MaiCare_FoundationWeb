@@ -1,17 +1,22 @@
 /*
-  maiCare Foundation: design system (Phase 2)
-  -------------------------------------------
+  maiCare Foundation: design system (Phase 2, refreshed in Phase 8)
+  -----------------------------------------------------------------
   Every colour, font, size, radius and shadow on the site comes from this file.
   Change a value here and the whole site follows.
 
-  Pink + olive + blush is the maiCare family. Shades were tuned in Phase 2 so
-  all text passes WCAG AA (4.5:1). The ratios are shown live on /style-guide/.
+  Phase 8 brand: the foundation's official logo and brochure. Rose pink +
+  forest / sage green + blush, on warm cream paper. Shades were tuned so all
+  text passes WCAG AA (4.5:1). The ratios are shown live on /style-guide/.
 
   Rules of thumb
   - pink-600 is the ACTION pink: buttons, links, pink text.
-  - pink-500 is the LOGO pink: hearts, butterfly, underline. Decoration only,
-    never for small text (it is 4.1:1 on blush, below the 4.5:1 text minimum).
-  - On dark olive, never put pink-600 (1.9:1). Use cream buttons and pink-300 text.
+  - pink-500 is the LOGO rose: hearts, leaves, wave, underline. Decoration only,
+    never for text (about 3.4:1 on blush, below the 4.5:1 text minimum).
+  - green-800 (forest) is for headlines and dark sections; green-900 the footer.
+  - On dark green, never put pink-600 (too dark). Use cream buttons and pink-300 text.
+  - The script font (Dancing Script) is for short accent phrases only, at 20px
+    or more: taglines, one pull quote, big decorative numbers. Never body text,
+    buttons, menus, form labels, section labels or long headings.
 */
 
 @import "tailwindcss";
@@ -23,8 +28,7 @@
 @import "@fontsource/plus-jakarta-sans/latin-600.css";
 @import "@fontsource/plus-jakarta-sans/latin-700.css";
 @import "@fontsource/plus-jakarta-sans/latin-800.css";
-@import "@fontsource/fraunces/latin-400-italic.css";
-@import "@fontsource/fraunces/latin-500-italic.css";
+@import "@fontsource/dancing-script/latin-600.css";
 
 /* "static" = output every token below, even ones no page uses yet, so the
    style guide (and any future inline style) can always read them. */
@@ -37,39 +41,38 @@
   --color-white: #ffffff;
   --color-black: #000000;
 
-  /* Pink */
-  --color-pink-50: #fdf0f4; /* blush: page background */
-  --color-pink-100: #fbe4ec; /* blush tint: cards */
-  --color-pink-200: #f7cddb; /* borders on blush, soft fills */
-  --color-pink-300: #f7a8c4; /* pink text/icons on dark olive (5.6:1) */
-  --color-pink-400: #ec5c94;
-  --color-pink-500: #e0206f; /* logo pink: decoration only */
-  --color-pink-600: #c9185f; /* ACTION pink: buttons, links (white on it 5.6:1) */
-  --color-pink-700: #a8114e; /* hover / pressed (white on it 7.4:1) */
-  --color-pink-800: #860e3f;
+  /* Pink (rose) */
+  --color-pink-50: #fdf1f4; /* blush: soft panels */
+  --color-pink-100: #fce5eb; /* blush tint: cards (brochure pink panels) */
+  --color-pink-200: #f6cbd8; /* borders on blush, soft fills */
+  --color-pink-300: #f5aac1; /* pink text/icons on dark green (4.8:1 on green-800) */
+  --color-pink-500: #e0507b; /* LOGO rose: decoration only */
+  --color-pink-600: #b82e60; /* ACTION pink: buttons, links (white on it 5.8:1) */
+  --color-pink-700: #99224f; /* hover / pressed (white on it 7.8:1) */
 
-  /* Olive */
-  --color-olive-50: #f3f4ef;
-  --color-olive-100: #e4e7dc;
-  --color-olive-200: #c9cdba;
-  --color-olive-500: #6b7360;
-  --color-olive-700: #4e5545;
-  --color-olive-800: #3c4235; /* brand olive: headlines, dark sections */
-  --color-olive-900: #2f3429; /* deepest: footer */
+  /* Green: forest for headlines and dark sections, sage for the logo and tints */
+  --color-green-50: #f3f7ef;
+  --color-green-100: #e7efe2; /* sage tint: panels (brochure green panels) */
+  --color-green-200: #cfdcc7;
+  --color-green-500: #5f6a5a; /* logo sage ("ma" and FOUNDATION) */
+  --color-green-700: #25624a;
+  --color-green-800: #1c543e; /* forest: headlines, dark sections */
+  --color-green-900: #153f2f; /* deepest: footer */
 
   /* Plum: announcement / emergency banner */
   --color-plum-700: #7a2a48;
   --color-plum-800: #5e1f37;
 
-  /* Cream: secondary button on dark */
-  --color-cream-100: #fbf5ec;
-  --color-cream-200: #f6eadb;
-  --color-cream-300: #ebdac3;
+  /* Cream: page paper and the button on dark */
+  --color-cream-50: #fbfaf5; /* page background (brochure paper) */
+  --color-cream-100: #f6f6ef;
+  --color-cream-200: #f4eedf; /* button on dark */
+  --color-cream-300: #e8dfc8;
 
-  /* Warm gray: text and lines */
-  --color-ink-600: #5f5a5c; /* body text (6.1:1 on blush) */
-  --color-ink-500: #6f676a; /* quieter text: captions, hints (5.5:1 on white) */
-  --color-ink-300: #8a8184; /* form field borders only (3.4:1+, the UI minimum is 3:1) */
+  /* Green-gray: text and lines (brochure body text) */
+  --color-ink-600: #4b605b; /* body text (6.4:1 on cream) */
+  --color-ink-500: #596b64; /* quieter text: captions, hints (5.7:1 on white) */
+  --color-ink-300: #7f8f88; /* form field borders only (3.2:1+, the UI minimum is 3:1) */
 
   /* Feedback */
   --color-error: #b3261e;
@@ -77,8 +80,8 @@
 
   /* ---------- Fonts ---------- */
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  /* Fraunces Italic: accents only (labels, taglines, pull quotes) */
-  --font-accent: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+  /* Dancing Script: short accent phrases only (see the rules at the top) */
+  --font-script: "Dancing Script", "Segoe Script", "Brush Script MT", cursive;
 
   /* ---------- Type scale (fluid: small on phones, bigger on desktop) ---------- */
   --text-display: clamp(2.5rem, 1.6rem + 4.2vw, 4.25rem);
@@ -110,18 +113,25 @@
   --text-small: 0.9375rem; /* 15px */
   --text-small--line-height: 1.55;
 
-  --text-label: 1.125rem; /* Fraunces italic section labels */
-  --text-label--line-height: 1.3;
+  /* Section labels: Plus Jakarta Sans, bold, sentence case (never script) */
+  --text-label: 1rem;
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.01em;
+  --text-label--font-weight: 700;
+
+  /* Script accents (taglines). Never smaller than this. */
+  --text-script: clamp(1.625rem, 1.4rem + 1vw, 2.125rem);
+  --text-script--line-height: 1.25;
 
   /* ---------- Corners ---------- */
   --radius-field: 1rem; /* 16px */
   --radius-card: 1.25rem; /* 20px */
   --radius-panel: 1.5rem; /* 24px: big feature panels */
 
-  /* ---------- Shadows (soft, olive-tinted, never harsh) ---------- */
-  --shadow-soft: 0 1px 2px rgb(60 66 53 / 0.05), 0 10px 28px -12px rgb(60 66 53 / 0.16);
-  --shadow-lift: 0 2px 4px rgb(60 66 53 / 0.06), 0 18px 36px -14px rgb(60 66 53 / 0.24);
-  --shadow-button: 0 6px 16px -6px rgb(201 24 95 / 0.55);
+  /* ---------- Shadows (soft, green-tinted, never harsh) ---------- */
+  --shadow-soft: 0 1px 2px rgb(21 63 47 / 0.05), 0 10px 28px -12px rgb(21 63 47 / 0.15);
+  --shadow-lift: 0 2px 4px rgb(21 63 47 / 0.06), 0 18px 36px -14px rgb(21 63 47 / 0.22);
+  --shadow-button: 0 6px 16px -6px rgb(184 46 96 / 0.5);
 
   /* ---------- Motion ---------- */
   --ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -149,7 +159,7 @@
   }
 
   body {
-    background-color: var(--color-pink-50);
+    background-color: var(--color-cream-50);
     color: var(--color-ink-600);
     font-family: var(--font-sans);
     font-size: var(--text-body);
@@ -163,7 +173,7 @@
   h2,
   h3,
   h4 {
-    color: var(--color-olive-800);
+    color: var(--color-green-800);
     text-wrap: balance;
   }
 
@@ -175,9 +185,9 @@
     text-underline-offset: 0.2em;
   }
 
-  /* One clear keyboard focus ring everywhere. Olive on light surfaces... */
+  /* One clear keyboard focus ring everywhere. Forest green on light surfaces... */
   :focus-visible {
-    outline: 3px solid var(--color-olive-800);
+    outline: 3px solid var(--color-green-800);
     outline-offset: 3px;
   }
 
@@ -189,7 +199,7 @@
 
   ::selection {
     background: var(--color-pink-200);
-    color: var(--color-olive-900);
+    color: var(--color-green-900);
   }
 }
 

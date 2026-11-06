@@ -1,0 +1,13 @@
+---
+/**
+ * Email: writes an email address so that, on a narrow phone screen, it can
+ * only wrap right after the "@" (never in the middle of "gmail.com").
+ * Put it inside the mailto link: <a href={`mailto:${x}`}><Email address={x} /></a>
+ */
+interface Props {
+  address: string;
+}
+const [name, domain] = Astro.props.address.split('@');
+---
+
+{domain ? <>{name}@<wbr />{domain}</> : Astro.props.address}

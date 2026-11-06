@@ -6,12 +6,12 @@
  *  1. Header: heading + intro on the left, a small plain "no online payments"
  *     note on the right (the single most useful thing to say up front).
  *     The pink underline is used once (the h1).
- *  2. #how-to-donate (white): heading on the left, three big italic numerals on
+ *  2. #how-to-donate (white): heading on the left, three big script numerals on
  *     the right (the 3 steps from plan section 7). Then ONE connected panel
  *     with three ways to give (money / clothes / food), not three separate cards.
  *     Then what we can take, where to drop it off, and our promise as a pull quote.
  *  3. #volunteer (blush panel): split text + a short list of ways to help.
- *  4. #partner (dark olive): for companies, schools and groups. Cream button.
+ *  4. #partner (dark green): for companies, schools and groups. Cream button.
  *  5. #faq (white): native <details> rows, no JavaScript.
  *
  * Every "Donate..." button opens the contact form with the right option picked
@@ -21,7 +21,7 @@
  */
 import PageLayout from '../layouts/PageLayout.astro';
 import Button from '../components/Button.astro';
-import Butterfly from '../components/Butterfly.astro';
+import HeartLeaf from '../components/HeartLeaf.astro';
 import Icon, { type IconName } from '../components/Icon.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import { inKind } from '../data/site';
@@ -38,7 +38,7 @@ const steps = [
   },
   {
     title: 'We follow up',
-    text: 'We reply by email or phone with the details: how to give, and when and where to drop off goods. Then we let you know we received your help.',
+    text: 'We reply by email or phone with the details: how to donate or share, and when and where to drop off goods. Then we let you know we received your help.',
   },
 ];
 
@@ -47,34 +47,34 @@ const ways: { topic: ContactTopicId; icon: IconName; title: string; where: strin
     topic: 'donate-money',
     icon: 'hand-coins',
     title: 'Money',
-    where: 'Goes to our programs: scholarships, school supplies, storm relief and care for orphans and the elderly.',
+    where: 'Goes to our programs: food, healthcare, education and other help for children and families in need, including relief after a typhoon.',
     cta: 'Donate money',
   },
   {
     topic: 'donate-clothes',
     icon: 'shirt',
     title: 'Clothes',
-    where: 'Goes into relief packs and to the children and senior citizens we help.',
-    cta: 'Donate clothes',
+    where: 'Goes into relief packs, and to the children and elders we help.',
+    cta: 'Share clothes',
   },
   {
     topic: 'donate-food',
     icon: 'utensils',
     title: 'Food',
-    where: 'Goes into relief packs and to orphans and the elderly.',
-    cta: 'Donate food',
+    where: 'Goes into relief packs, and to children without parents and our elders.',
+    cta: 'Share food',
   },
 ];
 
 const volunteerWays = [
-  'Pack and hand out relief goods after a typhoon',
-  'Visit orphans and senior citizens and spend time with them',
+  'Pack relief goods after a typhoon and bring them to families',
+  'Visit children without parents and our elders, and spend time with them',
   'Help sort and pack school supplies for students',
   'Share a skill, such as teaching, nursing or organizing',
 ];
 
 const partnerWays = [
-  'Give goods or supplies for relief packs',
+  'Share goods or supplies for relief packs',
   'Sponsor school supplies or a scholarship',
   'Host a volunteer day for your team or class',
   'Share your skills or space for a program',
@@ -83,15 +83,15 @@ const partnerWays = [
 const faqs: { q: string; a: string; link?: { href: string; label: string } }[] = [
   {
     q: 'Can I donate online?',
-    a: 'Not on this website. It takes no online payments. Send us a message, and we will tell you the ways you can give.',
+    a: 'Not on this website. It takes no online payments. Send us a message, and we will tell you the ways you can help.',
     link: { href: contactHref('donate-money'), label: 'Donate money' },
   },
   {
     q: 'How will I know you received my donation?',
-    a: 'We follow up with every donor by email or phone, and we tell you when your help has arrived.',
+    a: 'We follow up with everyone who helps, by email or phone, and we tell you when your help has arrived.',
   },
   {
-    q: 'What can I give besides money?',
+    q: 'Besides money, how else can I help?',
     a: 'Food, clothes in good condition, school supplies and your time. The list of what we can take is in the How to donate section above.',
     link: { href: '#goods', label: 'See what we can take' },
   },
@@ -101,8 +101,8 @@ const faqs: { q: string; a: string; link?: { href: string; label: string } }[] =
     link: { href: '/about/', label: 'Read our promise' },
   },
   {
-    q: 'Can I choose which group my help goes to?',
-    a: 'Tell us in your message. We will talk it through with you. Our three focus groups are students, families hit by typhoons, and orphans and the elderly.',
+    q: 'Can I choose where my help goes?',
+    a: 'Yes. Tell us in your message and we will talk it through with you. Our four areas are food support, healthcare support, education support and other assistance.',
     link: { href: '/programs/', label: 'See our programs' },
   },
   {
@@ -121,23 +121,23 @@ const dropOff = [inKind.dropOffPlace, inKind.dropOffHours].filter(Boolean);
 >
   <!-- 1. Header -->
   <section class="relative overflow-hidden">
-    <Butterfly class="pointer-events-none absolute -right-12 -top-4 size-52 rotate-12 text-pink-500 opacity-[0.12] md:right-8 md:size-72" />
+    <HeartLeaf class="pointer-events-none absolute -right-12 -top-4 size-52 rotate-12 text-pink-500 opacity-[0.12] md:right-8 md:size-72" />
     <div class="container-page relative grid items-end gap-8 pb-12 pt-10 md:pb-16 md:pt-16 lg:grid-cols-[1.3fr_1fr] lg:gap-14">
       <SectionHeading
         level="h1"
         label="Get involved"
         title="Ways to help"
         underline="help"
-        intro="Give money, clothes or food. Give your time. Or bring your company, school or group. Here is how each one works."
+        intro="Donate money, or share clothes or food. Share your time. Or bring your company, school or group. Here is how each one works."
         class="fade-in"
       />
       <div class="rounded-panel bg-pink-100 p-6 md:p-7">
-        <p class="flex items-center gap-2 font-accent text-label font-medium italic text-pink-600">
+        <p class="flex items-center gap-2 text-label text-pink-600">
           <Icon name="info" size={20} />
           Good to know
         </p>
-        <p class="mt-2 text-body text-olive-800">
-          This website takes no online payments. You start by sending us a message, and we tell you how to give.
+        <p class="mt-2 text-body text-green-800">
+          This website takes no online payments. You start by sending us a message, and we tell you how to donate or share.
         </p>
       </div>
     </div>
@@ -159,11 +159,11 @@ const dropOff = [inKind.dropOffPlace, inKind.dropOffHours].filter(Boolean);
           {
             steps.map((step, i) => (
               <li class="grid grid-cols-[3.5rem_1fr] items-baseline gap-x-5 py-7 md:grid-cols-[5rem_1fr] md:py-9">
-                <span class="font-accent text-[3rem] font-medium italic leading-none text-pink-600 md:text-[4rem]" aria-hidden="true">
+                <span class="font-script text-[3.25rem] leading-none text-pink-600 md:text-[4.25rem]" aria-hidden="true">
                   {i + 1}
                 </span>
                 <div>
-                  <h3 class="text-h3 text-olive-800">
+                  <h3 class="text-h3 text-green-800">
                     <span class="sr-only">Step {i + 1}: </span>{step.title}
                   </h3>
                   <p class="mt-2 text-body text-ink-600">{step.text}</p>
@@ -178,7 +178,7 @@ const dropOff = [inKind.dropOffPlace, inKind.dropOffHours].filter(Boolean);
 
   <section aria-labelledby="ways-heading">
     <div class="container-page section">
-      <h2 id="ways-heading" class="text-h2 max-w-xl text-olive-800">Choose what you would like to give</h2>
+      <h2 id="ways-heading" class="text-h2 max-w-xl text-green-800">Choose what you would like to share</h2>
       <p class="mt-3 max-w-xl text-lead text-ink-600">Pick one. The form opens with your choice ready.</p>
 
       <!-- One connected panel, not three separate cards -->
@@ -189,7 +189,7 @@ const dropOff = [inKind.dropOffPlace, inKind.dropOffHours].filter(Boolean);
               <span class="grid size-14 place-items-center rounded-full bg-white text-pink-600">
                 <Icon name={way.icon} size={28} />
               </span>
-              <h3 class="mt-5 text-h3 text-olive-800">{way.title}</h3>
+              <h3 class="mt-5 text-h3 text-green-800">{way.title}</h3>
               <p class="mt-2 flex-1 text-body text-ink-600">{way.where}</p>
               <div class="mt-6">
                 <Button href={contactHref(way.topic)} variant="secondary" icon="arrow-right">{way.cta}</Button>
@@ -204,11 +204,11 @@ const dropOff = [inKind.dropOffPlace, inKind.dropOffHours].filter(Boolean);
   <section id="goods" class="scroll-mt-24 pb-12 md:pb-20" aria-labelledby="goods-heading">
     <div class="container-page grid gap-10 lg:grid-cols-2 lg:gap-16">
       <div>
-        <h2 id="goods-heading" class="text-h2 text-olive-800">Giving goods</h2>
+        <h2 id="goods-heading" class="text-h2 text-green-800">Sharing food and clothes</h2>
         {
           inKind.accepted.length > 0 && (
             <>
-              <h3 class="mt-6 text-h3 text-olive-800">What we can take</h3>
+              <h3 class="mt-6 text-h3 text-green-800">What we can take</h3>
               <ul class="mt-3 space-y-2">
                 {inKind.accepted.map((item) => (
                   <li class="flex gap-3 text-body text-ink-600">
@@ -223,7 +223,7 @@ const dropOff = [inKind.dropOffPlace, inKind.dropOffHours].filter(Boolean);
         {
           inKind.notAccepted.length > 0 && (
             <>
-              <h3 class="mt-8 text-h3 text-olive-800">What we cannot take</h3>
+              <h3 class="mt-8 text-h3 text-green-800">What we cannot take</h3>
               <ul class="mt-3 space-y-2">
                 {inKind.notAccepted.map((item) => (
                   <li class="flex gap-3 text-body text-ink-600">
@@ -239,7 +239,7 @@ const dropOff = [inKind.dropOffPlace, inKind.dropOffHours].filter(Boolean);
       </div>
 
       <div class="rounded-panel bg-white p-7 shadow-soft md:p-9">
-        <h3 class="flex items-center gap-3 text-h3 text-olive-800">
+        <h3 class="flex items-center gap-3 text-h3 text-green-800">
           <Icon name="package" size={26} class="text-pink-600" />
           Drop-off
         </h3>
@@ -275,8 +275,8 @@ const dropOff = [inKind.dropOffPlace, inKind.dropOffHours].filter(Boolean);
   <section class="pb-16 md:pb-24" aria-label="Our promise">
     <div class="container-page">
       <figure class="mx-auto max-w-3xl border-l-4 border-pink-500 pl-6 md:pl-10">
-        <p class="font-accent text-label font-medium italic text-pink-600">Our promise</p>
-        <blockquote class="mt-3 font-accent text-[1.5rem] font-normal italic leading-snug text-olive-800 md:text-[1.875rem]">
+        <p class="text-label text-pink-600">Our promise</p>
+        <blockquote class="mt-3 text-[1.375rem] font-bold leading-snug text-green-800 md:text-[1.75rem]">
           No part of our income goes to any member, trustee or officer. Every donation is used solely for our programs.
         </blockquote>
         <a href="/about/" class="mt-4 inline-flex min-h-11 items-center gap-2 font-semibold text-pink-600 no-underline hover:text-pink-700">
@@ -292,8 +292,8 @@ const dropOff = [inKind.dropOffPlace, inKind.dropOffHours].filter(Boolean);
     <div class="container-page">
       <div class="grid gap-10 rounded-panel bg-pink-100 p-7 md:p-12 lg:grid-cols-2 lg:gap-16">
         <div>
-          <p class="font-accent text-label font-medium italic text-pink-600">Volunteer</p>
-          <h2 id="volunteer-heading" class="mt-3 text-h2 text-olive-800">Give your time</h2>
+          <p class="text-label text-pink-600">Volunteer</p>
+          <h2 id="volunteer-heading" class="mt-3 text-h2 text-green-800">Share your time</h2>
           <p class="mt-4 text-lead text-ink-600">
             You do not need experience. Tell us when you are free and what you enjoy doing, and we will find a place for you.
           </p>
@@ -302,7 +302,7 @@ const dropOff = [inKind.dropOffPlace, inKind.dropOffHours].filter(Boolean);
           </div>
         </div>
         <div>
-          <h3 class="text-h3 text-olive-800">Ways you could help</h3>
+          <h3 class="text-h3 text-green-800">Ways you could help</h3>
           <ul class="mt-4 space-y-3">
             {
               volunteerWays.map((item) => (
@@ -319,7 +319,7 @@ const dropOff = [inKind.dropOffPlace, inKind.dropOffHours].filter(Boolean);
   </section>
 
   <!-- 4. Partner -->
-  <section id="partner" data-surface="dark" class="scroll-mt-24 bg-olive-800 text-pink-50" aria-label="Partner with us">
+  <section id="partner" data-surface="dark" class="scroll-mt-24 bg-green-800 text-pink-50" aria-label="Partner with us">
     <div class="container-page section">
       <div class="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
         <div>
@@ -333,7 +333,7 @@ const dropOff = [inKind.dropOffPlace, inKind.dropOffHours].filter(Boolean);
             <Button href={contactHref('partner')} variant="on-dark" size="lg">Talk about partnering</Button>
           </div>
         </div>
-        <ul class="divide-y divide-olive-700 border-y border-olive-700 self-center">
+        <ul class="divide-y divide-green-700 border-y border-green-700 self-center">
           {
             partnerWays.map((item) => (
               <li class="flex items-center gap-4 py-5">
@@ -363,7 +363,7 @@ const dropOff = [inKind.dropOffPlace, inKind.dropOffHours].filter(Boolean);
           {
             faqs.map((item) => (
               <details class="group rounded-card bg-pink-50 open:bg-pink-100">
-                <summary class="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 rounded-card px-5 py-4 font-semibold text-olive-800 marker:hidden [&::-webkit-details-marker]:hidden">
+                <summary class="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 rounded-card px-5 py-4 font-semibold text-green-800 marker:hidden [&::-webkit-details-marker]:hidden">
                   <span>{item.q}</span>
                   <Icon name="chevron-down" size={22} class="shrink-0 text-pink-600 transition-transform duration-200 group-open:rotate-180" />
                 </summary>

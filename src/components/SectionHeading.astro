@@ -2,13 +2,13 @@
 /**
  * SectionHeading: small label + heading + optional intro.
  *
- * label      short Fraunces-italic line above the heading ("Our story",
+ * label      short sans line above the heading ("Our story",
  *            "Donate", "Volunteer"). Sentence case, never ALL CAPS.
  * title      the heading itself.
  * underline  a phrase inside the title to give the pink hand-drawn underline.
  *            Optional. Use it once per page, not in every section.
  * level      "h1" for the page's main heading (once per page), otherwise "h2".
- * tone       "dark" when the section background is olive or plum.
+ * tone       "dark" when the section background is green or plum.
  */
 import Underline from './Underline.astro';
 
@@ -56,7 +56,7 @@ const dark = tone === 'dark';
     label && (
       <p
         class:list={[
-          'font-accent italic text-label font-medium mb-3',
+          'text-label mb-3',
           dark ? 'text-pink-300' : 'text-pink-600',
         ]}
       >

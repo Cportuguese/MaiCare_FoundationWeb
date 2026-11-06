@@ -1,29 +1,32 @@
 ---
 /**
- * Programs page (Phase 5).
+ * Programs page (Phase 5, rebuilt around the brochure's "Our Focus" in Phase 8).
  *
  * Design direction (different from Home's grid and from About's text-led layout)
- *  1. Header: heading, intro and three jump links (one per focus group), with a
- *     faint butterfly at the corner. The pink underline is used once (the h1).
- *  2. Focus groups: three full-width rows that alternate sides (visual / words /
- *     visual...). Each row says who we want to help, what help is needed, and
- *     links to How to Donate.
+ *  1. Header: heading, intro and four jump links (one per focus area), with a
+ *     faint heart-and-leaf line art at the corner. The pink underline is used once (the h1).
+ *  2. Focus areas: the brochure's four (Food, Healthcare, Education, Other
+ *     assistance) as full-width rows that alternate sides (visual / words /
+ *     visual...). Each row says who it helps, what help is needed, and links to
+ *     How to Donate.
  *     The "visual" is a designed icon panel, NOT a stock photo: there is no
  *     honest photo of the people we will help yet. Drop a real photo into
- *     src/assets/images/programs/ named students.jpg, storm-relief.jpg or
- *     orphans-elderly.jpg (jpg, jpeg, png or webp) and that row shows it
+ *     src/assets/images/programs/ named food.jpg, healthcare.jpg, education.jpg
+ *     or other-assistance.jpg (jpg, jpeg, png or webp) and that row shows it
  *     automatically. Real photos of people, especially children, need written
  *     guardian consent first.
- *  3. Program areas: a ruled list (icon / name / description), like a table.
- *  4. Closing panel with the one pink button.
+ *  3. Who we want to reach: a ruled list (icon / group / which areas help them).
+ *     It keeps the groups from the earlier draft (students, families hit by
+ *     typhoons, children without parents and our elders), as the user decided in Phase 8.
+ *  4. Closing panel with the one pink button and the brochure's script line.
  *
- * Wording comes from the foundation's brief and its earlier draft. It says "we
- * want to", not "we did": there is no track record yet. No numbers or names.
+ * Wording comes from the brochure and the earlier draft. It says "we want to",
+ * not "we did": there is no track record yet. No numbers or names.
  */
 import { Image } from 'astro:assets';
 import PageLayout from '../layouts/PageLayout.astro';
 import Button from '../components/Button.astro';
-import Butterfly from '../components/Butterfly.astro';
+import HeartLeaf from '../components/HeartLeaf.astro';
 import Icon, { type IconName } from '../components/Icon.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import { donateLink } from '../data/nav';
@@ -36,89 +39,133 @@ const photoFiles = import.meta.glob<{ default: ImageMetadata }>(
 const findPhoto = (slug: string) =>
   Object.entries(photoFiles).find(([path]) => path.split('/').pop()?.startsWith(`${slug}.`))?.[1].default;
 
+type FocusId = 'food' | 'healthcare' | 'education' | 'other-assistance';
+
 const focusAreas: {
-  id: string;
+  id: FocusId;
   icon: IconName;
   chip: string;
+  /** Short name for the small chips in "Who we want to reach". */
+  short: string;
   title: string;
   who: string;
   needs: string[];
   cta: string;
 }[] = [
   {
-    id: 'students',
-    icon: 'graduation-cap',
-    chip: 'Students',
-    title: 'Students who struggle to stay in school',
+    id: 'food',
+    icon: 'utensils',
+    chip: 'Food support',
+    short: 'Food',
+    title: 'Food for families who go hungry',
+    who: 'Children and families who do not have enough to eat, including families who lose their food and income to a typhoon or a flood. We want to share food with them, and bring relief quickly when a storm hits.',
+    needs: [
+      'Rice, canned goods and other food that keeps',
+      'Food and clothes for relief packs after a typhoon or flood',
+      'Volunteers to pack food and share it with families',
+    ],
+    cta: 'How to help with food',
+  },
+  {
+    id: 'healthcare',
+    icon: 'stethoscope',
+    chip: 'Healthcare support',
+    short: 'Healthcare',
+    title: 'Care for those who are sick',
+    who: 'Children, families and older neighbors who are sick and cannot afford the care they need. We want to help with medicines and checkups, so that no one has to face an illness alone.',
+    needs: [
+      'Money for medicines and checkups',
+      'Basic health and hygiene supplies',
+      'Doctors, nurses and health workers who can share some of their time',
+    ],
+    cta: 'How to help with healthcare',
+  },
+  {
+    id: 'education',
+    icon: 'book-open',
+    chip: 'Education support',
+    short: 'Education',
+    title: 'Helping children stay in school',
     who: 'Children and young people whose families find it hard to pay for school. When money is tight, school is often the first thing to go. We want to help them keep learning.',
     needs: [
-      'Scholarships for deserving students',
       'School supplies, such as notebooks, pens and bags',
-      'Literacy and learning programs',
+      'Scholarships for deserving students',
+      'Volunteers for reading and tutoring sessions',
     ],
     cta: 'How to help students',
   },
   {
-    id: 'storm-relief',
-    icon: 'cloud-lightning',
-    chip: 'Storm relief',
-    title: 'Families hit by typhoons',
-    who: 'Families in Pangasinan who lose their home, food or income to a typhoon or a flood. We want to bring relief fast, then help families get back on their feet.',
+    id: 'other-assistance',
+    icon: 'hand-heart',
+    chip: 'Other assistance',
+    short: 'Other assistance',
+    title: 'Help wherever it is needed',
+    who: 'Some needs do not fit in one box: a family rebuilding after a typhoon, a child without parents, an older neighbor who lives alone. We want to show up with what we can, and with care and company.',
     needs: [
-      'Food and clothes for relief packs',
+      'Clothes in good condition',
       'Money for emergency needs and rebuilding',
-      'Volunteers to pack and hand out relief goods',
-    ],
-    cta: 'How to help with relief',
-  },
-  {
-    id: 'orphans-elderly',
-    icon: 'heart-handshake',
-    chip: 'Orphans and the elderly',
-    title: 'Orphans and the elderly',
-    who: 'Children without parents and older neighbors, who can go unnoticed. We want to make sure someone shows up with food, care and company.',
-    needs: [
-      'Food and clothes for children and senior citizens',
       'Volunteers who can visit and spend time',
-      'Support for everyday care',
     ],
     cta: 'How to help',
   },
 ];
 
-const programAreas: { icon: IconName; name: string; text: string }[] = [
-  { icon: 'hand-heart', name: 'Charitable', text: 'Relief goods and aid for the poor and for families hit by calamities.' },
-  { icon: 'graduation-cap', name: 'Educational', text: 'Scholarships, school supplies and literacy programs for deserving students.' },
-  { icon: 'sprout', name: 'Livelihood', text: 'Skills training and small-business support to help families earn on their own.' },
-  { icon: 'heart-pulse', name: 'Health', text: 'Medical and dental missions, medicines and nutrition programs for indigent families.' },
-  { icon: 'users', name: 'Social welfare', text: 'Care for children, youth, women, senior citizens and persons with disabilities.' },
+const chipFor = (id: FocusId) => focusAreas.find((area) => area.id === id)!;
+
+// Who each area is for. These groups come from the earlier draft and the
+// brochure ("our heart is especially for children and families").
+const groups: { icon: IconName; name: string; text: string; through: FocusId[] }[] = [
+  {
+    icon: 'users',
+    name: 'Children and families going through hard times',
+    text: 'Those who are sick, hungry, struggling, or simply in need of someone to care. They come first in everything we do.',
+    through: ['food', 'healthcare', 'education', 'other-assistance'],
+  },
+  {
+    icon: 'graduation-cap',
+    name: 'Students',
+    text: 'Children and young people at risk of leaving school because their family cannot afford it.',
+    through: ['education'],
+  },
+  {
+    icon: 'cloud-lightning',
+    name: 'Families hit by typhoons and floods',
+    text: 'Families in Pangasinan who lose their home, food or income to a storm.',
+    through: ['food', 'other-assistance'],
+  },
+  {
+    icon: 'heart-handshake',
+    name: 'Children without parents and our elders',
+    text: 'Children who have lost their parents, and older neighbors who live alone. Both can easily go unnoticed.',
+    through: ['food', 'healthcare', 'other-assistance'],
+  },
 ];
 ---
 
 <PageLayout
   title="Programs"
-  description="The three groups maiCare Foundation wants to help first in San Carlos City, Pangasinan: students, families hit by typhoons, and orphans and the elderly. See who each program helps and what help is needed."
+  description="What maiCare Foundation wants to do in San Carlos City, Pangasinan: food, healthcare, education and other assistance for children and families in need. See who each one helps and what help is needed."
 >
   <!-- 1. Header -->
   <section class="relative overflow-hidden">
-    <Butterfly class="pointer-events-none absolute -right-12 top-2 size-52 rotate-12 text-pink-500 opacity-[0.12] md:right-8 md:size-72" />
+    <HeartLeaf class="pointer-events-none absolute -right-12 top-2 size-52 rotate-12 text-pink-500 opacity-[0.12] md:right-8 md:size-72" />
     <div class="container-page relative pb-10 pt-10 md:pb-14 md:pt-16">
       <SectionHeading
         level="h1"
-        label="Our programs"
+        label="Our focus"
         title="What we do"
         underline="we do"
-        intro="We start with three groups of people in San Carlos City and across Pangasinan. Here is who each one is, and what kind of help is needed."
+        intro="We offer four kinds of care to children and families in San Carlos City and across Pangasinan who need it most. Here is who each one helps, and what kind of help is needed."
         class="fade-in"
       />
-      <nav aria-label="Jump to a focus group" class="mt-8">
+      <nav aria-label="Jump to a focus area" class="mt-8">
         <ul class="flex flex-wrap gap-3">
           {
             focusAreas.map((area) => (
               <li>
                 <a
                   href={`#${area.id}`}
-                  class="inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-5 font-semibold text-olive-800 no-underline shadow-soft transition-colors hover:text-pink-700"
+                  class="inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-5 font-semibold text-green-800 no-underline shadow-soft transition-colors hover:text-pink-700"
                 >
                   <Icon name={area.icon} size={18} class="text-pink-600" />
                   {area.chip}
@@ -131,11 +178,13 @@ const programAreas: { icon: IconName; name: string; text: string }[] = [
     </div>
   </section>
 
-  <!-- 2. Focus groups: alternating full-width rows -->
+  <!-- 2. Focus areas: alternating full-width rows -->
   {
     focusAreas.map((area, i) => {
       const photo = findPhoto(area.id);
       const flip = i % 2 === 1;
+      // Pink and sage panels alternate, like the brochure's tinted boxes.
+      const panel = i % 2 === 0 ? 'bg-pink-100' : 'bg-green-100';
       return (
         <section id={area.id} class:list={['scroll-mt-24', i % 2 === 0 ? 'bg-white' : '']} aria-labelledby={`${area.id}-heading`}>
           <div class="container-page grid items-center gap-8 py-12 md:py-20 lg:grid-cols-2 lg:gap-16">
@@ -151,19 +200,15 @@ const programAreas: { icon: IconName; name: string; text: string }[] = [
                   class="aspect-[4/3] w-full rounded-panel object-cover shadow-soft"
                 />
               ) : (
-                <div
-                  class:list={[
-                    'relative grid aspect-[16/10] place-items-center overflow-hidden rounded-panel lg:aspect-[4/3]',
-                    i % 2 === 0 ? 'bg-pink-100' : 'bg-white shadow-soft',
-                  ]}
-                >
-                  <Butterfly
+                <div class:list={['relative grid aspect-[16/10] place-items-center overflow-hidden rounded-panel lg:aspect-[4/3]', panel]}>
+                  <HeartLeaf
                     class:list={[
-                      'pointer-events-none absolute size-40 text-pink-500 opacity-20 md:size-56',
+                      'pointer-events-none absolute size-40 opacity-25 md:size-56',
+                      i % 2 === 0 ? 'text-pink-500' : 'text-green-700',
                       flip ? '-left-6 -top-6 -rotate-12' : '-bottom-6 -right-6 rotate-12',
                     ]}
                   />
-                  <span class:list={['relative grid size-24 place-items-center rounded-full text-pink-600 md:size-28', i % 2 === 0 ? 'bg-white' : 'bg-pink-100']}>
+                  <span class="relative grid size-24 place-items-center rounded-full bg-white text-pink-600 shadow-soft md:size-28">
                     <Icon name={area.icon} size={44} />
                   </span>
                 </div>
@@ -171,11 +216,14 @@ const programAreas: { icon: IconName; name: string; text: string }[] = [
             </div>
 
             <div class:list={[flip && 'lg:order-1']}>
-              <p class="font-accent text-label font-medium italic text-pink-600">Focus {i + 1} of 3</p>
-              <h2 id={`${area.id}-heading`} class="mt-3 text-h2 text-olive-800">{area.title}</h2>
+              <p class="text-label text-pink-600">
+                {area.chip}
+                <span class="font-semibold text-ink-500"> &middot; {i + 1} of {focusAreas.length}</span>
+              </p>
+              <h2 id={`${area.id}-heading`} class="mt-3 text-h2 text-green-800">{area.title}</h2>
               <p class="mt-4 max-w-xl text-lead text-ink-600">{area.who}</p>
 
-              <h3 class="mt-7 text-h3 text-olive-800">Help we need</h3>
+              <h3 class="mt-7 text-h3 text-green-800">Help we need</h3>
               <ul class="mt-3 space-y-2">
                 {area.needs.map((need) => (
                   <li class="flex gap-3 text-body text-ink-600">
@@ -195,23 +243,37 @@ const programAreas: { icon: IconName; name: string; text: string }[] = [
     })
   }
 
-  <!-- 3. Program areas: ruled list -->
-  <section aria-labelledby="areas-heading">
+  <!-- 3. Who we want to reach: ruled list -->
+  <section aria-label="Who we want to reach">
     <div class="container-page section">
       <SectionHeading
-        label="Five program areas"
-        title="How our work is organized"
-        intro="Our programs fall under these five areas. Each program is planned with the community it serves and reported openly to our donors. We are just getting started, so not every area has begun yet."
+        label="Who we want to reach"
+        title="Children and families first"
+        intro="Our heart is especially for children and families facing hard times. These are the people we want to reach first, and the kinds of support that can help each of them. We are just getting started, so not every program has begun yet."
       />
       <ul class="mt-10 divide-y divide-pink-200 border-y border-pink-200">
         {
-          programAreas.map((area) => (
-            <li class="grid grid-cols-[3rem_1fr] items-start gap-x-5 gap-y-1 py-6 md:grid-cols-[3rem_12rem_1fr] md:items-center md:gap-x-8 md:py-7">
-              <span class="row-span-2 grid size-12 place-items-center rounded-full bg-white text-pink-600 shadow-soft md:row-span-1">
-                <Icon name={area.icon} size={22} />
+          groups.map((group) => (
+            <li class="grid grid-cols-[3rem_1fr] items-start gap-x-5 gap-y-2 py-6 md:grid-cols-[3rem_1.1fr_1fr] md:gap-x-8 md:py-7">
+              <span class="row-span-3 grid size-12 place-items-center rounded-full bg-white text-pink-600 shadow-soft md:row-span-1">
+                <Icon name={group.icon} size={22} />
               </span>
-              <h3 class="text-h3 text-olive-800">{area.name}</h3>
-              <p class="col-start-2 text-body text-ink-600 md:col-start-3">{area.text}</p>
+              <div>
+                <h3 class="text-h3 text-green-800">{group.name}</h3>
+                <p class="mt-1 text-body text-ink-600">{group.text}</p>
+              </div>
+              <ul class="flex flex-wrap gap-2 md:justify-end md:pt-1" aria-label={`Kinds of support for ${group.name.toLowerCase()}`}>
+                {group.through.map((id) => (
+                  <li>
+                    <a
+                      href={`#${id}`}
+                      class="inline-flex min-h-11 items-center rounded-full bg-green-100 px-4 text-small font-semibold text-green-800 no-underline transition-colors hover:bg-pink-100 hover:text-pink-700"
+                    >
+                      {chipFor(id).short}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </li>
           ))
         }
@@ -223,9 +285,10 @@ const programAreas: { icon: IconName; name: string; text: string }[] = [
   <section class="container-page pb-16 md:pb-24" aria-labelledby="programs-cta-heading">
     <div class="rounded-panel bg-white p-7 shadow-soft md:flex md:items-center md:justify-between md:gap-10 md:p-12">
       <div class="max-w-xl">
-        <h2 id="programs-cta-heading" class="text-h2 text-olive-800">Not sure where your help fits?</h2>
+        <p class="font-script text-script text-pink-600">Small hands. Big dreams. Brighter tomorrow.</p>
+        <h2 id="programs-cta-heading" class="mt-2 text-h2 text-green-800">Not sure where your help fits?</h2>
         <p class="mt-3 text-lead text-ink-600">
-          Tell us what you can give, whether it is money, clothes, food or your time, and we will point you to the right program.
+          Tell us what you can share, whether it is money, clothes, food or your time, and we will point you to the right program.
         </p>
       </div>
       <div class="mt-7 flex flex-wrap gap-3 md:mt-0 md:shrink-0">

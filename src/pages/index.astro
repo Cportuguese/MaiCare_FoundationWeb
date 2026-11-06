@@ -3,16 +3,19 @@
  * Home page (Phase 4).
  *
  * Design direction
- *  1. Hero: split. Words on the left, one photo on the right in a rounded frame
- *     with a faint butterfly at its corner. The pink underline is used here, once.
- *  2. Next-event strip: a slim white bar (date badge, name, link).
+ *  1. Hero: split. Words on the left (with the brochure's "Kindness everywhere…"
+ *     tagline in script), one photo on the right in a rounded frame with the
+ *     heart-and-leaf line art at its corner. The pink underline is used here, once.
+ *  2. Next-event strip: a slim white bar (date badge, name, link). Then the
+ *     brochure's pink-and-green wave leads into the white "Who we help" section
+ *     (one of the wave's two uses on the site; the other is the footer).
  *  3. Who we help: asymmetric grid on white (tall photo card + wide photo card +
  *     a plain tinted card). Not three equal cards.
  *  4. Goals strip: ONLY renders when a goal is confirmed in src/data/site.ts.
- *  5. Ways to help: dark olive section, a list (not cards), cream button.
+ *  5. Ways to help: dark green section, a list (not cards), cream button.
  *  6. Events and news: the newest 3 posts from src/content (Phase 7), or a calm
  *     empty state when there are none.
- *  7. Final call to action: tinted panel with the butterfly.
+ *  7. Final call to action: tinted panel with the heart-and-leaf line art.
  *
  * Not on this page on purpose: a featured story or quote (there is no real one
  * yet) and any invented numbers. Everything that changes lives in src/data/site.ts.
@@ -20,11 +23,12 @@
 import { Image } from 'astro:assets';
 import PageLayout from '../layouts/PageLayout.astro';
 import Button from '../components/Button.astro';
-import Butterfly from '../components/Butterfly.astro';
+import HeartLeaf from '../components/HeartLeaf.astro';
 import Icon from '../components/Icon.astro';
 import PostCard from '../components/PostCard.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import Underline from '../components/Underline.astro';
+import Wave from '../components/Wave.astro';
 import { contact, goals, nextEvent } from '../data/site';
 import { donateLink } from '../data/nav';
 import { getLatestPosts } from '../data/posts';
@@ -54,32 +58,30 @@ const shownGoals = goals.filter((g) => g.confirmed && g.target !== null);
 const emailToShow = contact.emailDonate ?? contact.emailInfo;
 ---
 
-<PageLayout description="maiCare Foundation Inc. is a non-stock, non-profit foundation in San Carlos City, Pangasinan. We want to help students, families hit by typhoons, orphans and the elderly. See how you can help.">
+<PageLayout description="maiCare Foundation Inc. is a new non-stock, non-profit foundation in San Carlos City, Pangasinan, with a heart for children and families in need. Food, healthcare, education and other help. See how you can help.">
   <!-- 1. Hero -->
   <section class="relative overflow-hidden">
     <div class="container-page grid items-center gap-10 pb-10 pt-10 md:pb-14 md:pt-16 lg:grid-cols-2 lg:gap-14">
       <div class="fade-in">
-        <p class="font-accent text-label font-medium italic text-pink-600">San Carlos City, Pangasinan</p>
-        <h1 class="mt-3 text-display text-olive-800">
+        <p class="text-label text-pink-600">San Carlos City, Pangasinan</p>
+        <h1 class="mt-3 text-display text-green-800">
           Sharing hope. Extending a <Underline>helping hand</Underline>.
         </h1>
-        <p class="mt-5 font-accent text-lead italic text-plum-700">
-          With humble hearts, we begin a journey of kindness, compassion and service.
-        </p>
-        <p class="mt-5 max-w-xl text-lead text-ink-600">
-          maiCare Foundation is a non-stock, non-profit foundation. We want to help students who struggle to stay in school, families hit by typhoons, and orphans and the elderly.
+        <p class="mt-4 font-script text-script text-green-700">Kindness everywhere…</p>
+        <p class="mt-4 max-w-xl text-lead text-ink-600">
+          Together, we can bring hope, dignity and a brighter future to those in need. maiCare Foundation is a new non-stock, non-profit foundation with a heart for children and families who are sick, hungry or struggling.
         </p>
         <div class="mt-8 flex flex-wrap gap-3">
           <Button href={donateLink.href} size="lg">Donate</Button>
           <Button href="/get-involved/#volunteer" variant="secondary" size="lg">Volunteer</Button>
         </div>
         <p class="mt-5 max-w-md text-small text-ink-500">
-          Giving starts with a message to us. This website does not take online payments.
+          Sharing starts with a message to us. This website does not take online payments.
         </p>
       </div>
 
       <div class="relative fade-in lg:pl-4">
-        <Butterfly class="pointer-events-none absolute -right-3 -top-9 z-10 size-24 rotate-12 text-pink-500 md:-right-6 md:-top-12 md:size-32" />
+        <HeartLeaf class="pointer-events-none absolute -right-3 -top-9 z-10 size-24 rotate-12 text-pink-500 md:-right-6 md:-top-12 md:size-32" />
         <Image
           src={heroPhoto}
           alt="A barangay hall and day care center in San Carlos City, Pangasinan, with a large red heart sign that reads I love Barangay Turac."
@@ -103,7 +105,7 @@ const emailToShow = contact.emailDonate ?? contact.emailInfo;
           <div class="flex items-center gap-4">
             <time
               datetime={nextEvent.date}
-              class="grid size-16 shrink-0 place-items-center rounded-2xl bg-pink-100 text-center leading-none text-olive-800"
+              class="grid size-16 shrink-0 place-items-center rounded-2xl bg-pink-100 text-center leading-none text-green-800"
             >
               <span>
                 <span class="block text-small font-semibold text-pink-600">{eventMonth}</span>
@@ -111,8 +113,8 @@ const emailToShow = contact.emailDonate ?? contact.emailInfo;
               </span>
             </time>
             <div class="min-w-0">
-              <p class="font-accent text-small italic text-pink-600">Next event</p>
-              <p class="text-h3 text-olive-800">{nextEvent.title}</p>
+              <p class="text-small font-bold text-pink-600">Next event</p>
+              <p class="text-h3 text-green-800">{nextEvent.title}</p>
               <p class="text-small text-ink-600">{eventDetails}</p>
             </div>
           </div>
@@ -129,12 +131,13 @@ const emailToShow = contact.emailDonate ?? contact.emailInfo;
   }
 
   <!-- 3. Who we help -->
+  <Wave class="-mb-px text-white" />
   <section class="bg-white" aria-label="Who we help">
-    <div class="container-page section">
+    <div class="container-page section !pt-10 md:!pt-14">
       <SectionHeading
         label="Who we help"
-        title="Students, storm-hit families, and those who need steady care"
-        intro="We start close to home, in San Carlos City and across Pangasinan."
+        title="Children and families facing hard times"
+        intro="Through food, healthcare, education and other help, we want to reach students, families hit by typhoons, children without parents and our elders. We start close to home, in San Carlos City and across Pangasinan."
       />
 
       <div class="mt-10 grid gap-5 lg:grid-cols-12 lg:gap-6">
@@ -153,7 +156,7 @@ const emailToShow = contact.emailDonate ?? contact.emailInfo;
             <span class="grid size-12 place-items-center rounded-full bg-white text-pink-600">
               <Icon name="cloud-lightning" size={24} />
             </span>
-            <h3 class="text-h3 text-olive-800">Families hit by typhoons</h3>
+            <h3 class="text-h3 text-green-800">Families hit by typhoons</h3>
             <p class="text-body text-ink-600">
               Typhoons hit Pangasinan often, and floods can take a family's home and food in one night. We want to bring relief fast, then help families get back on their feet.
             </p>
@@ -175,21 +178,21 @@ const emailToShow = contact.emailDonate ?? contact.emailInfo;
             <span class="grid size-12 place-items-center rounded-full bg-pink-100 text-pink-600">
               <Icon name="graduation-cap" size={24} />
             </span>
-            <h3 class="text-h3 text-olive-800">Students who struggle to stay in school</h3>
+            <h3 class="text-h3 text-green-800">Students who struggle to stay in school</h3>
             <p class="text-body text-ink-600">
               When money is tight, school is often the first thing to go. We want to help children and young people keep learning.
             </p>
           </div>
         </article>
 
-        <!-- Orphans and elderly: plain tinted card, no photo (none we can honestly use) -->
+        <!-- Children without parents and our elders: plain tinted card, no photo (none we can honestly use) -->
         <article class="flex flex-col gap-3 rounded-panel bg-pink-50 p-6 ring-1 ring-pink-200 md:p-7 lg:col-span-7">
           <span class="grid size-12 place-items-center rounded-full bg-white text-pink-600">
             <Icon name="heart-handshake" size={24} />
           </span>
-          <h3 class="text-h3 text-olive-800">Orphans and the elderly</h3>
+          <h3 class="text-h3 text-green-800">Children without parents and our elders</h3>
           <p class="max-w-xl text-body text-ink-600">
-            Children without parents and older neighbors can go unnoticed. We want to make sure someone shows up with food, care and company.
+            They can easily go unnoticed. We want to make sure someone shows up for them with food, care and company.
           </p>
         </article>
       </div>
@@ -205,13 +208,13 @@ const emailToShow = contact.emailDonate ?? contact.emailInfo;
     shownGoals.length > 0 && (
       <section class="bg-pink-100" aria-labelledby="goals-heading">
         <div class="container-page py-12 md:py-16">
-          <h2 id="goals-heading" class="font-accent text-label font-medium italic text-pink-600">
+          <h2 id="goals-heading" class="text-label text-pink-600">
             Where we are headed
           </h2>
           <ul class="mt-6 grid gap-8 sm:grid-cols-3">
             {shownGoals.map((goal) => (
               <li>
-                <p class="text-display text-olive-800">
+                <p class="text-display text-green-800">
                   {goal.current !== null ? `${goal.current} of ${goal.target}` : goal.target}
                 </p>
                 <p class="mt-1 text-body text-ink-600">
@@ -227,14 +230,14 @@ const emailToShow = contact.emailDonate ?? contact.emailInfo;
   }
 
   <!-- 5. Ways to help (dark) -->
-  <section class="bg-olive-800" data-surface="dark" aria-label="Ways to help">
+  <section class="bg-green-800" data-surface="dark" aria-label="Ways to help">
     <div class="container-page section grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
       <div class="lg:sticky lg:top-28 lg:self-start">
         <SectionHeading
           tone="dark"
           label="Ways to help"
           title="Every way to help starts with a message"
-          intro="There is no online checkout. Tell us what you would like to give, and we will follow up by email or phone."
+          intro="There is no online checkout. Tell us what you would like to share, and we will follow up by email or phone."
         />
         <div class="mt-8">
           <Button href="/get-involved/" variant="on-dark" icon="arrow-right">See all the ways to help</Button>
@@ -243,13 +246,13 @@ const emailToShow = contact.emailDonate ?? contact.emailInfo;
 
       <ol class="divide-y divide-pink-50/15 border-y border-pink-50/15">
         <li class="flex gap-5 py-7">
-          <span class="grid size-12 shrink-0 place-items-center rounded-full bg-olive-700 text-pink-300">
+          <span class="grid size-12 shrink-0 place-items-center rounded-full bg-green-700 text-pink-300">
             <Icon name="hand-coins" size={24} />
           </span>
           <div>
-            <h3 class="text-h3 text-pink-50">Give money</h3>
+            <h3 class="text-h3 text-pink-50">Donate money</h3>
             <p class="mt-2 text-body text-pink-50/85">
-              Message us that you would like to give, and we will reply with how to send it.
+              Message us that you would like to donate, and we will reply with how to send it.
             </p>
             <a href={donateLink.href} class="mt-3 inline-flex min-h-11 items-center gap-2 font-semibold text-pink-300 underline-offset-4 hover:underline">
               How to donate <Icon name="arrow-right" size={18} />
@@ -257,26 +260,26 @@ const emailToShow = contact.emailDonate ?? contact.emailInfo;
           </div>
         </li>
         <li class="flex gap-5 py-7">
-          <span class="grid size-12 shrink-0 place-items-center rounded-full bg-olive-700 text-pink-300">
+          <span class="grid size-12 shrink-0 place-items-center rounded-full bg-green-700 text-pink-300">
             <Icon name="package" size={24} />
           </span>
           <div>
-            <h3 class="text-h3 text-pink-50">Give clothes or food</h3>
+            <h3 class="text-h3 text-pink-50">Share clothes or food</h3>
             <p class="mt-2 text-body text-pink-50/85">
               Contact us first, so we can tell you what is needed and where to bring it.
             </p>
-            <!-- Phase 6 will open the form with "Donate clothes" / "Donate food" already picked. -->
+            <!-- Could open the form with "Share clothes" / "Share food" already picked (contactHref). -->
             <a href="/contact/" class="mt-3 inline-flex min-h-11 items-center gap-2 font-semibold text-pink-300 underline-offset-4 hover:underline">
-              Offer clothes or food <Icon name="arrow-right" size={18} />
+              Share clothes or food <Icon name="arrow-right" size={18} />
             </a>
           </div>
         </li>
         <li class="flex gap-5 py-7">
-          <span class="grid size-12 shrink-0 place-items-center rounded-full bg-olive-700 text-pink-300">
+          <span class="grid size-12 shrink-0 place-items-center rounded-full bg-green-700 text-pink-300">
             <Icon name="hand-heart" size={24} />
           </span>
           <div>
-            <h3 class="text-h3 text-pink-50">Give your time</h3>
+            <h3 class="text-h3 text-pink-50">Share your time</h3>
             <p class="mt-2 text-body text-pink-50/85">
               Join our drives and events, or share a skill you have.
             </p>
@@ -313,7 +316,7 @@ const emailToShow = contact.emailDonate ?? contact.emailInfo;
               <Icon name="calendar" size={26} />
             </span>
             <div class="max-w-2xl">
-              <h2 class="text-h3 text-olive-800">Events and news</h2>
+              <h2 class="text-h3 text-green-800">Events and news</h2>
               <p class="mt-2 text-body text-ink-600">
                 We are just getting started. Our first events and news posts will appear here as soon as they are published.
               </p>
@@ -328,28 +331,29 @@ const emailToShow = contact.emailDonate ?? contact.emailInfo;
   <!-- 7. Final call to action -->
   <section class="container-page pb-16 pt-6 md:pb-24" aria-labelledby="cta-heading">
     <div class="relative overflow-hidden rounded-panel bg-pink-100 px-6 py-12 md:px-14 md:py-16">
-      <Butterfly class="pointer-events-none absolute -bottom-6 -right-6 size-44 -rotate-12 text-pink-500 opacity-25 md:-right-2 md:bottom-4 md:size-64" />
+      <HeartLeaf class="pointer-events-none absolute -bottom-6 -right-6 size-44 -rotate-12 text-pink-500 opacity-25 md:-right-2 md:bottom-4 md:size-64" />
       <div class="relative max-w-xl">
-        <h2 id="cta-heading" class="text-h2 text-olive-800">Get in touch to help</h2>
+        <p class="font-script text-script text-pink-600">Together for a brighter tomorrow</p>
+        <h2 id="cta-heading" class="mt-2 text-h2 text-green-800">Get in touch to help</h2>
         <p class="mt-4 text-lead text-ink-600">
-          Tell us whether you would like to give money, clothes or food, volunteer, or partner with us. We will reply with the next step.
+          Tell us whether you would like to donate money, share clothes or food, volunteer, or partner with us. We will reply with the next step.
         </p>
         <div class="mt-7">
           <Button href="/contact/" size="lg">Contact us</Button>
         </div>
         {
           (contact.phone || emailToShow) && (
-            <ul class="mt-8 flex flex-col gap-2 text-body text-olive-800">
+            <ul class="mt-8 flex flex-col gap-2 text-body text-green-800">
               {contact.phone && (
                 <li class="flex items-center gap-3">
-                  <Icon name="phone" size={20} class="text-pink-600" />
-                  <a href={`tel:${contact.phone.replace(/\s+/g, '')}`} class="font-semibold">{contact.phone}</a>
+                  <Icon name="phone" size={20} class="shrink-0 text-pink-600" />
+                  <a href={`tel:${contact.phone.replace(/\s+/g, '')}`} class="-my-3 inline-block py-3 font-semibold">{contact.phone}</a>
                 </li>
               )}
               {emailToShow && (
                 <li class="flex items-center gap-3">
-                  <Icon name="mail" size={20} class="text-pink-600" />
-                  <a href={`mailto:${emailToShow}`} class="font-semibold">{emailToShow}</a>
+                  <Icon name="mail" size={20} class="shrink-0 text-pink-600" />
+                  <a href={`mailto:${emailToShow}`} class="-my-3 inline-block py-3 font-semibold">{emailToShow}</a>
                 </li>
               )}
             </ul>

@@ -1,0 +1,44 @@
+---
+/**
+ * Address: the office address from src/data/site.ts, as a link that opens
+ * Google Maps (the Maps app on phones).
+ *
+ * It shows the 2–3 tidy lines from `addressLines`. On a narrow screen a line
+ * may still need to wrap, so it only ever wraps after a comma (never in the
+ * middle of "Caranto Building" or "Brgy. Mabini (Pob.)").
+ * Used by the footer, the Contact page and the About page.
+ */
+import { addressLines, maps, contact } from '../data/site';
+
+interface Props {
+  /** Classes for the link (colour, underline, size). */
+  class?: string;
+  /** Classes for the optional landmark line under the address. */
+  landmarkClass?: string;
+}
+const { class: className, landmarkClass = 'mt-1 block text-small opacity-85' } = Astro.props;
+const { landmark } = contact.address;
+---
+
+<a href={maps.openUrl} target="_blank" rel="noopener noreferrer" class:list={['block', className]}>
+  {
+    addressLines.map((line) => {
+      const parts = line.split(', ');
+      return (
+        <span class="block">
+          {parts.map((part, i) => (
+            <>
+              <span class="whitespace-nowrap">
+                {part}
+                {i < parts.length - 1 && ','}
+              </span>
+              {i < parts.length - 1 && ' '}
+            </>
+          ))}
+        </span>
+      );
+    })
+  }
+  <span class="sr-only"> (opens Google Maps)</span>
+</a>
+{landmark && <span class={landmarkClass}>{landmark}</span>}

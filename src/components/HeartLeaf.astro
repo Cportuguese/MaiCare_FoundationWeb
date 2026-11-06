@@ -1,0 +1,46 @@
+---
+/**
+ * HeartLeaf: the signature decoration (Phase 8). A hand-drawn heart with two
+ * small leaves at its tip, from the foundation's brochure. It replaces the old
+ * butterfly, which is not in the new logo.
+ *
+ * It is only a quiet decoration: never put it behind text, keep it faint and
+ * at the edge of a section. Colour comes from the text colour (currentColor),
+ * e.g. class="text-pink-500".
+ */
+interface Props {
+  class?: string;
+  /** Stroke thickness in pixels (stays the same however big the drawing is). */
+  strokeWidth?: number;
+}
+
+const { class: className, strokeWidth = 1.4 } = Astro.props;
+
+const paths = [
+  // heart, drawn in one loop that slightly overshoots at the top (hand-drawn feel)
+  'M50 76 C 34 63, 15 50, 15 32 C 15 20, 24 12, 34 12 C 42 12, 47 17, 50 25 C 53 17, 58 12, 66 12 C 76 12, 85 20, 85 32 C 85 50, 66 63, 50 76',
+  'M50 25 C 49 22, 47 19, 45 17',
+  // stem from the tip
+  'M50 76 C 50 81, 49 86, 47 91',
+  // left leaf + vein
+  'M48.5 86 C 42 80, 32 80, 26 86 C 32 92, 42 92, 48.5 86',
+  'M48.5 86 C 40 86, 33 86, 28 86',
+  // right leaf + vein
+  'M49.5 83 C 55 76, 65 75, 72 80 C 66 87, 56 88, 49.5 83',
+  'M49.5 83 C 57 81, 64 80, 70 80',
+];
+---
+
+<svg
+  viewBox="0 0 100 100"
+  fill="none"
+  stroke="currentColor"
+  stroke-width={strokeWidth}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class={className}
+  aria-hidden="true"
+  focusable="false"
+>
+  {paths.map((d) => <path d={d} vector-effect="non-scaling-stroke" />)}
+</svg>

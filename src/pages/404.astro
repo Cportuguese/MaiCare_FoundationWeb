@@ -3,13 +3,13 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import Button from '../components/Button.astro';
-import Butterfly from '../components/Butterfly.astro';
+import HeartLeaf from '../components/HeartLeaf.astro';
 import { donateLink } from '../data/nav';
 ---
 
 <PageLayout title="Page not found" description="This page could not be found.">
   <section class="relative overflow-hidden">
-    <Butterfly class="pointer-events-none absolute -right-12 top-2 size-52 rotate-12 text-pink-500 opacity-[0.12] md:right-8 md:size-72" />
+    <HeartLeaf class="pointer-events-none absolute -right-12 top-2 size-52 rotate-12 text-pink-500 opacity-[0.12] md:right-8 md:size-72" />
     <div class="container-page section relative">
       <SectionHeading
         level="h1"

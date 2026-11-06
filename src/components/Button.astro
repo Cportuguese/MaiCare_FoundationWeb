@@ -3,8 +3,8 @@
  * Button
  * ------
  * variant="primary"   solid pink. ONE per section. For the main action.
- * variant="secondary" olive outline. For the second action.
- * variant="on-dark"   cream. The button to use on olive / plum backgrounds.
+ * variant="secondary" green outline. For the second action.
+ * variant="on-dark"   cream. The button to use on green / plum backgrounds.
  *
  * Pass `href` and you get a link (<a>); leave it out and you get a <button>.
  * Always 48px tall or more, so it is easy to tap on a phone.
@@ -52,9 +52,9 @@ const variants = {
   primary:
     'bg-pink-600 text-white shadow-[var(--shadow-button)] hover:bg-pink-700 hover:-translate-y-0.5',
   secondary:
-    'bg-transparent text-olive-800 border-2 border-olive-800 hover:bg-olive-800 hover:text-pink-50',
+    'bg-transparent text-green-800 border-2 border-green-800 hover:bg-green-800 hover:text-pink-50',
   'on-dark':
-    'bg-cream-200 text-olive-900 hover:bg-cream-100 hover:-translate-y-0.5',
+    'bg-cream-200 text-green-900 hover:bg-cream-100 hover:-translate-y-0.5',
 };
 
 const classes = [base, sizes[size], variants[variant], className].filter(Boolean).join(' ');

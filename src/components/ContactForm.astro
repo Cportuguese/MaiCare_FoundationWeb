@@ -31,7 +31,7 @@ const options = contactTopics.map((t) => ({ value: t.id, label: t.label }));
 {
   !showForm && (
     <div id="contact-form" class="rounded-panel bg-white p-7 shadow-soft md:p-10">
-      <h2 class="text-h3 text-olive-800">Our message form is almost ready</h2>
+      <h2 class="text-h3 text-green-800">Our message form is almost ready</h2>
       <p class="mt-3 text-body text-ink-600">
         We are still setting it up. Please check back very soon
         {fallbackMail || contact.phone || contact.facebookUrl ? ', or reach us directly using the details on this page.' : '.'}
@@ -44,7 +44,7 @@ const options = contactTopics.map((t) => ({ value: t.id, label: t.label }));
   showForm && (
     <div id="contact-form" class="scroll-mt-24 rounded-panel bg-white p-6 shadow-soft sm:p-8 md:p-10">
       {!configured && (
-        <p class="mb-6 rounded-field bg-pink-100 p-4 text-small text-olive-800">
+        <p class="mb-6 rounded-field bg-pink-100 p-4 text-small text-green-800">
           <strong>Preview only.</strong> The Web3Forms access key is not set yet in <code>src/data/site.ts</code>, so
           sending will fail. The live site hides this form until the key is added.
         </p>
@@ -77,7 +77,7 @@ const options = contactTopics.map((t) => ({ value: t.id, label: t.label }));
         <FormField id="name" name="name" label="Your name" required autocomplete="name" />
 
         <fieldset class="m-0 flex min-w-0 flex-col gap-4 border-0 p-0">
-          <legend class="mb-1 p-0 text-[0.9375rem] font-semibold text-olive-800">
+          <legend class="mb-1 p-0 text-[0.9375rem] font-semibold text-green-800">
             How can we reach you? <span class="font-normal text-ink-500">Give at least one</span>
           </legend>
           <div class="grid gap-5 md:grid-cols-2">
@@ -93,7 +93,7 @@ const options = contactTopics.map((t) => ({ value: t.id, label: t.label }));
           label="Your message"
           required
           rows={5}
-          hint="A few words is enough. For goods, tell us what you would like to give."
+          hint="A few words is enough. For goods, tell us what you would like to share."
         />
 
         <Checkbox id="consent" name="consent" required>
@@ -103,7 +103,7 @@ const options = contactTopics.map((t) => ({ value: t.id, label: t.label }));
           </a>.
         </Checkbox>
 
-        <div id="form-error" role="alert" hidden class="flex items-start gap-3 rounded-field bg-pink-100 p-4 text-small text-olive-800">
+        <div id="form-error" role="alert" hidden class="flex items-start gap-3 rounded-field bg-pink-100 p-4 text-small text-green-800">
           <Icon name="info" size={20} class="mt-0.5 shrink-0 text-error" />
           <p>
             <strong class="text-error">We could not send your message.</strong>
@@ -129,7 +129,7 @@ const options = contactTopics.map((t) => ({ value: t.id, label: t.label }));
         <span class="mx-auto grid size-16 place-items-center rounded-full bg-pink-100 text-pink-600">
           <Icon name="check" size={32} />
         </span>
-        <h2 class="mt-5 text-h2 text-olive-800">Thank you<span id="form-success-name"></span>. We got your message.</h2>
+        <h2 class="mt-5 text-h2 text-green-800">Thank you<span id="form-success-name"></span>. We got your message.</h2>
         <p class="mx-auto mt-3 max-w-md text-lead text-ink-600">
           Someone from maiCare will reply by email or phone with the next steps.
         </p>

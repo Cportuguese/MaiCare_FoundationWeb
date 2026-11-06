@@ -1,6 +1,6 @@
 ---
 /**
- * Style guide (hidden page, Phase 2)
+ * Style guide (hidden page, Phase 2; brand refreshed in Phase 8)
  * ----------------------------------
  * One page that shows every colour, font, button, card, icon and form field
  * so the look can be reviewed together. It is NOT in the menu or footer and
@@ -18,8 +18,10 @@ import Checkbox from '../components/Checkbox.astro';
 import FormField from '../components/FormField.astro';
 import Icon, { icons, type IconName } from '../components/Icon.astro';
 import SectionHeading from '../components/SectionHeading.astro';
-import Butterfly from '../components/Butterfly.astro';
+import HeartLeaf from '../components/HeartLeaf.astro';
+import Logo from '../components/Logo.astro';
 import Underline from '../components/Underline.astro';
+import Wave from '../components/Wave.astro';
 import css from '../styles/global.css?raw';
 
 // ---------- Read colour tokens from global.css ----------
@@ -34,10 +36,10 @@ for (const m of css.matchAll(/--color-([a-z0-9-]+):[ \t]*#[0-9a-fA-F]{6};[ \t]*\
 }
 
 const families: { title: string; keys: string[] }[] = [
-  { title: 'Pink', keys: ['pink-50', 'pink-100', 'pink-200', 'pink-300', 'pink-400', 'pink-500', 'pink-600', 'pink-700', 'pink-800'] },
-  { title: 'Olive', keys: ['olive-50', 'olive-100', 'olive-200', 'olive-500', 'olive-700', 'olive-800', 'olive-900'] },
-  { title: 'Plum and cream', keys: ['plum-700', 'plum-800', 'cream-100', 'cream-200', 'cream-300'] },
-  { title: 'Warm gray and feedback', keys: ['ink-600', 'ink-500', 'ink-300', 'error', 'success'] },
+  { title: 'Rose pink', keys: ['pink-50', 'pink-100', 'pink-200', 'pink-300', 'pink-500', 'pink-600', 'pink-700'] },
+  { title: 'Forest and sage green', keys: ['green-50', 'green-100', 'green-200', 'green-500', 'green-700', 'green-800', 'green-900'] },
+  { title: 'Cream and plum', keys: ['cream-50', 'cream-100', 'cream-200', 'cream-300', 'plum-700', 'plum-800'] },
+  { title: 'Green-gray text and feedback', keys: ['ink-600', 'ink-500', 'ink-300', 'error', 'success'] },
 ];
 
 // ---------- Contrast maths (WCAG 2.x) ----------
@@ -54,34 +56,45 @@ function ratio(a: string, b: string) {
 
 type Pair = { fg: string; bg: string; use: string; min: 4.5 | 3 };
 const pairs: Pair[] = [
-  { fg: 'ink-600', bg: 'pink-50', use: 'Body text on the page background', min: 4.5 },
-  { fg: 'ink-600', bg: 'pink-100', use: 'Body text on a tinted card', min: 4.5 },
+  { fg: 'ink-600', bg: 'cream-50', use: 'Body text on the page background (cream)', min: 4.5 },
+  { fg: 'ink-600', bg: 'pink-50', use: 'Body text on a blush panel', min: 4.5 },
+  { fg: 'ink-600', bg: 'pink-100', use: 'Body text on a pink card', min: 4.5 },
+  { fg: 'ink-600', bg: 'green-100', use: 'Body text on a sage card', min: 4.5 },
   { fg: 'ink-600', bg: 'white', use: 'Body text on a white card', min: 4.5 },
   { fg: 'ink-500', bg: 'white', use: 'Hints and captions on white', min: 4.5 },
-  { fg: 'ink-500', bg: 'pink-50', use: 'Hints and captions on blush', min: 4.5 },
-  { fg: 'olive-800', bg: 'pink-50', use: 'Headlines on blush', min: 4.5 },
-  { fg: 'olive-800', bg: 'pink-100', use: 'Headlines on a tinted card', min: 4.5 },
-  { fg: 'olive-800', bg: 'cream-200', use: 'Headlines on cream', min: 4.5 },
+  { fg: 'ink-500', bg: 'cream-50', use: 'Hints and captions on cream', min: 4.5 },
+  { fg: 'ink-500', bg: 'pink-100', use: 'Hints and captions on a pink card', min: 4.5 },
+  { fg: 'green-800', bg: 'cream-50', use: 'Headlines on cream', min: 4.5 },
+  { fg: 'green-800', bg: 'pink-100', use: 'Headlines on a pink card', min: 4.5 },
+  { fg: 'green-800', bg: 'green-100', use: 'Headlines and chips on a sage card', min: 4.5 },
+  { fg: 'green-700', bg: 'cream-50', use: 'Script tagline on cream', min: 4.5 },
+  { fg: 'pink-600', bg: 'cream-50', use: 'Pink links and labels on cream', min: 4.5 },
   { fg: 'pink-600', bg: 'pink-50', use: 'Pink links and labels on blush', min: 4.5 },
-  { fg: 'pink-600', bg: 'pink-100', use: 'Pink links and labels on a tinted card', min: 4.5 },
+  { fg: 'pink-600', bg: 'pink-100', use: 'Pink links and labels on a pink card', min: 4.5 },
+  { fg: 'pink-600', bg: 'green-100', use: 'Pink links and icons on a sage card', min: 4.5 },
   { fg: 'pink-600', bg: 'white', use: 'Pink links and labels on white', min: 4.5 },
+  { fg: 'pink-700', bg: 'pink-100', use: 'Pink link hover on a pink card', min: 4.5 },
   { fg: 'white', bg: 'pink-600', use: 'Main button label', min: 4.5 },
   { fg: 'white', bg: 'pink-700', use: 'Main button label on hover', min: 4.5 },
-  { fg: 'olive-900', bg: 'cream-200', use: 'On-dark button label', min: 4.5 },
-  { fg: 'pink-50', bg: 'olive-800', use: 'Text on a dark olive section', min: 4.5 },
-  { fg: 'pink-50', bg: 'olive-900', use: 'Text on the footer', min: 4.5 },
-  { fg: 'pink-50', bg: 'olive-700', use: 'Text on a dark card', min: 4.5 },
-  { fg: 'pink-300', bg: 'olive-800', use: 'Pink labels and links on dark olive', min: 4.5 },
-  { fg: 'pink-300', bg: 'olive-900', use: 'Pink labels and links on the footer', min: 4.5 },
+  { fg: 'green-900', bg: 'cream-200', use: 'On-dark button label', min: 4.5 },
+  { fg: 'pink-50', bg: 'green-800', use: 'Text on a dark green section', min: 4.5 },
+  { fg: 'pink-50', bg: 'green-900', use: 'Text on the footer', min: 4.5 },
+  { fg: 'pink-50', bg: 'green-700', use: 'Text on a dark card', min: 4.5 },
+  { fg: 'cream-200', bg: 'green-900', use: 'Footer links and tagline', min: 4.5 },
+  { fg: 'green-100', bg: 'green-900', use: 'Footer "EST. 2026" line', min: 4.5 },
+  { fg: 'pink-300', bg: 'green-800', use: 'Pink labels and links on dark green', min: 4.5 },
+  { fg: 'pink-300', bg: 'green-900', use: 'Pink labels and links on the footer', min: 4.5 },
+  { fg: 'pink-300', bg: 'green-700', use: 'Pink icons in dark circles (icons only, UI minimum 3:1)', min: 3 },
   { fg: 'cream-200', bg: 'plum-700', use: 'Banner text', min: 4.5 },
   { fg: 'white', bg: 'plum-700', use: 'Banner text (white)', min: 4.5 },
   { fg: 'error', bg: 'white', use: 'Form error message on white', min: 4.5 },
-  { fg: 'error', bg: 'pink-50', use: 'Form error message on blush', min: 4.5 },
-  { fg: 'success', bg: 'pink-50', use: 'Success message on blush', min: 4.5 },
+  { fg: 'error', bg: 'cream-50', use: 'Form error message on cream', min: 4.5 },
+  { fg: 'success', bg: 'cream-50', use: 'Success message on cream', min: 4.5 },
   { fg: 'ink-300', bg: 'white', use: 'Form field border on white (UI minimum 3:1)', min: 3 },
-  { fg: 'ink-300', bg: 'pink-50', use: 'Form field border on blush (UI minimum 3:1)', min: 3 },
-  { fg: 'pink-500', bg: 'pink-50', use: 'Logo pink: butterfly, underline, hearts (decoration only)', min: 3 },
-  { fg: 'olive-800', bg: 'pink-50', use: 'Keyboard focus ring (UI minimum 3:1)', min: 3 },
+  { fg: 'ink-300', bg: 'cream-50', use: 'Form field border on cream (UI minimum 3:1)', min: 3 },
+  { fg: 'pink-500', bg: 'cream-50', use: 'Logo rose: hearts, line art, underline (decoration only)', min: 3 },
+  { fg: 'pink-500', bg: 'pink-100', use: 'Logo rose on a pink card (decoration only)', min: 3 },
+  { fg: 'green-800', bg: 'cream-50', use: 'Keyboard focus ring (UI minimum 3:1)', min: 3 },
 ];
 const results = pairs.map((p) => {
   const fg = tokens[p.fg] ?? (p.fg === 'white' ? '#ffffff' : '#000000');
@@ -94,6 +107,7 @@ const allPass = results.every((r) => r.pass);
 const iconNames = Object.keys(icons) as IconName[];
 
 const sections = [
+  ['logo', 'Logo'],
   ['colors', 'Colors'],
   ['contrast', 'Contrast'],
   ['type', 'Type'],
@@ -114,18 +128,18 @@ const sections = [
 >
   <header class="border-b border-pink-200 bg-white">
     <div class="container-page py-8 md:py-10">
-      <p class="font-accent italic text-label font-medium text-pink-600">Internal page, not public</p>
+      <p class="text-label text-pink-600">Internal page, not public</p>
       <h1 class="text-h1 mt-2">maiCare style guide</h1>
       <p class="mt-3 max-w-2xl text-lead">
         Every color, font and building block in one place. Hidden from the menu and from search engines.
-        Phase 2 of the build.
+        Built in Phase 2; brand refreshed in Phase 8 from the foundation's official logo and brochure.
       </p>
       <nav aria-label="Style guide sections" class="mt-6 flex flex-wrap gap-2">
         {
           sections.map(([id, name]) => (
             <a
               href={`#${id}`}
-              class="inline-flex min-h-11 items-center rounded-full bg-pink-100 px-4 text-[0.9375rem] font-semibold text-olive-800 no-underline hover:bg-pink-200"
+              class="inline-flex min-h-11 items-center rounded-full bg-pink-100 px-4 text-[0.9375rem] font-semibold text-green-800 no-underline hover:bg-pink-200"
             >
               {name}
             </a>
@@ -136,10 +150,41 @@ const sections = [
   </header>
 
   <main>
-    <!-- ===================== COLORS ===================== -->
-    <section id="colors" class="section scroll-mt-4">
+    <!-- ===================== LOGO ===================== -->
+    <section id="logo" class="section scroll-mt-4">
       <div class="container-page">
-        <SectionHeading label="Colors" title="Pink, olive and blush" intro="Tuned from the reference screenshots so every text color passes contrast. The logo pink (500) is for decoration; the action pink (600) is for buttons and pink text." />
+        <SectionHeading
+          label="Logo"
+          title="The official logo, redrawn for the web"
+          intro="Redrawn as a clean SVG from the foundation's logo image, without the glow. Sage 'ma', rose 'iCare', a heart over the 'i', FOUNDATION underneath. Swap in the original file if the foundation sends one (see src/components/Logo.astro)."
+        />
+        <div class="mt-10 grid gap-5 md:grid-cols-3">
+          <div class="grid place-items-center rounded-[var(--radius-panel)] bg-white p-8 shadow-[var(--shadow-soft)]">
+            <Logo />
+            <p class="mt-5 text-small text-ink-500">Header (no tagline: no room)</p>
+          </div>
+          <div class="grid place-items-center rounded-[var(--radius-panel)] bg-cream-100 p-8">
+            <Logo full size="lg" />
+            <p class="mt-5 text-small text-ink-500">Full, with EST. 2026 and the tagline</p>
+          </div>
+          <div data-surface="dark" class="grid place-items-center rounded-[var(--radius-panel)] bg-green-900 p-8">
+            <Logo tone="dark" full size="lg" />
+            <p class="mt-5 text-small text-pink-50/80">Footer, on dark green</p>
+          </div>
+        </div>
+        <div class="mt-5 flex flex-wrap items-center gap-6 rounded-[var(--radius-panel)] bg-white p-6 shadow-[var(--shadow-soft)]">
+          <img src="/favicon.svg" width="64" height="64" alt="" class="size-16" />
+          <img src="/favicon.svg" width="32" height="32" alt="" class="size-8" />
+          <img src="/favicon.svg" width="16" height="16" alt="" class="size-4" />
+          <p class="max-w-md text-small text-ink-600">Browser tab icon: the logo's pink "i" with its heart, on blush. It stays readable at 16px.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== COLORS ===================== -->
+    <section id="colors" class="section scroll-mt-4 bg-white">
+      <div class="container-page">
+        <SectionHeading label="Colors" title="Rose, forest green and blush on cream" intro="Sampled from the logo and brochure, then tuned so every text color passes contrast. The logo rose (500) is for decoration; the action pink (600) is for buttons and pink text. The page itself is warm cream, like the brochure's paper." />
         <div class="mt-10 space-y-10">
           {
             families.map((f) => (
@@ -150,7 +195,7 @@ const sections = [
                     <li class="overflow-hidden rounded-[var(--radius-card)] bg-white shadow-[var(--shadow-soft)]">
                       <div class="h-20 border-b border-black/5" style={`background:var(--color-${k})`} />
                       <div class="p-3">
-                        <p class="text-small font-semibold text-olive-800">{k}</p>
+                        <p class="text-small font-semibold text-green-800">{k}</p>
                         <p class="text-small text-ink-500">{tokens[k]}</p>
                         {notes[k] && <p class="mt-1 text-[0.8125rem] leading-snug text-ink-500">{notes[k]}</p>}
                       </div>
@@ -165,7 +210,7 @@ const sections = [
     </section>
 
     <!-- ===================== CONTRAST ===================== -->
-    <section id="contrast" class="section scroll-mt-4 bg-white">
+    <section id="contrast" class="section scroll-mt-4">
       <div class="container-page">
         <SectionHeading
           label="Contrast check"
@@ -175,7 +220,7 @@ const sections = [
         <p
           class:list={[
             'mt-6 inline-flex items-center gap-2 rounded-full px-4 py-2 font-semibold',
-            allPass ? 'bg-olive-100 text-olive-900' : 'bg-pink-100 text-error',
+            allPass ? 'bg-green-100 text-green-900' : 'bg-pink-100 text-error',
           ]}
         >
           <Icon name={allPass ? 'check' : 'info'} size={20} />
@@ -193,13 +238,13 @@ const sections = [
                 </span>
                 <div class="min-w-0 flex-1 sm:grid sm:grid-cols-[1fr_auto] sm:items-center sm:gap-6">
                   <div>
-                    <p class="text-small font-semibold text-olive-800">{r.use}</p>
+                    <p class="text-small font-semibold text-green-800">{r.use}</p>
                     <p class="text-[0.8125rem] text-ink-500">
                       {r.fg} on {r.bg}
                     </p>
                   </div>
                   <p class="mt-1 text-small sm:mt-0 sm:text-right">
-                    <span class="font-semibold text-olive-800">{r.r.toFixed(2)}:1</span>
+                    <span class="font-semibold text-green-800">{r.r.toFixed(2)}:1</span>
                     <span class:list={['ml-2 font-semibold', r.pass ? 'text-success' : 'text-error']}>
                       {r.pass ? `Pass (${r.min}:1)` : `Fail (needs ${r.min}:1)`}
                     </span>
@@ -210,38 +255,43 @@ const sections = [
           }
         </ul>
         <p class="mt-6 max-w-2xl text-small text-ink-500">
-          Not allowed, because they fail: pink-600 or pink-500 text on dark olive (1.9:1 and 2.3:1). On dark
-          sections use cream buttons and pink-300 text instead.
+          Not allowed, because they fail: pink-600 or pink-500 text on dark green, and pink-500 for any text
+          (it is decoration only). On dark sections use cream buttons and pink-300 text instead. Pink-300 is
+          for icons only on green-700 (3.9:1).
         </p>
       </div>
     </section>
 
     <!-- ===================== TYPE ===================== -->
-    <section id="type" class="section scroll-mt-4">
+    <section id="type" class="section scroll-mt-4 bg-white">
       <div class="container-page">
         <SectionHeading
           label="Type"
           title="Two fonts, used with restraint"
-          intro="Plus Jakarta Sans does almost everything. Fraunces Italic appears only for small labels, taglines and pull quotes: that soft serif echoes the one in the logo."
+          intro="Plus Jakarta Sans does almost everything, including section labels. Dancing Script, a readable script close to the brochure's lettering, appears only in short accent phrases at 20px or larger."
         />
 
         <div class="mt-10 grid gap-10 lg:grid-cols-[14rem_1fr]">
           <dl class="space-y-6 text-small">
             <div>
-              <dt class="font-semibold text-olive-800">Headlines</dt>
+              <dt class="font-semibold text-green-800">Headlines</dt>
               <dd>Plus Jakarta Sans ExtraBold (800)</dd>
             </div>
             <div>
-              <dt class="font-semibold text-olive-800">Body</dt>
+              <dt class="font-semibold text-green-800">Body</dt>
               <dd>Plus Jakarta Sans Regular (400), 17px on phones</dd>
             </div>
             <div>
-              <dt class="font-semibold text-olive-800">Buttons and card titles</dt>
+              <dt class="font-semibold text-green-800">Buttons and card titles</dt>
               <dd>Plus Jakarta Sans SemiBold / Bold (600 / 700)</dd>
             </div>
             <div>
-              <dt class="font-semibold text-olive-800">Accents</dt>
-              <dd class="font-accent italic">Fraunces Italic (400 / 500)</dd>
+              <dt class="font-semibold text-green-800">Section labels</dt>
+              <dd>Plus Jakarta Sans Bold (700), 16px, pink</dd>
+            </div>
+            <div>
+              <dt class="font-semibold text-green-800">Accents</dt>
+              <dd><span class="font-script text-xl">Dancing Script</span> SemiBold (600)</dd>
             </div>
             <p class="text-ink-500">Sizes grow smoothly between phone and desktop; no breakpoints to maintain.</p>
           </dl>
@@ -249,19 +299,19 @@ const sections = [
           <div class="space-y-8">
             <div>
               <p class="mb-1 text-small text-ink-500">text-display: home page hero only</p>
-              <p class="text-display font-extrabold text-olive-800">With humble hearts, we serve.</p>
+              <p class="text-display font-extrabold text-green-800">Sharing hope. Extending a helping hand.</p>
             </div>
             <div>
               <p class="mb-1 text-small text-ink-500">text-h1: one per page</p>
-              <p class="text-h1 text-olive-800">A foundation built on care</p>
+              <p class="text-h1 text-green-800">Born from a simple desire to help</p>
             </div>
             <div>
               <p class="mb-1 text-small text-ink-500">text-h2: section headings</p>
-              <p class="text-h2 text-olive-800">How you can help</p>
+              <p class="text-h2 text-green-800">How you can help</p>
             </div>
             <div>
               <p class="mb-1 text-small text-ink-500">text-h3: card titles</p>
-              <p class="text-h3 text-olive-800">Give clothes and food</p>
+              <p class="text-h3 text-green-800">Give clothes and food</p>
             </div>
             <div>
               <p class="mb-1 text-small text-ink-500">text-lead: the line under a heading</p>
@@ -273,9 +323,9 @@ const sections = [
             <div>
               <p class="mb-1 text-small text-ink-500">text-body: normal paragraphs</p>
               <p class="max-w-prose">
-                A little help, given with compassion, can change the course of a life. We work with local
-                government, schools, health workers and partner organizations. This paragraph is here to show
-                comfortable line length and spacing on a phone and on a laptop.
+                We may not have many resources today, but we believe that having little should never be a
+                reason not to start. This paragraph is here to show comfortable line length and spacing on a
+                phone and on a laptop.
               </p>
             </div>
             <div>
@@ -283,12 +333,14 @@ const sections = [
               <p class="text-small text-ink-500">Photo placeholder. Replace with a real photo.</p>
             </div>
             <div>
-              <p class="mb-1 text-small text-ink-500">font-accent italic: labels, taglines, pull quotes</p>
-              <p class="font-accent text-label font-medium italic text-pink-600">Donate · Volunteer · Partner</p>
-              <p class="mt-3 max-w-xl font-accent text-2xl italic text-olive-800 md:text-3xl">
-                &ldquo;Every peso donated reaches the people who need it most.&rdquo;
+              <p class="mb-1 text-small text-ink-500">text-label: section labels (sans, never script)</p>
+              <p class="text-label text-pink-600">Donate · Volunteer · Partner</p>
+              <p class="mb-1 mt-6 text-small text-ink-500">font-script text-script: short taglines and one pull quote per page</p>
+              <p class="font-script text-script text-green-700">Kindness everywhere…</p>
+              <p class="mt-2 max-w-xl font-script text-[2.5rem] leading-tight text-green-800">
+                We may start with little, but we start with love.
               </p>
-              <p class="mt-1 text-small text-ink-500">Sample layout only. Real quotes are added when real ones exist.</p>
+              <p class="mt-2 text-small text-ink-500">Never for body text, buttons, menus, form labels, section labels or long headings.</p>
             </div>
             <div>
               <p class="mb-1 text-small text-ink-500">Weights available</p>
@@ -305,7 +357,7 @@ const sections = [
     </section>
 
     <!-- ===================== BUTTONS ===================== -->
-    <section id="buttons" class="section scroll-mt-4 bg-white">
+    <section id="buttons" class="section scroll-mt-4">
       <div class="container-page">
         <SectionHeading
           label="Buttons"
@@ -333,20 +385,20 @@ const sections = [
             </p>
           </div>
 
-          <div data-surface="dark" class="rounded-[var(--radius-panel)] bg-olive-800 p-6 md:p-8">
+          <div data-surface="dark" class="rounded-[var(--radius-panel)] bg-green-800 p-6 md:p-8">
             <h3 class="text-h3 mb-4 text-pink-50!">On dark backgrounds</h3>
             <div class="flex flex-wrap items-center gap-4">
               <Button href="#buttons" variant="on-dark">Donate</Button>
               <Button href="#buttons" variant="on-dark" icon="arrow-right">See how to help</Button>
             </div>
             <p class="mt-4 text-small text-pink-50/80">
-              The pink button is not used on olive: it would only reach 1.9:1. Cream is the button for dark.
+              The pink button is not used on green: the two are too close in darkness. Cream is the button for dark.
             </p>
           </div>
         </div>
 
         <div data-surface="dark" class="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-[var(--radius-panel)] bg-plum-700 px-6 py-5 md:px-8">
-          <p class="font-accent text-xl italic text-pink-50 md:text-2xl">Banner example: a launch or emergency announcement</p>
+          <p class="text-lead font-semibold text-pink-50">Banner example: a launch or emergency announcement</p>
           <Button href="#buttons" variant="on-dark">See more details</Button>
         </div>
         <p class="mt-2 text-small text-ink-500">The plum banner, built in Phase 3, uses the same cream button.</p>
@@ -354,25 +406,25 @@ const sections = [
     </section>
 
     <!-- ===================== HEADINGS ===================== -->
-    <section id="headings" class="section scroll-mt-4">
+    <section id="headings" class="section scroll-mt-4 bg-white">
       <div class="container-page">
         <div class="grid gap-10 lg:grid-cols-2">
           <div>
             <p class="mb-4 text-small text-ink-500">Light section, with underline on the key phrase</p>
             <SectionHeading
               label="About us"
-              title="A foundation built on care"
-              underline="care"
-              intro="This is how a section heading looks: a small Fraunces label, a bold headline and a lead line."
+              title="Born from a simple desire to help"
+              underline="to help"
+              intro="This is how a section heading looks: a small bold label, a bold headline and a lead line."
             />
           </div>
-          <div data-surface="dark" class="rounded-[var(--radius-panel)] bg-olive-900 p-6 md:p-10">
+          <div data-surface="dark" class="rounded-[var(--radius-panel)] bg-green-900 p-6 md:p-10">
             <p class="mb-4 text-small text-pink-50/80">Dark section</p>
             <SectionHeading
               tone="dark"
               label="Get involved"
               title="Give time, food or clothes"
-              intro="Same heading on olive: the label turns light pink, the headline turns blush."
+              intro="Same heading on green: the label turns light pink, the headline turns blush."
             />
           </div>
         </div>
@@ -389,7 +441,7 @@ const sections = [
     </section>
 
     <!-- ===================== CARDS ===================== -->
-    <section id="cards" class="section scroll-mt-4 bg-white">
+    <section id="cards" class="section scroll-mt-4">
       <div class="container-page">
         <SectionHeading
           label="Cards"
@@ -407,9 +459,9 @@ const sections = [
               <p>A white card with a soft shadow. It stands out on a blush background.</p>
             </Card>
           </div>
-          <div data-surface="dark" class="flex rounded-[var(--radius-panel)] bg-olive-800 p-4">
+          <div data-surface="dark" class="flex rounded-[var(--radius-panel)] bg-green-800 p-4">
             <Card tone="dark" icon="utensils" title="Dark card" class="w-full">
-              <p>For use inside an olive section.</p>
+              <p>For use inside a dark green section.</p>
             </Card>
           </div>
         </div>
@@ -425,7 +477,7 @@ const sections = [
     </section>
 
     <!-- ===================== ICONS ===================== -->
-    <section id="icons" class="section scroll-mt-4">
+    <section id="icons" class="section scroll-mt-4 bg-white">
       <div class="container-page">
         <SectionHeading
           label="Icons"
@@ -435,14 +487,14 @@ const sections = [
         <ul class="mt-10 grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">
           {
             iconNames.map((n) => (
-              <li class="flex flex-col items-center gap-2 rounded-[var(--radius-card)] bg-white p-4 text-center shadow-[var(--shadow-soft)]">
+              <li class="flex flex-col items-center gap-2 rounded-[var(--radius-card)] bg-cream-50 p-4 text-center shadow-[var(--shadow-soft)]">
                 <Icon name={n} size={28} class="text-pink-600" />
                 <span class="text-[0.8125rem] leading-tight text-ink-600">{n}</span>
               </li>
             ))
           }
         </ul>
-        <div class="mt-8 flex flex-wrap items-center gap-6 text-olive-800">
+        <div class="mt-8 flex flex-wrap items-center gap-6 text-green-800">
           <span class="inline-flex items-center gap-2"><Icon name="map-pin" size={20} class="text-pink-600" /> 20px with text</span>
           <span class="inline-flex items-center gap-2"><Icon name="phone" size={24} class="text-pink-600" /> 24px standard</span>
           <span class="inline-flex items-center gap-2"><Icon name="heart" size={32} class="text-pink-500" /> 32px feature</span>
@@ -451,7 +503,7 @@ const sections = [
     </section>
 
     <!-- ===================== FORMS ===================== -->
-    <section id="forms" class="section scroll-mt-4 bg-white">
+    <section id="forms" class="section scroll-mt-4">
       <div class="container-page">
         <SectionHeading
           label="Form fields"
@@ -508,82 +560,90 @@ const sections = [
     </section>
 
     <!-- ===================== SIGNATURE ===================== -->
-    <section id="signature" class="section scroll-mt-4">
+    <section id="signature" class="section scroll-mt-4 bg-white">
       <div class="container-page">
         <SectionHeading
           label="Signature details"
-          title="Three small things that make it maiCare"
+          title="Four small things that make it maiCare"
           underline="maiCare"
-          intro="Used the same way everywhere, and kept quiet. Everything else on the page stays restrained."
+          intro="From the brochure, used the same way everywhere, and kept quiet. Everything else on the page stays restrained."
         />
         <div class="mt-10 grid gap-5 md:grid-cols-3">
           <div class="relative overflow-hidden rounded-[var(--radius-panel)] bg-pink-100 p-6 pb-32 md:p-8 md:pb-36">
-            <Butterfly class="pointer-events-none absolute -bottom-8 -right-4 size-40 -rotate-6 text-pink-500 opacity-60 md:size-44" />
-            <h3 class="text-h3 relative">The butterfly</h3>
+            <HeartLeaf class="pointer-events-none absolute -bottom-8 -right-4 size-40 -rotate-6 text-pink-500 opacity-60 md:size-44" />
+            <h3 class="text-h3 relative">The heart-and-leaf line art</h3>
             <p class="relative mt-3 max-w-[16rem]">
-              Line art from the logo, big and faint at the edge of a section. Never behind text.
+              The brochure's heart with two leaves, big and faint at the edge of a section. Never behind text.
             </p>
-            <p class="relative mt-3 text-small text-ink-500">Placeholder drawing until the real logo file arrives.</p>
           </div>
-          <div class="rounded-[var(--radius-panel)] bg-white p-6 shadow-[var(--shadow-soft)] md:p-8">
+          <div class="rounded-[var(--radius-panel)] bg-cream-50 p-6 shadow-[var(--shadow-soft)] md:p-8">
             <h3 class="text-h3">The pink underline</h3>
-            <p class="mt-4 text-h2 text-olive-800">
+            <p class="mt-4 text-h2 text-green-800">
               Built on <Underline>care</Underline>
             </p>
             <p class="mt-5 text-small text-ink-500">Under the one phrase that matters. Once per page.</p>
           </div>
-          <div class="rounded-[var(--radius-panel)] bg-white p-6 shadow-[var(--shadow-soft)] md:p-8">
-            <h3 class="text-h3">Fraunces italic</h3>
-            <p class="mt-4 font-accent text-2xl italic text-pink-600">With humble hearts…</p>
-            <p class="mt-5 text-small text-ink-500">Labels, taglines and pull quotes only.</p>
+          <div class="rounded-[var(--radius-panel)] bg-cream-50 p-6 shadow-[var(--shadow-soft)] md:p-8">
+            <h3 class="text-h3">Script taglines</h3>
+            <p class="mt-4 font-script text-script text-pink-600">Because kindness changes lives.</p>
+            <p class="mt-5 text-small text-ink-500">Short taglines and one pull quote per page. Never labels.</p>
           </div>
         </div>
 
-        <div class="relative mt-5 overflow-hidden rounded-[var(--radius-panel)] bg-olive-900 p-8 pb-40 md:p-12 md:pb-12" data-surface="dark">
-          <Butterfly class="pointer-events-none absolute -bottom-8 right-2 size-44 rotate-12 text-pink-300 opacity-30 md:-bottom-10 md:right-8 md:size-72" />
-          <p class="relative font-accent text-label font-medium italic text-pink-300">On dark</p>
-          <p class="relative mt-2 max-w-md text-h2 text-pink-50 md:max-w-lg">The butterfly turns light pink and fainter on olive.</p>
+        <div class="mt-5 overflow-hidden rounded-[var(--radius-panel)] bg-cream-50 shadow-[var(--shadow-soft)]">
+          <div class="p-6 md:p-8">
+            <h3 class="text-h3">The pink-and-green wave</h3>
+            <p class="mt-2 max-w-xl">A soft divider leading into the next section. Used in only two places: above the footer and under the Home hero.</p>
+          </div>
+          <Wave class="text-green-900" />
+          <div class="h-6 bg-green-900"></div>
+        </div>
+
+        <div class="relative mt-5 overflow-hidden rounded-[var(--radius-panel)] bg-green-900 p-8 pb-40 md:p-12 md:pb-12" data-surface="dark">
+          <HeartLeaf class="pointer-events-none absolute -bottom-8 right-2 size-44 rotate-12 text-pink-300 opacity-30 md:-bottom-10 md:right-8 md:size-72" />
+          <p class="relative text-label text-pink-300">On dark</p>
+          <p class="relative mt-2 max-w-md text-h2 text-pink-50 md:max-w-lg">The heart-and-leaf line art turns light pink and fainter on green.</p>
         </div>
       </div>
     </section>
 
     <!-- ===================== SHAPE ===================== -->
-    <section id="shape" class="section scroll-mt-4 bg-white">
+    <section id="shape" class="section scroll-mt-4">
       <div class="container-page">
         <SectionHeading
           label="Shape and motion"
           title="Rounded, soft, gentle"
-          intro="Corners are 16 to 24px, shadows are soft and tinted olive, and movement is limited to a fade-in and a small lift. Everything stops for visitors who have 'reduce motion' turned on."
+          intro="Corners are 16 to 24px, shadows are soft and tinted green, and movement is limited to a fade-in and a small lift. Everything stops for visitors who have 'reduce motion' turned on."
         />
         <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           <div class="rounded-[var(--radius-field)] bg-pink-100 p-5">
-            <p class="font-semibold text-olive-800">Field corner</p>
+            <p class="font-semibold text-green-800">Field corner</p>
             <p class="text-small">16px</p>
           </div>
           <div class="rounded-[var(--radius-card)] bg-pink-100 p-5">
-            <p class="font-semibold text-olive-800">Card corner</p>
+            <p class="font-semibold text-green-800">Card corner</p>
             <p class="text-small">20px</p>
           </div>
           <div class="rounded-[var(--radius-panel)] bg-pink-100 p-5">
-            <p class="font-semibold text-olive-800">Panel corner</p>
+            <p class="font-semibold text-green-800">Panel corner</p>
             <p class="text-small">24px</p>
           </div>
           <div class="rounded-full bg-pink-100 px-5 py-5">
-            <p class="font-semibold text-olive-800">Buttons</p>
+            <p class="font-semibold text-green-800">Buttons</p>
             <p class="text-small">fully round</p>
           </div>
         </div>
         <div class="mt-5 grid gap-5 rounded-[var(--radius-panel)] bg-pink-50 p-5 sm:grid-cols-3 md:p-8">
           <div class="rounded-[var(--radius-card)] bg-white p-5 shadow-[var(--shadow-soft)]">
-            <p class="font-semibold text-olive-800">shadow-soft</p>
+            <p class="font-semibold text-green-800">shadow-soft</p>
             <p class="text-small">Resting cards</p>
           </div>
           <div class="rounded-[var(--radius-card)] bg-white p-5 shadow-[var(--shadow-lift)]">
-            <p class="font-semibold text-olive-800">shadow-lift</p>
+            <p class="font-semibold text-green-800">shadow-lift</p>
             <p class="text-small">Hover state</p>
           </div>
           <a href="#shape" class="lift fade-in block rounded-[var(--radius-card)] bg-white p-5 no-underline shadow-[var(--shadow-soft)]">
-            <p class="font-semibold text-olive-800">Hover me</p>
+            <p class="font-semibold text-green-800">Hover me</p>
             <p class="text-small">Lifts 3px. This card also faded up when the page loaded.</p>
           </a>
         </div>
@@ -591,9 +651,9 @@ const sections = [
     </section>
   </main>
 
-  <footer data-surface="dark" class="bg-olive-900 py-10 text-pink-50">
+  <footer data-surface="dark" class="bg-green-900 py-10 text-pink-50">
     <div class="container-page">
-      <p class="font-accent text-label italic text-pink-300">End of the style guide</p>
+      <p class="text-label text-pink-300">End of the style guide</p>
       <p class="mt-2 text-small text-pink-50/80">
         maiCare Foundation Inc. · San Carlos City, Pangasinan. Internal page; the real footer is built in Phase 3.
       </p>

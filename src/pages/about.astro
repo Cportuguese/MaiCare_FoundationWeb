@@ -1,12 +1,13 @@
 ---
 /**
- * About page (Phase 5).
+ * About page (Phase 5, wording refreshed from the brochure in Phase 8).
  *
  * Design direction (text-led, so it feels different from Home's photo grid)
- *  1. Story: a left column of words and a Fraunces-italic belief statement in a
- *     tinted panel on the right, with the butterfly at its corner. The pink
- *     underline is used here once (the h1).
- *  2. Mission, vision, promise: a dark olive band of three big statements set in
+ *  1. Story: the brochure's "About maiCare Foundation" text on the left; the
+ *     brochure's "Our heart" line in script in a blush panel on the right, with
+ *     the heart-and-leaf line art at its corner. The pink underline is used here
+ *     once (the h1).
+ *  2. Mission, vision, promise: a dark green band of three big statements set in
  *     rows (label on the left, statement on the right). No cards.
  *  3. How we work: a four-step timeline. Horizontal on desktop, vertical on phones.
  *  4. People and partners: two calm columns on white. They read from
@@ -19,22 +20,25 @@
  */
 import PageLayout from '../layouts/PageLayout.astro';
 import Button from '../components/Button.astro';
-import Butterfly from '../components/Butterfly.astro';
+import HeartLeaf from '../components/HeartLeaf.astro';
 import Icon, { type IconName } from '../components/Icon.astro';
 import SectionHeading from '../components/SectionHeading.astro';
-import { contact, identity, officers, partners } from '../data/site';
+import Address from '../components/Address.astro';
+import { contact, identity, officers, partners, addressOneLine } from '../data/site';
 import { privacyLink } from '../data/nav';
 
-// Mission, vision and promise wording comes from the foundation's earlier draft.
-// It is reproduced as written; confirm it with the foundation before launch.
+// Mission and vision: the foundation's brochure (Phase 8). The end of the
+// mission was corrected for grammar with the user's okay ("joy and hope",
+// "spreading"). The promise is not in the brochure; the user chose to keep it
+// (the board should still confirm it).
 const statements = [
   {
     label: 'Our mission',
-    text: 'To promote the general well-being, self-reliance and quality of life of individuals, families and communities in need, without distinction as to race, religion, gender or political affiliation.',
+    text: 'To extend help, hope and love to people in need by providing food, healthcare, education and compassionate support, bringing dignity, joy and hope into their lives, and spreading kindness everywhere.',
   },
   {
     label: 'Our vision',
-    text: 'Communities where every family has access to education, health care and the means to earn a decent living.',
+    text: 'A community where no one feels forgotten, where children have hope for a better future, and where people come together to care for and uplift those in need.',
   },
   {
     label: 'Our promise',
@@ -55,23 +59,23 @@ const steps: { icon: IconName; title: string; text: string }[] = [
   },
   {
     icon: 'hand-heart',
-    title: 'Give where it was meant',
+    title: 'Every gift goes where it was meant',
     text: 'Help goes to the program it was given for, and to the people that program serves.',
   },
   {
     icon: 'clipboard-list',
     title: 'Report openly',
-    text: 'We share what was given and what it did, so donors can see it for themselves.',
+    text: 'We share what was given and what it did, so everyone who helps can see it for themselves.',
   },
 ];
 
 // ----- Legal and transparency facts (null values are left out) -----
-const { address, secRegistrationNumber } = contact;
-const basedIn = [address.street, address.city, address.province, address.country].filter(Boolean).join(', ');
-const facts: { label: string; value: string }[] = [
+const { secRegistrationNumber } = contact;
+const facts: { label: string; value: string; isAddress?: boolean }[] = [
   { label: 'Legal name', value: identity.name },
   { label: 'What we are', value: 'A non-stock, non-profit foundation' },
-  { label: 'Based in', value: basedIn },
+  { label: 'Established', value: '2026' },
+  { label: 'Office', value: addressOneLine, isAddress: true },
   ...(secRegistrationNumber ? [{ label: 'SEC registration no.', value: secRegistrationNumber }] : []),
 ];
 
@@ -86,19 +90,28 @@ const initials = (name: string) =>
 
 <PageLayout
   title="About"
-  description="Who maiCare Foundation is: our story, mission, vision and promise, and how we work with our partners in San Carlos City, Pangasinan."
+  description="Who maiCare Foundation is: a new foundation in San Carlos City, Pangasinan, with a heart for children and families in need. Our story, mission, vision and promise."
 >
   <!-- 1. Story -->
   <section class="relative overflow-hidden">
     <div class="container-page grid gap-10 pb-14 pt-10 md:pb-20 md:pt-16 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
       <div class="fade-in">
-        <SectionHeading level="h1" label="About us" title="A foundation built on care" underline="built on care" />
-        <div class="mt-7 max-w-xl space-y-5 text-lead text-ink-600">
-          <p>
-            {identity.name} is a non-stock, non-profit organization based in the City of San Carlos, Pangasinan. It was born from a simple belief: that a little help, given with compassion, can change the course of a life.
+        <SectionHeading level="h1" label="About us" title="Born from a simple desire to help" underline="to help" />
+        <div class="mt-7 max-w-xl space-y-5 text-body text-ink-600">
+          <p class="text-lead">
+            maiCare Foundation was born from a simple desire: to touch the lives of people who are in need, and to extend a helping hand to those who are often neglected or forgotten.
           </p>
           <p>
-            We are just starting out, so we have no results to show yet. What we do have is a clear purpose, three groups of people we want to reach first, and a promise about how every donation will be used.
+            Our heart is especially for children and families facing difficult circumstances: those who are sick, hungry, struggling, or simply in need of someone to care. We believe every person deserves to experience hope, dignity, love and compassion, especially when life feels most difficult.
+          </p>
+          <p>
+            We are committed to sharing meaningful support through food, healthcare, education and other forms of assistance. Our goal is not only to meet immediate needs, but also to bring joy, hope and encouragement into the lives of the people we reach.
+          </p>
+          <p>
+            We may not have many resources today, but we believe that having little should never be a reason not to start. One helping hand can bring hope. One caring heart can remind someone that they are not forgotten. And one act of love can inspire another.
+          </p>
+          <p>
+            We are a non-stock, non-profit foundation in San Carlos City, Pangasinan, started in 2026. We are just beginning, so we have no results to show yet. As we begin this journey, we hope our small efforts will touch many lives and inspire others to join us.
           </p>
         </div>
         <div class="mt-8 flex flex-wrap gap-x-6 gap-y-1">
@@ -109,24 +122,27 @@ const initials = (name: string) =>
       </div>
 
       <figure class="relative fade-in self-center overflow-hidden rounded-panel bg-pink-100 px-7 py-12 md:px-10 md:py-16">
-        <Butterfly class="pointer-events-none absolute -right-5 -top-5 size-28 rotate-12 text-pink-500 opacity-25 md:size-32" />
-        <p class="relative font-accent text-label font-medium italic text-pink-600">What we believe</p>
-        <blockquote class="relative mt-4 font-accent text-[clamp(1.5rem,1.2rem+1.4vw,2.125rem)] italic leading-snug text-olive-800">
-          A little help, given with compassion, can change the course of a life.
+        <HeartLeaf class="pointer-events-none absolute -right-5 -top-5 size-28 rotate-12 text-pink-500 opacity-25 md:size-32" />
+        <p class="relative text-label text-pink-600">Our heart</p>
+        <blockquote class="relative mt-3 font-script text-[clamp(2rem,1.6rem+1.8vw,2.75rem)] leading-tight text-green-800">
+          We may start with little, but we start with love.
         </blockquote>
+        <p class="relative mt-5 text-body text-ink-600">
+          maiCare Foundation: because caring for one life can be the beginning of changing many lives.
+        </p>
       </figure>
     </div>
   </section>
 
   <!-- 2. Mission, vision, promise (dark) -->
-  <section class="bg-olive-800" data-surface="dark" aria-labelledby="values-heading">
+  <section class="bg-green-800" data-surface="dark" aria-labelledby="values-heading">
     <div class="container-page py-10 md:py-16">
       <h2 id="values-heading" class="sr-only">Our mission, vision and promise</h2>
       <dl class="divide-y divide-pink-50/15 border-y border-pink-50/15">
         {
           statements.map((s) => (
             <div class="grid gap-3 py-9 md:grid-cols-[14rem_1fr] md:gap-12 md:py-12">
-              <dt class="font-accent text-label font-medium italic text-pink-300 md:pt-1">{s.label}</dt>
+              <dt class="text-label text-pink-300 md:pt-1">{s.label}</dt>
               <dd class="max-w-3xl text-[clamp(1.1875rem,1.05rem+0.6vw,1.5rem)] font-semibold leading-snug text-pink-50">
                 {s.text}
               </dd>
@@ -156,8 +172,8 @@ const initials = (name: string) =>
                 <Icon name={step.icon} size={22} />
               </span>
               <div class="lg:mt-5">
-                <p class="font-accent text-small italic text-pink-600">Step {i + 1}</p>
-                <h3 class="mt-1 text-h3 text-olive-800">{step.title}</h3>
+                <p class="text-small font-bold text-pink-600">Step {i + 1}</p>
+                <h3 class="mt-1 text-h3 text-green-800">{step.title}</h3>
                 <p class="mt-2 text-body text-ink-600">{step.text}</p>
               </div>
             </li>
@@ -179,7 +195,7 @@ const initials = (name: string) =>
       <div class="mt-10 grid gap-6 lg:grid-cols-2 lg:gap-8">
         <!-- Officers and trustees -->
         <div class="rounded-panel bg-pink-50 p-6 ring-1 ring-pink-200 md:p-8">
-          <h3 class="flex items-center gap-3 text-h3 text-olive-800">
+          <h3 class="flex items-center gap-3 text-h3 text-green-800">
             <Icon name="users" size={24} class="text-pink-600" /> Officers and trustees
           </h3>
           {
@@ -187,11 +203,11 @@ const initials = (name: string) =>
               <ul class="mt-6 grid gap-5 sm:grid-cols-2">
                 {officers.map((person) => (
                   <li class="flex items-center gap-4">
-                    <span class="grid size-14 shrink-0 place-items-center rounded-full bg-pink-100 font-extrabold text-olive-800" aria-hidden="true">
+                    <span class="grid size-14 shrink-0 place-items-center rounded-full bg-pink-100 font-extrabold text-green-800" aria-hidden="true">
                       {initials(person.name)}
                     </span>
                     <span>
-                      <span class="block font-semibold text-olive-800">{person.name}</span>
+                      <span class="block font-semibold text-green-800">{person.name}</span>
                       <span class="block text-small text-ink-600">{person.role}</span>
                     </span>
                   </li>
@@ -207,7 +223,7 @@ const initials = (name: string) =>
 
         <!-- Partners -->
         <div class="rounded-panel bg-pink-50 p-6 ring-1 ring-pink-200 md:p-8">
-          <h3 class="flex items-center gap-3 text-h3 text-olive-800">
+          <h3 class="flex items-center gap-3 text-h3 text-green-800">
             <Icon name="handshake" size={24} class="text-pink-600" /> Partners
           </h3>
           {
@@ -216,11 +232,11 @@ const initials = (name: string) =>
                 {partners.map((partner) => (
                   <li>
                     {partner.url ? (
-                      <a href={partner.url} class="inline-flex min-h-11 items-center rounded-full bg-white px-5 font-semibold text-olive-800 no-underline shadow-soft hover:text-pink-700">
+                      <a href={partner.url} class="inline-flex min-h-11 items-center rounded-full bg-white px-5 font-semibold text-green-800 no-underline shadow-soft hover:text-pink-700">
                         {partner.name}
                       </a>
                     ) : (
-                      <span class="inline-flex min-h-11 items-center rounded-full bg-white px-5 font-semibold text-olive-800 shadow-soft">
+                      <span class="inline-flex min-h-11 items-center rounded-full bg-white px-5 font-semibold text-green-800 shadow-soft">
                         {partner.name}
                       </span>
                     )}
@@ -248,7 +264,7 @@ const initials = (name: string) =>
         <SectionHeading
           label="Legal and transparency"
           title="Plain facts, in one place"
-          intro="Donors should be able to check who we are. These details are shown exactly as we have them."
+          intro="Everyone who supports us should be able to check who we are. These details are shown exactly as we have them."
         />
       </div>
 
@@ -258,7 +274,13 @@ const initials = (name: string) =>
             facts.map((fact) => (
               <div class="grid gap-1 py-4 sm:grid-cols-[11rem_1fr] sm:gap-6">
                 <dt class="text-small font-semibold text-ink-500">{fact.label}</dt>
-                <dd class="font-semibold text-olive-800">{fact.value}</dd>
+                <dd class="font-semibold text-green-800">
+                  {fact.isAddress ? (
+                    <Address class="text-green-800 underline decoration-pink-500 decoration-2 underline-offset-4 hover:text-pink-700" landmarkClass="mt-1 block text-small font-normal text-ink-600" />
+                  ) : (
+                    fact.value
+                  )}
+                </dd>
               </div>
             ))
           }
@@ -277,7 +299,10 @@ const initials = (name: string) =>
   <!-- 6. Closing line -->
   <section class="container-page pb-16 md:pb-24" aria-labelledby="about-cta-heading">
     <div class="flex flex-col gap-6 border-t border-pink-200 pt-10 sm:flex-row sm:items-center sm:justify-between">
-      <h2 id="about-cta-heading" class="max-w-md text-h2 text-olive-800">Want to help build this with us?</h2>
+      <div>
+        <p class="font-script text-script text-pink-600">Because kindness changes lives.</p>
+        <h2 id="about-cta-heading" class="mt-1 max-w-md text-h2 text-green-800">Want to help build this with us?</h2>
+      </div>
       <div class="flex flex-wrap gap-3">
         <Button href="/get-involved/" size="lg">See ways to help</Button>
         <Button href="/contact/" variant="secondary" size="lg">Contact us</Button>
